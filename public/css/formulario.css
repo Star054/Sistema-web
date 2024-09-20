@@ -1,0 +1,9 @@
+.vertical-text {
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    text-align: center;
+    vertical-align: middle;
+    width: 20px; /* Ajusta el ancho dependiendo del contenido */
+    white-space: nowrap;
+    height: 200px; /* Ajusta la altura dependiendo del tamaño de la celda */
+}
