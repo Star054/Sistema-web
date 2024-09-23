@@ -1,9 +1,51 @@
-.vertical-text {
-    writing-mode: vertical-lr;
-    transform: rotate(180deg);
-    text-align: center;
-    vertical-align: middle;
-    width: 20px; /* Ajusta el ancho dependiendo del contenido */
-    white-space: nowrap;
-    height: 200px; /* Ajusta la altura dependiendo del tamaño de la celda */
+/*.vertical-text {*/
+/*    writing-mode: vertical-lr;*/
+/*    transform: rotate(180deg);*/
+/*    text-align: center;*/
+/*    vertical-align: middle;*/
+/*    width: 20px; !* Ajusta el ancho dependiendo del contenido *!*/
+/*    white-space: nowrap;*/
+/*    height: 200px; !* Ajusta la altura dependiendo del tamaño de la celda *!*/
+/*}*/
+
+
+/*.vertical-text {*/
+/*    writing-mode: vertical-rl; !* Escribe el texto de arriba hacia abajo *!*/
+/*    transform: rotate(180deg); !* Rota el texto para que sea legible *!*/
+/*    text-align: center;*/
+/*    vertical-align: middle;*/
+/*}*/
+
+
+/*.grid {*/
+/*    display: flex; !* Cambia grid por flex *!*/
+/*    gap: 1rem; !* Espacio entre los componentes *!*/
+/*    align-items: stretch; !* Asegura que todos los componentes tengan la misma altura *!*/
+/*}*/
+
+/*.form-container {*/
+/*    width: 100%; !* Ajusta el ancho del contenedor *!*/
+/*    overflow-x: auto; !* Scroll horizontal si es necesario *!*/
+/*}*/
+
+/*.component {*/
+/*    flex: 1; !* Cada componente ocupará el mismo espacio dentro del flex *!*/
+/*    border: 1px solid black; !* Para mantener el mismo estilo *!*/
+/*    padding: 10px; !* Asegura que el contenido tenga espacio interno *!*/
+/*    min-height: 200px; !* Establece una altura mínima *!*/
+/*}*/
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 5px;
+    height: 90px; /* Definir la misma altura para todas las celdas */
+}
+
+.container {
+    margin-bottom: 20px;
 }
