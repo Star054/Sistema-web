@@ -1,6 +1,6 @@
 <nav x-data="{ open: false, formOpen: false, profileOpen: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
-    <div class="w-full max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
@@ -9,6 +9,9 @@
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </a>
                 </div>
+
+
+
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
@@ -33,7 +36,7 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('for-sigsa-5b')">
+                        <x-dropdown-link :href="route('for-sigsa-5b.store')">
                             {{ __('FOR-SIGSA-5b') }}
                         </x-dropdown-link>
                         <x-dropdown-link :href="route('form2')">
@@ -106,7 +109,7 @@
             </button>
 
             <div :class="{'block': formOpen, 'hidden': ! formOpen}" class="hidden">
-                <x-responsive-nav-link :href="route('for-sigsa-5b')">
+                <x-responsive-nav-link :href="route('for-sigsa-5b.store')">
                     {{ __('FOR-SIGSA-5b') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('form2')">

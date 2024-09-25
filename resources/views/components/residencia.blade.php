@@ -1,42 +1,61 @@
-<div class="container">
-    <!-- Tabla de datos de Residencia, Agrícola Migrante y Embarazada -->
-    <table class="table table-bordered" style="width: 50%;border: 1px solid black; border-collapse: collapse;">
-        <thead>
-        <tr>
-            <th colspan="2" style="border: 1px solid black; padding: 5px; text-align: center;">Residencia</th>
-            <th rowspan="2" style="border: 1px solid black; padding: 5px; text-align: center;">9/ Agrícola Migrante</th>
-            <th rowspan="2" style="border: 1px solid black; padding: 5px; text-align: center;">10/ Embarazada?</th>
-        </tr>
-        <tr>
-            <th style="border: 1px solid black; padding: 5px;">Comunidad y/o dirección exacta</th>
-            <th style="border: 1px solid black; padding: 5px;">Municipio</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <!-- Comunidad y/o dirección exacta -->
-            <td style="border: 1px solid black; padding: 5px;">
-                <input type="text" name="comunidad_direccion" style="width: 100%; border: none; border-bottom: 1px solid black;">
-            </td>
-            <!-- Municipio -->
-            <td style="border: 1px solid black; padding: 5px;">
-                <input type="text" name="municipio" style="width: 100%; border: none; border-bottom: 1px solid black;">
-            </td>
-            <!-- Agrícola Migrante -->
-            <td style="border: 1px solid black; padding: 5px;">
-                <select name="agricola_migrante" style="width: 100%; border: none; border-bottom: 1px solid black;">
-                    <option value="Sí">Sí</option>
-                    <option value="No">No</option>
-                </select>
-            </td>
-            <!-- Embarazada -->
-            <td style="border: 1px solid black; padding: 5px;">
-                <select name="embarazada" style="width: 100%; border: none; border-bottom: 1px solid black;">
-                    <option value="Sí">Sí</option>
-                    <option value="No">No</option>
-                </select>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<div class="container mx-auto px-4 py-6">
+    <!-- Encabezado del Formulario -->
+    <div class="w-3/4 overflow-x-auto">
+        <table class="able-auto w-3/4 border-collapse mb-6 border border-black dark:border-white">
+            <thead>
+            <tr>
+                <th colspan="2" class="border border-black dark:border-white p-2 text-center text-black dark:text-white">
+                    Residencia
+                </th>
+                <th rowspan="2" class="border border-black dark:border-white p-2 text-center text-black dark:text-white">
+                    9/ Agrícola Migrante
+                </th>
+                <th rowspan="2" class="border border-black dark:border-white p-2 text-center text-black dark:text-white">
+                    10/ Embarazada?
+                </th>
+            </tr>
+            <tr>
+                <th class="border border-black dark:border-white p-2 text-black dark:text-white">
+                    Comunidad y/o dirección exacta
+                </th>
+                <th class="border border-black dark:border-white p-2 text-black dark:text-white">
+                    Municipio
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <!-- Campo de entrada para Comunidad y/o dirección exacta -->
+                <td class="border border-black dark:border-white p-0">
+                    <input type="text" name="comunidad_direccion"
+                           class="w-full h-full border-none p-2 text-black dark:text-white dark:bg-gray-900 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+                </td>
+
+                <!-- Campo de entrada para Municipio -->
+                <td class="border border-black dark:border-white p-0">
+                    <input type="text" name="municipio"
+                           class="w-full h-full border-none p-2 text-black dark:text-white dark:bg-gray-900 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+                </td>
+
+                <!-- Selector para Agrícola Migrante -->
+                <td class="border border-black dark:border-white p-0">
+                    <select name="agricola_migrante"
+                            class="w-full h-full border-none p-2 text-black dark:text-white dark:bg-gray-900 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+                        <option value="Sí">Sí</option>
+                        <option value="No">No</option>
+                    </select>
+                </td>
+
+                <!-- Selector para Embarazada -->
+                <td class="border border-black dark:border-white p-0">
+                    <select name="embarazada"
+                            class="w-full h-full border-none p-2 text-black dark:text-white dark:bg-gray-900 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+                        <option value="Sí">Sí</option>
+                        <option value="No">No</option>
+                    </select>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
