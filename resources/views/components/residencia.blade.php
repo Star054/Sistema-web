@@ -41,8 +41,8 @@
                 <td class="border border-black dark:border-white p-0">
                     <select name="agricola_migrante"
                             class="w-full h-full border-none p-2 text-black dark:text-white dark:bg-gray-900 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
-                        <option value="Sí">Sí</option>
-                        <option value="No">No</option>
+                        <option value="1">Sí</option>
+                        <option value="0">No</option>
                     </select>
                 </td>
 
@@ -50,8 +50,8 @@
                 <td class="border border-black dark:border-white p-0">
                     <select name="embarazada"
                             class="w-full h-full border-none p-2 text-black dark:text-white dark:bg-gray-900 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
-                        <option value="Sí">Sí</option>
-                        <option value="No">No</option>
+                        <option value="1">Sí</option>
+                        <option value="0">No</option>
                     </select>
                 </td>
             </tr>

@@ -27,7 +27,7 @@
                 </td>
                 <!-- Nombres y apellidos del paciente (con textarea auto-resize) -->
                 <td class="border border-black dark:border-white p-0">
-                    <textarea name="nombres_apellidos" maxlength="40" pattern="\l{40}"
+                    <textarea name="nombre_paciente" maxlength="40" pattern="\l{40}"
                               class="w-full h-full border-none p-2 text-black dark:text-white dark:bg-gray-900 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
                               rows="1"
                               oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
@@ -39,10 +39,13 @@
                 </td>
                 <!-- Sexo (convertido en textarea) -->
                 <td class="border border-black dark:border-white p-0">
-                    <textarea name="sexo" class="w-full h-full border-none p-2 text-black dark:text-white dark:bg-gray-900 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-                              rows="1"
-                              oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
+                    <select name="sexo" class="w-full h-full border-none p-2 text-black dark:text-white dark:bg-gray-900 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" required>
+                        <option value="">Seleccione el sexo</option>
+                        <option value="M">M</option>
+                        <option value="F">F</option>
+                    </select>
                 </td>
+
                 <!-- Pueblo (convertido en textarea) -->
                 <td class="border border-black dark:border-white p-0">
                     <textarea name="pueblo" class="w-full h-full border-none p-2 text-black dark:text-white dark:bg-gray-900 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"

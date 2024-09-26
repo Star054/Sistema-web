@@ -8,6 +8,9 @@
                     <a href="{{ route('dashboard') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </a>
+                    <!-- Form vacunas -->
+                    <a href="{{ route('vacunas.store') }}">
+                    </a>
                 </div>
 
 
@@ -17,6 +20,10 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('vacunas.create')" :active="request()->routeIs('form.create')">
+                        {{ __('Vacunas') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -97,6 +104,11 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('vacunas.create')" :active="request()->routeIs('vacunas.create')">
+                {{ __('Vacunas') }}
+            </x-responsive-nav-link>
+
+
         </div>
 
         <!-- Responsive Formularios -->
