@@ -9,7 +9,7 @@ class FormularioSIGSA5b extends Model
 {
     use HasFactory;
 
-    protected $table = 'formulario_sigsa_5b';
+    protected $table = 'formulario_sigsa_base';
 
     protected $fillable = [
         'vacuna',
@@ -31,15 +31,21 @@ class FormularioSIGSA5b extends Model
         'profesion_oficio',
     ];
 
-    // Relación con el modelo Residencia
+    // Relación con el modelo Residencia (uno a uno)
     public function residencia()
     {
-        return $this->hasOne(Residencia::class, 'formulario_sigsa_5b_id');
+        return $this->hasOne(Residencia::class, 'formulario_base_id');
     }
 
-    // Relación con el modelo Mujer15a49yOtrosGrupos
+    // Relación con el modelo Mujer15a49yOtrosGrupos (uno a uno)
     public function mujer15a49yOtrosGrupos()
     {
-        return $this->hasOne(Mujer15a49yOtrosGrupos::class, 'formulario_sigsa_5b_id');
+        return $this->hasOne(Mujer15a49yOtrosGrupos::class, 'formulario_base_id');
+    }
+
+    // Relación many-to-many con el modelo TipoFormulario
+    public function tiposFormulario()
+    {
+        return $this->belongsToMany(TipoFormulario::class, 'formulario_sigsa_tipo_formulario');
     }
 }

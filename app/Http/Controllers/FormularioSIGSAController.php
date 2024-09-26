@@ -1,18 +1,23 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\FormularioSIGSA5b;  // Modelo para la tabla principal del formulario
 use App\Models\Residencia;         // Modelo para la tabla de residencia
 use App\Models\Mujer15a49yOtrosGrupos; // Modelo para la tabla de mujer 15 a 49 años y otros grupos
+use App\Models\Vacuna;  // Modelo para la tabla de vacunas
 
 class FormularioSIGSAController extends Controller
 {
     // Mostrar el formulario
     public function create()
     {
-        // Retorna la vista del formulario (el archivo blade para mostrar el formulario)
-        return view('formulario-for-sigsa-5b'); // Cambia esto al nombre de la vista que corresponda
+        // Obtener todas las vacunas para mostrarlas en el select
+        $vacunas = Vacuna::all();
+
+        // Retornar la vista del formulario, pasando las vacunas a la vista
+        return view('formulario-for-sigsa-5b', compact('vacunas'));
     }
 
     // Almacenar los datos del formulario en la base de datos
@@ -20,7 +25,7 @@ class FormularioSIGSAController extends Controller
     {
         // Validar los datos que vienen desde el formulario
         $validated = $request->validate([
-            'vacuna' => 'required|string',
+            'vacuna' => 'required|string|exists:vacunas,nombre_vacuna',  // Validar que la vacuna es requerida y existe en la tabla vacunas
             'nombre_paciente' => 'required|string',
             'codigo_formulario' => 'nullable|string',
 
@@ -34,7 +39,7 @@ class FormularioSIGSAController extends Controller
             'anio' => 'nullable|string',
 
             // Campos del paciente
-            'no_orden' => 'nullable|int',
+            'no_orden' => 'nullable|integer',
             'cui' => 'nullable|string',
             'fecha_nacimiento' => 'nullable|date',
             'sexo' => 'nullable|string|max:1',
@@ -62,9 +67,12 @@ class FormularioSIGSAController extends Controller
             'vacuna_otros_grupos_r2' => 'nullable|date',
         ]);
 
+        // Buscar el ID de la vacuna basada en su nombre
+        $vacuna = Vacuna::where('nombre_vacuna', $validated['vacuna'])->firstOrFail();
+
         // Almacenar los datos en la tabla principal del formulario
         $formulario = FormularioSIGSA5b::create([
-            'vacuna' => $validated['vacuna'],
+            'vacuna' => $vacuna->nombre_vacuna,  // Almacenar el nombre de la vacuna seleccionada
             'nombre_paciente' => $validated['nombre_paciente'],
             'codigo_formulario' => $validated['codigo_formulario'],
             'area_salud' => $validated['area_salud'],
@@ -77,27 +85,24 @@ class FormularioSIGSAController extends Controller
         ]);
 
         // Almacenar los datos de la tabla de residencia
-        Residencia::create([
-            'formulario_sigsa_5b_id' => $formulario->id, // Relación con el formulario
+        $formulario->residencia()->create([
             'comunidad_direccion' => $validated['comunidad_direccion'],
             'municipio_residencia' => $validated['municipio_residencia'],
             'agricola_migrante' => $validated['agricola_migrante'],
             'embarazada' => $validated['embarazada'],
         ]);
 
-        // Almacenar los datos de la tabla de mujer 15 a 49 años y otros grupos
-        Mujer15a49yOtrosGrupos::create([
-            'formulario_sigsa_5b_id' => $formulario->id, // Relación con el formulario
-            'vacuna_mujer_15_49_1a' => $validated['vacuna_mujer_15_49_1a'],
-            'vacuna_mujer_15_49_2a' => $validated['vacuna_mujer_15_49_2a'],
-            'vacuna_mujer_15_49_3a' => $validated['vacuna_mujer_15_49_3a'],
-            'vacuna_mujer_15_49_r1' => $validated['vacuna_mujer_15_49_r1'],
-            'vacuna_mujer_15_49_r2' => $validated['vacuna_mujer_15_49_r2'],
-            'vacuna_otros_grupos_1a' => $validated['vacuna_otros_grupos_1a'],
-            'vacuna_otros_grupos_2a' => $validated['vacuna_otros_grupos_2a'],
-            'vacuna_otros_grupos_3a' => $validated['vacuna_otros_grupos_3a'],
-            'vacuna_otros_grupos_r1' => $validated['vacuna_otros_grupos_r1'],
-            'vacuna_otros_grupos_r2' => $validated['vacuna_otros_grupos_r2'],
+        $formulario->mujer15a49yOtrosGrupos()->create([
+            'vacuna_mujer_15_49_1a' => $validated['vacuna_mujer_15_49_1a'] ?? null,
+            'vacuna_mujer_15_49_2a' => $validated['vacuna_mujer_15_49_2a'] ?? null,
+            'vacuna_mujer_15_49_3a' => $validated['vacuna_mujer_15_49_3a'] ?? null,
+            'vacuna_mujer_15_49_r1' => $validated['vacuna_mujer_15_49_r1'] ?? null,
+            'vacuna_mujer_15_49_r2' => $validated['vacuna_mujer_15_49_r2'] ?? null,
+            'vacuna_otros_grupos_1a' => $validated['vacuna_otros_grupos_1a'] ?? null,
+            'vacuna_otros_grupos_2a' => $validated['vacuna_otros_grupos_2a'] ?? null,
+            'vacuna_otros_grupos_3a' => $validated['vacuna_otros_grupos_3a'] ?? null,
+            'vacuna_otros_grupos_r1' => $validated['vacuna_otros_grupos_r1'] ?? null,
+            'vacuna_otros_grupos_r2' => $validated['vacuna_otros_grupos_r2'] ?? null,
         ]);
 
         // Redirigir a la misma página con un mensaje de éxito

@@ -1,24 +1,32 @@
 <x-app-layout>
     <div class="container mx-auto px-4 py-6 space-y-8">
 
-        <!-- Encabezado dinámico usando slot para el título -->
-        <div class="bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out hover:shadow-xl">
-            <x-formulario-slot
-                codigo="FOR-SIGSA-5b"
-                version="3.0"
-                vigencia="Noviembre 2017">
-                REGISTRO DE VACUNACION PARA LA MUJER DE 15 A 49 AÑOS Y OTROS GRUPOS
-            </x-formulario-slot>
-
-        </div>
-
-
         <!-- Iniciar el formulario -->
         <form action="{{ route('for-sigsa-5b.store') }}" method="POST">
             @csrf  <!-- Token de seguridad de Laravel -->
 
             <!-- Inputs ocultos para el tipo de formulario -->
             <input type="hidden" name="codigo_formulario" value="FOR-SIGSA-5b">
+
+            <!-- Encabezado dinámico usando slot para el título y select -->
+            <div class="bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out hover:shadow-xl">
+                <x-formulario-slot
+                    codigo="FOR-SIGSA-5b"
+                    version="3.0"
+                    vigencia="Noviembre 2017">
+                    REGISTRO DE VACUNACION PARA LA MUJER DE 15 A 49 AÑOS Y OTROS GRUPOS
+                    <br>
+                    <div class="flex justify-end items-center mt-2">
+                        <label for="vacuna" class="text-sm text-gray-600 dark:text-gray-400 mr-2">Seleccione la vacuna:</label>
+                        <select name="vacuna" id="vacuna" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-1 rounded-md text-sm w-auto">
+                            <option value="">Seleccione una vacuna</option>
+                            @foreach($vacunas as $vacuna)
+                                <option value="{{ $vacuna->nombre_vacuna }}">{{ $vacuna->nombre_vacuna }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </x-formulario-slot>
+            </div>
 
             <!-- Mensajes de validación -->
             @if ($errors->any())

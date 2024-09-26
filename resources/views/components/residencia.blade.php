@@ -27,19 +27,19 @@
             <tr>
                 <!-- Campo de entrada para Comunidad y/o dirección exacta -->
                 <td class="border border-black dark:border-white p-0">
-                    <input type="text" name="comunidad_direccion"
+                    <input type="text" name="comunidad_direccion" id="comunidad_direccion"
                            class="w-full h-full border-none p-2 text-black dark:text-white dark:bg-gray-900 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
                 </td>
 
                 <!-- Campo de entrada para Municipio -->
                 <td class="border border-black dark:border-white p-0">
-                    <input type="text" name="municipio"
+                    <input type="text" name="municipio_residencia" id="municipio_residencia"
                            class="w-full h-full border-none p-2 text-black dark:text-white dark:bg-gray-900 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
                 </td>
 
                 <!-- Selector para Agrícola Migrante -->
                 <td class="border border-black dark:border-white p-0">
-                    <select name="agricola_migrante"
+                    <select name="agricola_migrante" id="agricola_migrante"
                             class="w-full h-full border-none p-2 text-black dark:text-white dark:bg-gray-900 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
                         <option value="1">Sí</option>
                         <option value="0">No</option>
@@ -48,7 +48,7 @@
 
                 <!-- Selector para Embarazada -->
                 <td class="border border-black dark:border-white p-0">
-                    <select name="embarazada"
+                    <select name="embarazada" id="embarazada"
                             class="w-full h-full border-none p-2 text-black dark:text-white dark:bg-gray-900 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
                         <option value="1">Sí</option>
                         <option value="0">No</option>

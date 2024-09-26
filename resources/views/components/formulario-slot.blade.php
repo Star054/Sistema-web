@@ -15,16 +15,7 @@
                 <!-- Título y selección de vacuna -->
                 <th class="border border-black dark:border-white p-6 text-2xl text-center w-3/5 text-gray-900 dark:text-gray-100">
                     <strong>{{ $slot }}</strong>
-                    <br>
-                    <div class="flex justify-end items-center mt-2">
-                        <label for="vacuna" class="text-sm text-gray-600 dark:text-gray-400 mr-2">Seleccione la vacuna:</label>
-                        <select id="id_vacuna" name="id_vacuna" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-1 rounded-md text-sm w-auto">
-                            <option value="" disabled selected>Seleccione una vacuna</option>
-                            @foreach($vacunas as $vacuna)
-                                <option value="{{ $vacuna->id }}">{{ $vacuna->nombre_vacuna }}</option> <!-- nombre_vacuna es el campo de tu tabla -->
-                            @endforeach
-                        </select>
-                    </div>
+
                 </th>
 
 

@@ -37,36 +37,36 @@
             <tr>
                 <!-- Campos de datos para Mujer de 15 a 49 años -->
                 <td class="border border-black dark:border-white p-2 text-center">
-                    <input type="date" name="vacuna_1a_mujer" class="date-input w-full border-none dark:bg-gray-900 dark:text-gray-300 focus:ring focus:ring-indigo-500" style="text-align: center;">
+                    <input type="date" name="vacuna_mujer_15_49_1a" class="date-input w-full border-none dark:bg-gray-900 dark:text-gray-300 focus:ring focus:ring-indigo-500" style="text-align: center;">
                 </td>
                 <td class="border border-black dark:border-white p-2 text-center">
-                    <input type="date" name="vacuna_2a_mujer" class="date-input w-full border-none dark:bg-gray-900 dark:text-gray-300 focus:ring focus:ring-indigo-500" style="text-align: center;">
+                    <input type="date" name="vacuna_mujer_15_49_2a" class="date-input w-full border-none dark:bg-gray-900 dark:text-gray-300 focus:ring focus:ring-indigo-500" style="text-align: center;">
                 </td>
                 <td class="border border-black dark:border-white p-2 text-center">
-                    <input type="date" name="vacuna_3a_mujer" class="date-input w-full border-none dark:bg-gray-900 dark:text-gray-300 focus:ring focus:ring-indigo-500" style="text-align: center;">
+                    <input type="date" name="vacuna_mujer_15_49_3a" class="date-input w-full border-none dark:bg-gray-900 dark:text-gray-300 focus:ring focus:ring-indigo-500" style="text-align: center;">
                 </td>
                 <td class="border border-black dark:border-white p-2 text-center">
-                    <input type="date" name="refuerzo_r1_mujer" class="date-input w-full border-none dark:bg-gray-900 dark:text-gray-300 focus:ring focus:ring-indigo-500" style="text-align: center;">
+                    <input type="date" name="vacuna_mujer_15_49_r1" class="date-input w-full border-none dark:bg-gray-900 dark:text-gray-300 focus:ring focus:ring-indigo-500" style="text-align: center;">
                 </td>
                 <td class="border border-black dark:border-white p-2 text-center">
-                    <input type="date" name="refuerzo_r2_mujer" class="date-input w-full border-none dark:bg-gray-900 dark:text-gray-300 focus:ring focus:ring-indigo-500" style="text-align: center;">
+                    <input type="date" name="vacuna_mujer_15_49_r2" class="date-input w-full border-none dark:bg-gray-900 dark:text-gray-300 focus:ring focus:ring-indigo-500" style="text-align: center;">
                 </td>
 
                 <!-- Campos de datos para Otros grupos -->
                 <td class="border border-black dark:border-white p-2 text-center">
-                    <input type="date" name="vacuna_1a_otros" class="date-input w-full border-none dark:bg-gray-900 dark:text-gray-300 focus:ring focus:ring-indigo-500" style="text-align: center;">
+                    <input type="date" name="vacuna_otros_grupos_1a" class="date-input w-full border-none dark:bg-gray-900 dark:text-gray-300 focus:ring focus:ring-indigo-500" style="text-align: center;">
                 </td>
                 <td class="border border-black dark:border-white p-2 text-center">
-                    <input type="date" name="vacuna_2a_otros" class="date-input w-full border-none dark:bg-gray-900 dark:text-gray-300 focus:ring focus:ring-indigo-500" style="text-align: center;">
+                    <input type="date" name="vacuna_otros_grupos_2a" class="date-input w-full border-none dark:bg-gray-900 dark:text-gray-300 focus:ring focus:ring-indigo-500" style="text-align: center;">
                 </td>
                 <td class="border border-black dark:border-white p-2 text-center">
-                    <input type="date" name="vacuna_3a_otros" class="date-input w-full border-none dark:bg-gray-900 dark:text-gray-300 focus:ring focus:ring-indigo-500" style="text-align: center;">
+                    <input type="date" name="vacuna_otros_grupos_3a" class="date-input w-full border-none dark:bg-gray-900 dark:text-gray-300 focus:ring focus:ring-indigo-500" style="text-align: center;">
                 </td>
                 <td class="border border-black dark:border-white p-2 text-center">
-                    <input type="date" name="refuerzo_r1_otros" class="date-input w-full border-none dark:bg-gray-900 dark:text-gray-300 focus:ring focus:ring-indigo-500" style="text-align: center;">
+                    <input type="date" name="vacuna_otros_grupos_r1" class="date-input w-full border-none dark:bg-gray-900 dark:text-gray-300 focus:ring focus:ring-indigo-500" style="text-align: center;">
                 </td>
                 <td class="border border-black dark:border-white p-2 text-center">
-                    <input type="date" name="refuerzo_r2_otros" class="date-input w-full border-none dark:bg-gray-900 dark:text-gray-300 focus:ring focus:ring-indigo-500" style="text-align: center;">
+                    <input type="date" name="vacuna_otros_grupos_r2" class="date-input w-full border-none dark:bg-gray-900 dark:text-gray-300 focus:ring focus:ring-indigo-500" style="text-align: center;">
                 </td>
             </tr>
             </tbody>

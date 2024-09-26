@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tipo_formularios', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id(); // Clave primaria
+            $table->string('codigo_formulario'); // Código del formulario
+            $table->timestamps(); // Timestamps para created_at y updated_at
         });
     }
 

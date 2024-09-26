@@ -14,7 +14,7 @@ class VacunaController extends Controller
     {
         // Opcional: Mostrar una lista de todas las vacunas
         $vacunas = Vacuna::all();
-        return view('vacunas.index', compact('vacunas'));
+        return view('vacunas.create', compact('vacunas'));
     }
 
     /**
