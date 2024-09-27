@@ -9,7 +9,7 @@ class TipoFormulario extends Model
 {
     use HasFactory;
 
-    protected $table = 'tipo_formularios'; // Cambiado a plural para coincidir con la tabla
+    protected $table = 'tipo_formularios';
 
     protected $fillable = [
         'codigo_formulario',
@@ -19,6 +19,7 @@ class TipoFormulario extends Model
     public function formulariosSIGSA()
     {
         // Nombre de la tabla pivote: 'formulario_sigsa_tipo_formulario'
-        return $this->belongsToMany(FormularioSIGSA5b::class, 'formulario_sigsa_tipo_formulario');
+
+        return $this->belongsToMany(TipoFormulario::class, 'formulario_sigsa_tipo_formulario', 'formulario_sigsa_id', 'tipo_formulario_id');
     }
 }

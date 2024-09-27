@@ -13,7 +13,7 @@ class Mujer15a49yOtrosGrupos extends Model
 
     // Lista de campos que se pueden asignar de manera masiva
     protected $fillable = [
-        'formulario_sigsa_5b_id',  // Relación con el formulario
+        'formulario_base_id',  // Relación con el formulario
         'vacuna_mujer_15_49_1a',
         'vacuna_mujer_15_49_2a',
         'vacuna_mujer_15_49_3a',
@@ -29,6 +29,6 @@ class Mujer15a49yOtrosGrupos extends Model
     // Relación con el modelo FormularioSIGSA5b
     public function formularioSIGSA5b()
     {
-        return $this->belongsTo(FormularioSIGSA5b::class, 'formulario_sigsa_5b_id');
+        return $this->belongsTo(FormularioSIGSA5b::class, 'formulario_base_id');
     }
 }

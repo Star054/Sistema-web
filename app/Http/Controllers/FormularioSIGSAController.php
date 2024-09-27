@@ -7,6 +7,7 @@ use App\Models\FormularioSIGSA5b;  // Modelo para la tabla principal del formula
 use App\Models\Residencia;         // Modelo para la tabla de residencia
 use App\Models\Mujer15a49yOtrosGrupos; // Modelo para la tabla de mujer 15 a 49 años y otros grupos
 use App\Models\Vacuna;  // Modelo para la tabla de vacunas
+use App\Models\TipoFormulario;  // Modelo para la tabla de tipos de formularios
 
 class FormularioSIGSAController extends Controller
 {
@@ -27,7 +28,7 @@ class FormularioSIGSAController extends Controller
         $validated = $request->validate([
             'vacuna' => 'required|string|exists:vacunas,nombre_vacuna',  // Validar que la vacuna es requerida y existe en la tabla vacunas
             'nombre_paciente' => 'required|string',
-            'codigo_formulario' => 'nullable|string',
+            'codigo_formulario' => 'required|string', // Validar que el código de formulario es requerido
 
             // Validaciones de los campos de la tabla principal
             'area_salud' => 'nullable|string',
@@ -40,7 +41,7 @@ class FormularioSIGSAController extends Controller
 
             // Campos del paciente
             'no_orden' => 'nullable|integer',
-            'cui' => 'nullable|string',
+            'cui' => 'nullable|string|unique:formulario_sigsa_base,cui',  // Evitar duplicados de CUI
             'fecha_nacimiento' => 'nullable|date',
             'sexo' => 'nullable|string|max:1',
             'pueblo' => 'nullable|string',
@@ -67,8 +68,22 @@ class FormularioSIGSAController extends Controller
             'vacuna_otros_grupos_r2' => 'nullable|date',
         ]);
 
+        // Buscar el tipo de formulario 'FOR-SIGSA-5b' o crearlo si no existe
+        $tipoFormulario = TipoFormulario::firstOrCreate([
+            'codigo_formulario' => $validated['codigo_formulario'],
+        ]);
+
         // Buscar el ID de la vacuna basada en su nombre
         $vacuna = Vacuna::where('nombre_vacuna', $validated['vacuna'])->firstOrFail();
+
+        // Validación para evitar la duplicación de formularios
+        $existeFormulario = FormularioSIGSA5b::where('nombre_paciente', $validated['nombre_paciente'])
+            ->where('cui', $validated['cui'])
+            ->exists();
+
+        if ($existeFormulario) {
+            return redirect()->back()->withErrors('El formulario ya existe para este paciente.');
+        }
 
         // Almacenar los datos en la tabla principal del formulario
         $formulario = FormularioSIGSA5b::create([
@@ -84,6 +99,9 @@ class FormularioSIGSAController extends Controller
             'anio' => $validated['anio'],
         ]);
 
+        // Guardar la relación en la tabla pivote
+        $formulario->tiposFormulario()->attach($tipoFormulario->id);
+
         // Almacenar los datos de la tabla de residencia
         $formulario->residencia()->create([
             'comunidad_direccion' => $validated['comunidad_direccion'],
@@ -92,6 +110,7 @@ class FormularioSIGSAController extends Controller
             'embarazada' => $validated['embarazada'],
         ]);
 
+        // Almacenar los datos de la tabla de mujer 15 a 49 años y otros grupos
         $formulario->mujer15a49yOtrosGrupos()->create([
             'vacuna_mujer_15_49_1a' => $validated['vacuna_mujer_15_49_1a'] ?? null,
             'vacuna_mujer_15_49_2a' => $validated['vacuna_mujer_15_49_2a'] ?? null,
@@ -105,7 +124,7 @@ class FormularioSIGSAController extends Controller
             'vacuna_otros_grupos_r2' => $validated['vacuna_otros_grupos_r2'] ?? null,
         ]);
 
-        // Redirigir a la misma página con un mensaje de éxito
-        return redirect()->back()->with('status', 'Formulario guardado exitosamente');
+        // Redirigir a una ruta específica para evitar el doble envío
+        return redirect()->route('formulario.exitoso')->with('status', 'Formulario guardado exitosamente');
     }
 }

@@ -13,7 +13,7 @@ class Residencia extends Model
 
     // Lista de campos que se pueden asignar de manera masiva
     protected $fillable = [
-        'formulario_sigsa_5b_id',  // Relación con el formulario
+        'formulario_base_id',  // Relación con el formulario
         'comunidad_direccion',
         'municipio_residencia',
         'agricola_migrante',
@@ -23,6 +23,6 @@ class Residencia extends Model
     // Relación con el modelo FormularioSIGSA5b
     public function formularioSIGSA5b()
     {
-        return $this->belongsTo(FormularioSIGSA5b::class, 'formulario_sigsa_5b_id');
+        return $this->belongsTo(FormularioSIGSA5b::class, 'formulario_base_id');
     }
 }

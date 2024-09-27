@@ -28,6 +28,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/for-sigsa-5b', [FormularioSIGSAController::class, 'store'])->name('for-sigsa-5b.store');
 
 
+
+    Route::get('/formulario-exitoso', function () {
+        return view('formulario-exitoso'); // Nombre de la vista (blade)
+    })->name('formulario.exitoso');
+
+
     // Ejemplo de una ruta para otro formulario (form2)
     Route::get('/form2', [FormularioController::class, 'form2'])->name('form2');
 });

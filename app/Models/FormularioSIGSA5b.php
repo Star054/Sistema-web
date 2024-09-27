@@ -12,6 +12,7 @@ class FormularioSIGSA5b extends Model
     protected $table = 'formulario_sigsa_base';
 
     protected $fillable = [
+
         'vacuna',
         'area_salud',
         'distrito_salud',
@@ -46,6 +47,6 @@ class FormularioSIGSA5b extends Model
     // Relación many-to-many con el modelo TipoFormulario
     public function tiposFormulario()
     {
-        return $this->belongsToMany(TipoFormulario::class, 'formulario_sigsa_tipo_formulario');
+        return $this->belongsToMany(TipoFormulario::class, 'formulario_sigsa_tipo_formulario', 'formulario_sigsa_base_id', 'tipo_formulario_id');
     }
 }
