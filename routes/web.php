@@ -4,6 +4,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FormularioSIGSAController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VacunaController;
+use App\Http\Controllers\FormularioController5bA;
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,7 +23,8 @@ Route::middleware('auth')->group(function () {
 
 
     // Rutas para vacunas utilizando Route::resource
-    Route::resource('vacunas', VacunaController::class)->only(['create', 'store']);
+    Route::resource('vacunas', VacunaController::class)->only(['create', 'store', 'index']);
+    Route::post('/formulario-sigsa', [FormularioSIGSAController::class, 'store'])->name('formulario-sigsa.store');
 
 
     // Rutas para el formulario FOR-SIGSA-5b
@@ -28,14 +32,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/for-sigsa-5b', [FormularioSIGSAController::class, 'store'])->name('for-sigsa-5b.store');
 
 
-
     Route::get('/formulario-exitoso', function () {
         return view('formulario-exitoso'); // Nombre de la vista (blade)
     })->name('formulario.exitoso');
 
+    Route::get('/for-sigsa-5bA', [FormularioController5bA::class, 'create'])->name('for-sigsa-5bA.create');
+    Route::post('/for-sigsa-5bA', [FormularioController5bA::class, 'store'])->name('for-sigsa-5bA.store');
 
-    // Ejemplo de una ruta para otro formulario (form2)
-    Route::get('/form2', [FormularioController::class, 'form2'])->name('form2');
+
+
 });
 
 require __DIR__.'/auth.php';

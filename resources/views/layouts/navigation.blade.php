@@ -43,11 +43,11 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('for-sigsa-5b.store')">
+                        <x-dropdown-link :href="route('for-sigsa-5b.create')">
                             {{ __('FOR-SIGSA-5b') }}
                         </x-dropdown-link>
-                        <x-dropdown-link :href="route('form2')">
-                            {{ __('Formulario 2') }}
+                        <x-dropdown-link :href="route('for-sigsa-5bA.create')">
+                            {{ __('FOR-SIGSA-5bA') }}
                         </x-dropdown-link>
                     </x-slot>
                 </x-dropdown>
@@ -121,11 +121,11 @@
             </button>
 
             <div :class="{'block': formOpen, 'hidden': ! formOpen}" class="hidden">
-                <x-responsive-nav-link :href="route('for-sigsa-5b.store')">
+                <x-responsive-nav-link :href="route('for-sigsa-5b.create')">
                     {{ __('FOR-SIGSA-5b') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('form2')">
-                    {{ __('Formulario 2') }}
+                <x-responsive-nav-link :href="route('for-sigsa-5bA.create')">
+                    {{ __('FOR-SIGSA-5bA') }}
                 </x-responsive-nav-link>
             </div>
         </div>

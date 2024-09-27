@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FormularioSIGSA5b;
 use Illuminate\Http\Request;
-use App\Models\FormularioSIGSA5b;  // Modelo para la tabla principal del formulario
 use App\Models\Residencia;         // Modelo para la tabla de residencia
 use App\Models\Mujer15a49yOtrosGrupos; // Modelo para la tabla de mujer 15 a 49 años y otros grupos
 use App\Models\Vacuna;  // Modelo para la tabla de vacunas
@@ -38,7 +38,6 @@ class FormularioSIGSAController extends Controller
             'responsable_informacion' => 'nullable|string',
             'cargo_responsable' => 'nullable|string',
             'anio' => 'nullable|string',
-
             // Campos del paciente
             'no_orden' => 'nullable|integer',
             'cui' => 'nullable|string|unique:formulario_sigsa_base,cui',  // Evitar duplicados de CUI
@@ -48,6 +47,7 @@ class FormularioSIGSAController extends Controller
             'comunidad_linguistica' => 'nullable|string',
             'escolaridad' => 'nullable|string',
             'profesion_oficio' => 'nullable|string',
+
 
             // Campos de residencia
             'comunidad_direccion' => 'nullable|string',
@@ -66,7 +66,25 @@ class FormularioSIGSAController extends Controller
             'vacuna_otros_grupos_3a' => 'nullable|date',
             'vacuna_otros_grupos_r1' => 'nullable|date',
             'vacuna_otros_grupos_r2' => 'nullable|date',
+
+//        ], [
+//            // Aquí van los mensajes personalizados
+//            'vacuna.required' => 'La selección de la vacuna es obligatoria.',
+//            'vacuna.exists' => 'La vacuna seleccionada no existe.',
+//            'nombre_paciente.required' => 'El nombre del paciente es obligatorio.',
+//            'codigo_formulario.required' => 'El código del formulario es obligatorio.',
+//            'cui.unique' => 'El CUI ya ha sido registrado.',
+//            // Agrega más mensajes personalizados según tus campos y reglas...
         ]);
+
+
+
+        // Verificar si el paciente ya está registrado usando el CUI
+        $pacienteExistente = FormularioSIGSA5b::where('cui', $validated['cui'])->first();
+
+        if ($pacienteExistente) {
+            return redirect()->back()->with('error', 'Este paciente ya está registrado con el CUI proporcionado.');
+        }
 
         // Buscar el tipo de formulario 'FOR-SIGSA-5b' o crearlo si no existe
         $tipoFormulario = TipoFormulario::firstOrCreate([
@@ -76,19 +94,11 @@ class FormularioSIGSAController extends Controller
         // Buscar el ID de la vacuna basada en su nombre
         $vacuna = Vacuna::where('nombre_vacuna', $validated['vacuna'])->firstOrFail();
 
-        // Validación para evitar la duplicación de formularios
-        $existeFormulario = FormularioSIGSA5b::where('nombre_paciente', $validated['nombre_paciente'])
-            ->where('cui', $validated['cui'])
-            ->exists();
 
-        if ($existeFormulario) {
-            return redirect()->back()->withErrors('El formulario ya existe para este paciente.');
-        }
 
         // Almacenar los datos en la tabla principal del formulario
         $formulario = FormularioSIGSA5b::create([
             'vacuna' => $vacuna->nombre_vacuna,  // Almacenar el nombre de la vacuna seleccionada
-            'nombre_paciente' => $validated['nombre_paciente'],
             'codigo_formulario' => $validated['codigo_formulario'],
             'area_salud' => $validated['area_salud'],
             'distrito_salud' => $validated['distrito_salud'],
@@ -97,6 +107,15 @@ class FormularioSIGSAController extends Controller
             'responsable_informacion' => $validated['responsable_informacion'],
             'cargo_responsable' => $validated['cargo_responsable'],
             'anio' => $validated['anio'],
+            'no_orden' => $validated['no_orden'] ?? null,
+            'cui' => $validated['cui'] ?? null,
+            'nombre_paciente' => $validated['nombre_paciente'],
+            'sexo' => $validated['sexo'] ?? null,
+            'pueblo' => $validated['pueblo'] ?? null,
+            'fecha_nacimiento' => $validated['fecha_nacimiento'] ?? null,
+            'comunidad_linguistica' => $validated['comunidad_linguistica'] ?? null,
+            'escolaridad' => $validated['escolaridad'] ?? null,
+            'profesion_oficio' => $validated['profesion_oficio'] ?? null,
         ]);
 
         // Guardar la relación en la tabla pivote
@@ -126,5 +145,7 @@ class FormularioSIGSAController extends Controller
 
         // Redirigir a una ruta específica para evitar el doble envío
         return redirect()->route('formulario.exitoso')->with('status', 'Formulario guardado exitosamente');
+
+
     }
 }

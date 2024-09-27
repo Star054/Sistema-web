@@ -15,11 +15,10 @@ class TipoFormulario extends Model
         'codigo_formulario',
     ];
 
-    // Relación con FormularioSIGSA5b (Usando una tabla pivote)
+    // Relación many-to-many con los formularios (por ejemplo, Modelo5bA o FormularioSIGSA5b)
     public function formulariosSIGSA()
     {
-        // Nombre de la tabla pivote: 'formulario_sigsa_tipo_formulario'
-
-        return $this->belongsToMany(TipoFormulario::class, 'formulario_sigsa_tipo_formulario', 'formulario_sigsa_id', 'tipo_formulario_id');
+        // Relación con los formularios usando la tabla pivote 'formulario_sigsa_tipo_formulario'
+        return $this->belongsToMany(Modelo5bA::class, 'formulario_sigsa_tipo_formulario', 'tipo_formulario_id', 'formulario_sigsa_base_id');
     }
 }

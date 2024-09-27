@@ -18,7 +18,6 @@
 
                 </th>
 
-
                 <!-- Información del formulario -->
                 <td class="w-1/5 border border-black dark:border-white p-4 text-sm text-gray-600 dark:text-gray-400">
                     <ul class="list-none p-0 m-0">
