@@ -49,6 +49,10 @@
                         <x-dropdown-link :href="route('for-sigsa-5bA.create')">
                             {{ __('FOR-SIGSA-5bA') }}
                         </x-dropdown-link>
+                        <x-dropdown-link :href="route('for-sigsa-3cs.create')">
+                            {{ __('FOR-SIGSA-3CS') }}
+                        </x-dropdown-link>
+
                     </x-slot>
                 </x-dropdown>
             </div>
@@ -127,6 +131,11 @@
                 <x-responsive-nav-link :href="route('for-sigsa-5bA.create')">
                     {{ __('FOR-SIGSA-5bA') }}
                 </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('for-sigsa-3cs.create')">
+                    {{ __('FOR-SIGSA-3CS') }}
+                </x-responsive-nav-link>
+
+
             </div>
         </div>
 

@@ -5,6 +5,8 @@ use App\Http\Controllers\FormularioSIGSAController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VacunaController;
 use App\Http\Controllers\FormularioController5bA;
+use App\Http\Controllers\ConsultaController;
+use App\Http\Controllers\FormularioController3CS;
 
 
 
@@ -39,7 +41,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/for-sigsa-5bA', [FormularioController5bA::class, 'create'])->name('for-sigsa-5bA.create');
     Route::post('/for-sigsa-5bA', [FormularioController5bA::class, 'store'])->name('for-sigsa-5bA.store');
 
+    Route::get('/for-sigsa-3cs', [FormularioController3CS::class, 'create'])->name('for-sigsa-3cs.create');
+    Route::post('/for-sigsa-3cs', [FormularioController3CS::class, 'store'])->name('for-sigsa-3cs.store');
 
+
+    Route::get('/consultas', [ConsultaController::class, 'create'])->name('consultas.create');  // Formulario de creación
+    Route::post('/consultas', [ConsultaController::class, 'store'])->name('consultas.store');    // Guardar la consulta
 
 });
 

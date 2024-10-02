@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\FormularioController5bA;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,6 +20,6 @@ class TipoFormulario extends Model
     public function formulariosSIGSA()
     {
         // Relación con los formularios usando la tabla pivote 'formulario_sigsa_tipo_formulario'
-        return $this->belongsToMany(Modelo5bA::class, 'formulario_sigsa_tipo_formulario', 'tipo_formulario_id', 'formulario_sigsa_base_id');
+        return $this->belongsToMany(FormularioSIGSA5b::class, 'formulario_sigsa_tipo_formulario', 'tipo_formulario_id', 'formulario_sigsa_base_id');
     }
 }

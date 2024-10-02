@@ -20,9 +20,17 @@ class Residencia extends Model
         'embarazada',
     ];
 
+    //Relacion con el modelo consulta
+    public function consulta()
+    {
+        return $this->belongsTo(Consulta::class, 'consulta_id');
+    }
     // Relación con el modelo FormularioSIGSA5b
     public function formularioSIGSA5b()
     {
         return $this->belongsTo(FormularioSIGSA5b::class, 'formulario_base_id');
     }
+
+
+
 }

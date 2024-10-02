@@ -24,6 +24,6 @@ class CriteriosVacuna extends Model
     // Relación inversa con el formulario en formulario_sigsa_base
     public function formularioSIGSA5bA()
     {
-        return $this->belongsTo(Modelo5bA::class, 'formulario_sigsa_base_id'); // Cambiado a formulario_sigsa_base_id
+        return $this->belongsTo(Modelo5bA::class, 'formulario_sigsa_base_id');
     }
 }

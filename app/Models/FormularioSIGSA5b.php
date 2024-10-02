@@ -30,6 +30,8 @@ class FormularioSIGSA5b extends Model
         'comunidad_linguistica',
         'escolaridad',
         'profesion_oficio',
+        'dia_consulta',          // Día de la consulta
+        'no_historia_clinica' ,
     ];
 
     // Relación con el modelo Residencia (uno a uno)
@@ -49,4 +51,9 @@ class FormularioSIGSA5b extends Model
     {
         return $this->belongsToMany(TipoFormulario::class, 'formulario_sigsa_tipo_formulario', 'formulario_sigsa_base_id', 'tipo_formulario_id');
     }
+
+
+
 }
+
+
