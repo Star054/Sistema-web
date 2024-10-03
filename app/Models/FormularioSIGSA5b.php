@@ -21,6 +21,7 @@ class FormularioSIGSA5b extends Model
         'responsable_informacion',
         'cargo_responsable',
         'anio',
+        // Campos del paciente
         'no_orden',
         'cui',
         'nombre_paciente',
@@ -30,8 +31,7 @@ class FormularioSIGSA5b extends Model
         'comunidad_linguistica',
         'escolaridad',
         'profesion_oficio',
-        'dia_consulta',          // Día de la consulta
-        'no_historia_clinica' ,
+
     ];
 
     // Relación con el modelo Residencia (uno a uno)

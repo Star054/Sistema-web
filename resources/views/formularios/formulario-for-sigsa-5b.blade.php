@@ -16,8 +16,8 @@
                     vigencia="Noviembre 2017">
                     REGISTRO DE VACUNACION PARA LA MUJER DE 15 A 49 AÑOS Y OTROS GRUPOS
                     <br>
-                    <div class="flex justify-end items-center mt-2">
-                        <label for="vacuna" class="text-sm text-gray-600 dark:text-gray-400 mr-2">Seleccione la vacuna:</label>
+                    <div class="flex justify-end items-center mt-2 space-x-2">
+                        <label for="vacuna" class="text-sm text-gray-600 dark:text-gray-400">Seleccione la vacuna:</label>
                         <select name="vacuna" id="vacuna" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-1 rounded-md text-sm w-auto">
                             <option value="">Seleccione una vacuna</option>
                             @foreach($vacunas as $vacuna)
@@ -79,5 +79,20 @@
                 @endif
             </div>
         </form> <!-- Fin del formulario -->
-    </div>
+        <br>
+        <!-- Botones CRUD para la navegación -->
+        <div class="bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out hover:shadow-xl">
+            <div class="container mx-auto px-3 py-5 space-y-5">
+                <div class="flex justify-center space-x-5 mt-5">
+                    <!-- Botón Listar Formularios -->
+                    <a href="{{ route('for-sigsa-5b.index') }}" class="inline-flex items-center px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-300 ease-in-out">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        Ver lista de registros
+                    </a>
+                </div>
+            </div>
+        </div>
+
 </x-app-layout>

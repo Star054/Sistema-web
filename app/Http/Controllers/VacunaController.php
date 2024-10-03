@@ -31,19 +31,31 @@ class VacunaController extends Controller
      */
     public function store(Request $request)
     {
-        // Validar los datos del formulario
-        $validated = $request->validate([
-            'nombre_vacuna' => 'required|string|max:255',
-            'descripcion' => 'nullable|string|max:1000',
-        ]);
+        // Inicializamos un array para almacenar los errores
+        $errors = [];
 
-        // Guardar los datos validados en la base de datos
-        Vacuna::create($validated);
+        // Validación para nombres que sean solo números
+        if (preg_match('/^\d+$/', $request->nombre_vacuna)) {
+            // Si el nombre de la vacuna es solo números
+            $errors['nombre_vacuna'][] = 'Error: no se puede registrar solo números como nombre de vacuna.';
+        }
 
-        // Redirigir a una página de éxito o a la lista de vacunas
-        return redirect()->route('vacunas.create')->with('success', 'Vacuna creada exitosamente.');
+        // Validación de unicidad manual
+        if (Vacuna::where('nombre_vacuna', $request->nombre_vacuna)->exists()) {
+            $errors['nombre_vacuna'][] = 'El nombre de la vacuna ya ha sido registrado.';
+        }
+
+        // Si hay errores, redirigir de vuelta con los errores
+        if (!empty($errors)) {
+            return redirect()->back()->withErrors($errors)->withInput();
+        }
+
+        // Si no hay errores, guardar los datos en la base de datos
+        Vacuna::create($request->only('nombre_vacuna', 'descripcion'));
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->route('vacunas.create')->with('status', 'form-saved');
     }
-
 
 
 

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('vacunas', function (Blueprint $table) {
             $table->id();
             $table->string('nombre_vacuna'); // Añadimos la columna nombre_vacuna
-            $table->string('descripcion');   // Añadimos la columna descripcion
+            $table->string('descripcion')->nullable();
             $table->timestamps();            // Añadimos timestamps
         });
     }
