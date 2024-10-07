@@ -5,16 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class FormularioSIGSA5b extends Model
+class Modelo3CS extends Model
 {
     use HasFactory;
 
-    protected $table = 'formulario_sigsa_base'; // Tabla base
+    protected $table = 'formulario_sigsa_base'; // Si esta tabla es la correcta
 
     protected $fillable = [
-        'codigo_formulario',
         'nombre_paciente',
         'cui',
+        'sexo',
+        'dia_consulta',
+        'no_historia_clinica',
         'area_salud',
         'distrito_salud',
         'municipio',
@@ -23,29 +25,42 @@ class FormularioSIGSA5b extends Model
         'cargo_responsable',
         'anio',
         'no_orden',
-        'sexo',
         'pueblo',
         'fecha_nacimiento',
         'comunidad_linguistica',
         'orientacion_sexual',
         'escolaridad',
         'profesion_oficio',
+
+        'consulta',
+        'control',
+        'semana_gestacion',
+        'referido_a',
+        'diagnostico',
+        'codigo_cie',
+        'tratamiento_descripcion',
+        'tratamiento_presentacion',
+        'cantidad_recetada',
+        'notificacion_lugar',
+        'notificacion_numero',
+        'nombre_acompanante',
+
     ];
 
-    // Relación con la tabla `residencia` (uno a uno)
+    // Relación con Residencia
     public function residencia()
     {
         return $this->hasOne(Residencia::class, 'formulario_base_id');
     }
 
-    // Relación con la tabla `mujer15a49y_otros_grupos` (uno a uno)
-    public function mujer15a49yOtrosGrupos()
+    // Relación con Consulta
+    public function consulta()
     {
-        return $this->hasOne(Mujer15a49yOtrosGrupos::class, 'formulario_base_id');
+        return $this->hasOne(Consulta::class, 'formulario_sigsa_base_id');
     }
 
-    // Relación many-to-many con `TipoFormulario`
-    public function tipoFormularios()
+    // Relación many-to-many con TipoFormulario
+    public function tiposFormulario()
     {
         return $this->belongsToMany(TipoFormulario::class, 'formulario_sigsa_tipo_formulario', 'formulario_sigsa_base_id', 'tipo_formulario_id');
     }

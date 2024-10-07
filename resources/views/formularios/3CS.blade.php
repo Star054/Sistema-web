@@ -2,7 +2,7 @@
     <div class="container mx-auto px-4 py-6 space-y-8">
 
         <!-- Iniciar el formulario -->
-        <form action="{{ route('for-sigsa-3cs.store') }}" method="POST">
+        <form action="{{ route('formularios-3cs.store') }}" method="POST">
             @csrf  <!-- Token de seguridad de Laravel -->
 
             <!-- Inputs ocultos para el tipo de formulario -->
@@ -44,7 +44,7 @@
                 <x-residencia :mostrarEmbarazada="false" />
             </div>
 
-            <br
+            <br>
 
 
             <div>
@@ -76,7 +76,23 @@
                         class="text-sm text-gray-600 dark:text-gray-400 transition-opacity duration-300"
                     >{{ __('Guardado.') }}</p>
                 @endif
-            </div>
+
         </form> <!-- Fin del formulario -->
+
+        <!-- Botones CRUD para la navegación -->
+        <div class="bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out hover:shadow-xl">
+            <div class="container mx-auto px-3 py-5 space-y-5">
+                <div class="flex justify-center space-x-5 mt-5">
+                    <!-- Botón Listar Formularios -->
+                    <a href="{{ route('formularios-3cs.index') }}" class="inline-flex items-center px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-300 ease-in-out">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        Ver lista de registros
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
 </x-app-layout>

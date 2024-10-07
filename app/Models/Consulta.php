@@ -26,13 +26,14 @@ class Consulta extends Model
         'notificacion_lugar',
         'notificacion_numero',
         'nombre_acompanante',
-         // Número de historia clínica
-        'formulario_sigsa_base_id'  // Agregar la clave foránea en el modelo
+        'formulario_sigsa_base_id',  // Clave foránea
     ];
 
-    // Relación con la tabla formulario_sigsa_base
-    public function formularioSIGSA()
+    // Relación con el formulario SIGSA
+    public function formulario()
     {
-        return $this->belongsTo(FormularioSIGSA5b::class, 'formulario_sigsa_base_id');
+        return $this->belongsTo(Modelo3CS::class, 'formulario_sigsa_base_id');
     }
+    
+
 }

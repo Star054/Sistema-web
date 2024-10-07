@@ -11,18 +11,24 @@ use App\Models\TipoFormulario;  // Modelo para la tabla de tipos de formularios
 
 class FormularioSIGSAController extends Controller
 {
-    // Mostrar la lista de formularios (index)
     public function index()
     {
-        $formularios = FormularioSIGSA5b::all(); // Obtener todos los registros
-        return view('formularios.crud5b.index', compact('formularios')); // Devolver a la vista
+        // Filtrar los formularios que estén relacionados con el tipo FOR-SIGSA-5b
+        $formularios = FormularioSIGSA5b::whereHas('tipoFormularios', function ($query) {
+            $query->where('codigo_formulario', 'FOR-SIGSA-5b');
+        })->get();
+
+        return view('formularios.crud5b.index', compact('formularios'));
     }
+
 
     // Mostrar un formulario específico (show)
     public function show($id)
     {
-        $formulario = FormularioSIGSA5b::findOrFail($id);
-        return view('formularios.crud5b.show', compact('formulario')); // Devolver a la vista
+        // Cargar el formulario junto con las relaciones residencia y mujer15a49yOtrosGrupos
+        $formulario = FormularioSIGSA5b::with(['residencia', 'mujer15a49yOtrosGrupos'])->findOrFail($id);
+
+        return view('formularios.crud5b.show', compact('formulario'));
     }
 
     // Editar un formulario existente (edit)
@@ -160,14 +166,13 @@ class FormularioSIGSAController extends Controller
 
 
 
-
-    // Eliminar un formulario existente (destroy)
     public function destroy($id)
     {
         $formulario = FormularioSIGSA5b::findOrFail($id);
-        $formulario->delete(); // Eliminar el registro
-        return redirect()->route('for-sigsa-5b.index')->with('success', 'Formulario eliminado correctamente');
+        $formulario->delete();  // Esto eliminará los registros relacionados automáticamente
+        return redirect()->route('for-sigsa-5b.index')->with('success', 'Formulario eliminado correctamente.');
     }
+
 
     // Crear un nuevo formulario (create)
     public function create()
@@ -194,7 +199,8 @@ class FormularioSIGSAController extends Controller
             'cargo_responsable' => 'nullable|string',
             'anio' => 'nullable|string',
             'no_orden' => 'nullable|integer',
-            'cui' => 'nullable|string|unique:formulario_sigsa_base,cui',
+            'cui' => 'nullable|string',
+
             'fecha_nacimiento' => 'nullable|date',
             'sexo' => 'nullable|string|max:1',
             'pueblo' => 'nullable|string',
@@ -258,7 +264,7 @@ class FormularioSIGSAController extends Controller
         ]);
 
         // Guardar la relación en la tabla pivote
-        $formulario->tiposFormulario()->attach($tipoFormulario->id);
+        $formulario->tipoFormularios()->attach($tipoFormulario->id);
 
         // Almacenar los datos de la tabla de residencia
         $formulario->residencia()->create([

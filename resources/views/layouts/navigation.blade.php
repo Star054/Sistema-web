@@ -39,6 +39,12 @@
                         <x-dropdown-link :href="route('for-sigsa-5b.index')">
                             {{ __('Formularios FOR-SIGSA-5b') }}
                         </x-dropdown-link>
+                        <x-dropdown-link :href="route('for-sigsa-5bA.index')">
+                            {{ __('Formularios FOR-SIGSA-5bA') }}
+                        </x-dropdown-link>
+                        <x-responsive-nav-link :href="route('formularios-3cs.index')">
+                            {{ __('Formularios FOR-SIGSA-3CS') }}
+                        </x-responsive-nav-link>
                     </x-slot>
                 </x-dropdown>
             </div>
@@ -64,7 +70,7 @@
                         <x-dropdown-link :href="route('for-sigsa-5bA.create')">
                             {{ __('FOR-SIGSA-5bA') }}
                         </x-dropdown-link>
-                        <x-dropdown-link :href="route('for-sigsa-3cs.create')">
+                        <x-dropdown-link :href="route('formularios-3cs.create')">
                             {{ __('FOR-SIGSA-3CS') }}
                         </x-dropdown-link>
                     </x-slot>
@@ -134,6 +140,12 @@
                 <x-responsive-nav-link :href="route('for-sigsa-5b.index')">
                     {{ __('Formularios FOR-SIGSA-5b') }}
                 </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('for-sigsa-5bA.index')">
+                    {{ __('Formularios FOR-SIGSA-5bA') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('formularios-3cs.index')">
+                    {{ __('Formularios FOR-SIGSA-3CS') }}
+                </x-responsive-nav-link>
             </div>
         </div>
 
@@ -152,7 +164,7 @@
                 <x-responsive-nav-link :href="route('for-sigsa-5bA.create')">
                     {{ __('FOR-SIGSA-5bA') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('for-sigsa-3cs.create')">
+                <x-responsive-nav-link :href="route('formularios-3cs.create')">
                     {{ __('FOR-SIGSA-3CS') }}
                 </x-responsive-nav-link>
             </div>

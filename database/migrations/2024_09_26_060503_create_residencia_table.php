@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('residencia', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('formulario_base_id'); // Relación con formulario base
-            $table->string('comunidad_direccion')->nullable();  // Comunidad y dirección exacta
-            $table->string('municipio_residencia')->nullable();  // Municipio de residencia
-            $table->boolean('agricola_migrante')->nullable();  // Agrícola migrante
-            $table->boolean('embarazada')->nullable();  // Embarazada
+            $table->string('comunidad_direccion')->nullable();
+            $table->string('municipio_residencia')->nullable();
+            $table->boolean('agricola_migrante')->nullable();
+            $table->boolean('embarazada')->nullable();
             $table->timestamps();
 
             // Clave foránea hacia formulario_sigsa_base

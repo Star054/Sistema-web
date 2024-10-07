@@ -85,7 +85,7 @@
             <div class="container mx-auto px-3 py-5 space-y-5">
                 <div class="flex justify-center space-x-5 mt-5">
                     <!-- Botón Listar Formularios -->
-                    <a href="{{ route('for-sigsa-5b.index') }}" class="inline-flex items-center px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-300 ease-in-out">
+                    <a href="{{ route('for-sigsa-5bA.index') }}" class="inline-flex items-center px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-300 ease-in-out">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
@@ -94,5 +94,5 @@
                 </div>
             </div>
         </div>
-
+    </div>
 </x-app-layout>

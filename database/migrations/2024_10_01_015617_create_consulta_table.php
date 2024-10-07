@@ -19,19 +19,19 @@ class CreateConsultaTable extends Migration
             // Relación con formulario_sigsa_base
             $table->unsignedBigInteger('formulario_sigsa_base_id');  // Agregar clave foránea
             $table->foreign('formulario_sigsa_base_id')
-                ->references('id')->on('formulario_sigsa_base')  // Referencia a la tabla base
+                ->references('id')->on('formulario_sigsa_base')
                 ->onDelete('cascade');
 
             // Campos relacionados con la consulta
             $table->string('consulta')->nullable();                 // Consulta
-                $table->String('control')->nullable();                  // Control
-            $table->integer('semana_gestacion')->nullable();         // Semana de gestación
-            $table->string('vive')->nullable();                      // Vive
-            $table->string('fue')->nullable();                       // Fue
+                $table->String('control')->nullable();
+            $table->integer('semana_gestacion')->nullable();
+            $table->string('vive')->nullable();
+            $table->string('fue')->nullable();
 
             // Campos relacionados con motivo de consulta
-            $table->string('referido_a')->nullable();                // Referido a
-            $table->text('diagnostico')->nullable();                 // Descripción del diagnóstico/control
+            $table->string('referido_a')->nullable();
+            $table->text('diagnostico')->nullable();
             $table->string('codigo_cie')->nullable();                // Código CIE-10
 
             // Campos relacionados con el tratamiento
@@ -44,7 +44,7 @@ class CreateConsultaTable extends Migration
             $table->string('notificacion_numero')->nullable();       // Número de notificación
 
             // Campo relacionado con los datos del acompañante
-            $table->string('nombre_acompanante')->nullable();        // Nombres y apellidos del acompañante
+            $table->string('nombre_acompanante')->nullable();
 
             $table->timestamps();                                    // Timestamps para created_at y updated_at
         });

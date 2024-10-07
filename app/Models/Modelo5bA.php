@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -47,16 +46,9 @@ class Modelo5bA extends Model
         return $this->hasOne(Residencia::class, 'formulario_base_id');
     }
 
-    // Relación many-to-many con `tipo_formularios`
+    // Relación many-to-many con `TipoFormulario`
     public function tipoFormularios()
     {
         return $this->belongsToMany(TipoFormulario::class, 'formulario_sigsa_tipo_formulario', 'formulario_sigsa_base_id', 'tipo_formulario_id');
     }
-
-    // Relación con otras posibles tablas, como datos de consulta o tratamiento
-    public function consulta()
-    {
-        return $this->hasOne(Consulta::class, 'formulario_base_id');
-    }
 }
-
