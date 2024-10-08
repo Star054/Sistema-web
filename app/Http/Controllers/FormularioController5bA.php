@@ -23,6 +23,7 @@ class FormularioController5bA extends Controller
     }
 
 
+
     public function show($id)
     {
         // Buscar el formulario 5bA por ID
@@ -38,7 +39,6 @@ class FormularioController5bA extends Controller
         $formulario = Modelo5bA::findOrFail($id);
         $vacunas = Vacuna::all(); // Obtener todas las vacunas para el select
 
-        // Asegúrate de que pasas 'formulario' y no 'consulta'
         return view('formularios.crud5bA.edit', compact('formulario', 'vacunas'));
     }
 
@@ -64,8 +64,8 @@ class FormularioController5bA extends Controller
             'cargo_responsable' => 'nullable|string',
             'anio' => 'required|string',
             'no_orden' => 'nullable|integer',
-            'nombre_paciente' => 'required|string|max:255',
-            'cui' => 'required|string|max:13|unique:formulario_sigsa_base,cui',
+            'nombre_paciente' => 'required|string|max:150',
+            'cui' => 'nullable|string',
             'sexo' => 'nullable|string|max:1',
             'pueblo' => 'nullable|string',
             'fecha_nacimiento' => 'nullable|date',

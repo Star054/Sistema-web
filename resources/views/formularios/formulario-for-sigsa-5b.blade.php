@@ -19,14 +19,18 @@
                     <div class="flex justify-end items-center mt-2 space-x-2">
                         <label for="vacuna" class="text-sm text-gray-600 dark:text-gray-400">Seleccione la vacuna:</label>
                         <select name="vacuna" id="vacuna" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-1 rounded-md text-sm w-auto">
-                            <option value="">Seleccione una vacuna</option>
+                        <option value="" disabled selected>Seleccione una vacuna</option> <!-- Opción deshabilitada -->
                             @foreach($vacunas as $vacuna)
                                 <option value="{{ $vacuna->nombre_vacuna }}">{{ $vacuna->nombre_vacuna }}</option>
                             @endforeach
                         </select>
+
+
+
                     </div>
                 </x-formulario-slot>
             </div>
+
 
             <!-- Mensajes de validación -->
             @if ($errors->any())
@@ -68,7 +72,15 @@
                     {{ __('Guardar') }}
                 </x-primary-button>
 
-                @if (session('status') === 'form-saved')
+
+                @if (session('alert'))
+                    <div class="alert alert-warning">
+                        {{ session('alert') }}
+                    </div>
+                @endif
+
+
+            @if (session('status') === 'form-saved')
                     <p
                         x-data="{ show: true }"
                         x-show="show"
@@ -80,6 +92,8 @@
             </div>
         </form> <!-- Fin del formulario -->
         <br>
+
+
         <!-- Botones CRUD para la navegación -->
         <div class="bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out hover:shadow-xl">
             <div class="container mx-auto px-3 py-5 space-y-5">

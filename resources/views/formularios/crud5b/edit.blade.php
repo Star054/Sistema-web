@@ -154,91 +154,35 @@
 
 
 
-                    <!-- Sección de Vacunas -->
-                    <!-- Campos relacionados con las vacunas para mujer de 15-49 años -->
+                    <!-- Sección de Vacunas para Mujer de 15 a 49 años -->
                     <div class="mt-8">
                         <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Mujer de 15 a 49</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="mb-4">
-                                <label for="vacuna_mujer_15_49_1a" class="block text-gray-700 dark:text-gray-400">Vacuna Mujer 15-49 (1a)</label>
-                                <input type="date" name="vacuna_mujer_15_49_1a" id="vacuna_mujer_15_49_1a"
-                                       value="{{ old('vacuna_mujer_15_49_1a', $formulario->mujer15a49yOtrosGrupos->vacuna_mujer_15_49_1a ?? '') }}"
-                                       class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="vacuna_mujer_15_49_2a" class="block text-gray-700 dark:text-gray-400">Vacuna Mujer 15-49 (2a)</label>
-                                <input type="date" name="vacuna_mujer_15_49_2a" id="vacuna_mujer_15_49_2a"
-                                       value="{{ old('vacuna_mujer_15_49_2a', $formulario->mujer15a49yOtrosGrupos->vacuna_mujer_15_49_2a ?? '') }}"
-                                       class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="vacuna_mujer_15_49_3a" class="block text-gray-700 dark:text-gray-400">Vacuna Mujer 15-49 (3a)</label>
-                                <input type="date" name="vacuna_mujer_15_49_3a" id="vacuna_mujer_15_49_3a"
-                                       value="{{ old('vacuna_mujer_15_49_3a', $formulario->mujer15a49yOtrosGrupos->vacuna_mujer_15_49_3a ?? '') }}"
-                                       class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="vacuna_mujer_15_49_r1" class="block text-gray-700 dark:text-gray-400">Refuerzo Mujer 15-49 (R1)</label>
-                                <input type="date" name="vacuna_mujer_15_49_r1" id="vacuna_mujer_15_49_r1"
-                                       value="{{ old('vacuna_mujer_15_49_r1', $formulario->mujer15a49yOtrosGrupos->vacuna_mujer_15_49_r1 ?? '') }}"
-                                       class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="vacuna_mujer_15_49_r2" class="block text-gray-700 dark:text-gray-400">Refuerzo Mujer 15-49 (R2)</label>
-                                <input type="date" name="vacuna_mujer_15_49_r2" id="vacuna_mujer_15_49_r2"
-                                       value="{{ old('vacuna_mujer_15_49_r2', $formulario->mujer15a49yOtrosGrupos->vacuna_mujer_15_49_r2 ?? '') }}"
-                                       class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Campos vacunas para otros grupos -->
-                            <div class="mt-8">
-                                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Otros Grupos</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <!-- Campos relacionados con las vacunas para otros grupos -->
-                                    <div class="mb-4">
-                                        <label for="vacuna_otros_grupos_1a" class="block text-gray-700 dark:text-gray-400">Vacuna Otros Grupos (1a)</label>
-                                        <input type="date" name="vacuna_otros_grupos_1a" id="vacuna_otros_grupos_1a"
-                                               value="{{ old('vacuna_otros_grupos_1a', $formulario->mujer15a49yOtrosGrupos->vacuna_otros_grupos_1a ?? '') }}"
-                                               class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <label for="vacuna_otros_grupos_2a" class="block text-gray-700 dark:text-gray-400">Vacuna Otros Grupos (2a)</label>
-                                        <input type="date" name="vacuna_otros_grupos_2a" id="vacuna_otros_grupos_2a"
-                                               value="{{ old('vacuna_otros_grupos_2a', $formulario->mujer15a49yOtrosGrupos->vacuna_otros_grupos_2a ?? '') }}"
-                                               class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <label for="vacuna_otros_grupos_3a" class="block text-gray-700 dark:text-gray-400">Vacuna Otros Grupos (3a)</label>
-                                        <input type="date" name="vacuna_otros_grupos_3a" id="vacuna_otros_grupos_3a"
-                                               value="{{ old('vacuna_otros_grupos_3a', $formulario->mujer15a49yOtrosGrupos->vacuna_otros_grupos_3a ?? '') }}"
-                                               class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <label for="vacuna_otros_grupos_r1" class="block text-gray-700 dark:text-gray-400">Refuerzo Otros Grupos (R1)</label>
-                                        <input type="date" name="vacuna_otros_grupos_r1" id="vacuna_otros_grupos_r1"
-                                               value="{{ old('vacuna_otros_grupos_r1', $formulario->mujer15a49yOtrosGrupos->vacuna_otros_grupos_r1 ?? '') }}"
-                                               class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <label for="vacuna_otros_grupos_r2" class="block text-gray-700 dark:text-gray-400">Refuerzo Otros Grupos (R2)</label>
-                                        <input type="date" name="vacuna_otros_grupos_r2" id="vacuna_otros_grupos_r2"
-                                               value="{{ old('vacuna_otros_grupos_r2', $formulario->mujer15a49yOtrosGrupos->vacuna_otros_grupos_r2 ?? '') }}"
-                                               class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
-                                    </div>
+                            @foreach (['1a', '2a', '3a', 'r1', 'r2'] as $dosis)
+                                <div class="mb-4">
+                                    <label for="vacuna_mujer_15_49_{{ $dosis }}" class="block text-gray-700 dark:text-gray-400">Vacuna Mujer 15-49 ({{ $dosis }})</label>
+                                    <input type="date" name="vacuna_mujer_15_49[{{ $dosis }}]" id="vacuna_mujer_15_49_{{ $dosis }}"
+                                           value="{{ old('vacuna_mujer_15_49.'.$dosis, $formulario->mujer15a49yOtrosGrupos->where('tipo_dosis', $dosis)->where('grupo', 'mujer_15_49')->first()->fecha_vacunacion ?? '') }}"
+                                           class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
                                 </div>
+                            @endforeach
                         </div>
                     </div>
 
+                    <!-- Sección de Vacunas para Otros Grupos -->
+                    <div class="mt-8">
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Otros Grupos</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            @foreach (['1a', '2a', '3a', 'r1', 'r2'] as $dosis)
+                                <div class="mb-4">
+                                    <label for="vacuna_otros_grupos_{{ $dosis }}" class="block text-gray-700 dark:text-gray-400">Vacuna Otros Grupos ({{ $dosis }})</label>
+                                    <input type="date" name="vacuna_otros_grupos[{{ $dosis }}]" id="vacuna_otros_grupos_{{ $dosis }}"
+                                           value="{{ old('vacuna_otros_grupos.'.$dosis, $formulario->mujer15a49yOtrosGrupos->where('tipo_dosis', $dosis)->where('grupo', 'otros_grupos')->first()->fecha_vacunacion ?? '') }}"
+                                           class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
 
 
                     <!-- Botón para actualizar -->

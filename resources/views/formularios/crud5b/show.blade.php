@@ -18,11 +18,11 @@
                     </tr>
                     <tr>
                         <th class="px-6 py-4">CUI</th>
-                        <td class="px-6 py-4">{{ $formulario->cui }}</td>
+                        <td class="px-6 py-4">{{ $formulario->cui ?? 'No registrado' }}</td>
                     </tr>
                     <tr>
                         <th class="px-6 py-4">Fecha de Nacimiento</th>
-                        <td class="px-6 py-4">{{ $formulario->fecha_nacimiento }}</td>
+                        <td class="px-6 py-4">{{ $formulario->fecha_nacimiento ?? 'No registrada' }}</td>
                     </tr>
                     <tr>
                         <th class="px-6 py-4">Sexo</th>
@@ -30,7 +30,7 @@
                     </tr>
                     <tr>
                         <th class="px-6 py-4">Escolaridad</th>
-                        <td class="px-6 py-4">{{ $formulario->escolaridad }}</td>
+                        <td class="px-6 py-4">{{ $formulario->escolaridad ?? 'No registrada' }}</td>
                     </tr>
                 </table>
 
@@ -41,19 +41,27 @@
                 <table class="min-w-full bg-white dark:bg-gray-800">
                     <tr>
                         <th class="px-6 py-4">Dirección de Comunidad</th>
-                        <td class="px-6 py-4">{{ $formulario->residencia->comunidad_direccion }}</td>
+                        <td class="px-6 py-4">
+                            {{ optional($formulario->residencia)->comunidad_direccion ?? 'No registrada' }}
+                        </td>
                     </tr>
                     <tr>
                         <th class="px-6 py-4">Municipio de Residencia</th>
-                        <td class="px-6 py-4">{{ $formulario->residencia->municipio_residencia }}</td>
+                        <td class="px-6 py-4">
+                            {{ optional($formulario->residencia)->municipio_residencia ?? 'No registrado' }}
+                        </td>
                     </tr>
                     <tr>
                         <th class="px-6 py-4">Agrícola Migrante</th>
-                        <td class="px-6 py-4">{{ $formulario->residencia->agricola_migrante ? 'Sí' : 'No' }}</td>
+                        <td class="px-6 py-4">
+                            {{ optional($formulario->residencia)->agricola_migrante ? 'Sí' : 'No' }}
+                        </td>
                     </tr>
                     <tr>
                         <th class="px-6 py-4">Embarazada</th>
-                        <td class="px-6 py-4">{{ $formulario->residencia->embarazada ? 'Sí' : 'No' }}</td>
+                        <td class="px-6 py-4">
+                            {{ optional($formulario->residencia)->embarazada ? 'Sí' : 'No' }}
+                        </td>
                     </tr>
                 </table>
 
@@ -64,15 +72,21 @@
                 <table class="min-w-full bg-white dark:bg-gray-800">
                     <tr>
                         <th class="px-6 py-4">1ª Dosis (Mujer 15-49)</th>
-                        <td class="px-6 py-4">{{ $formulario->mujer15a49yOtrosGrupos->vacuna_mujer_15_49_1a }}</td>
+                        <td class="px-6 py-4">
+                            {{ optional($formulario->mujer15a49yOtrosGrupos->where('grupo', 'mujer_15_49')->where('tipo_dosis', '1a')->first())->fecha_vacunacion ?? 'No registrada' }}
+                        </td>
                     </tr>
                     <tr>
                         <th class="px-6 py-4">2ª Dosis (Mujer 15-49)</th>
-                        <td class="px-6 py-4">{{ $formulario->mujer15a49yOtrosGrupos->vacuna_mujer_15_49_2a }}</td>
+                        <td class="px-6 py-4">
+                            {{ optional($formulario->mujer15a49yOtrosGrupos->where('grupo', 'mujer_15_49')->where('tipo_dosis', '2a')->first())->fecha_vacunacion ?? 'No registrada' }}
+                        </td>
                     </tr>
                     <tr>
                         <th class="px-6 py-4">1ª Dosis (Otros Grupos)</th>
-                        <td class="px-6 py-4">{{ $formulario->mujer15a49yOtrosGrupos->vacuna_otros_grupos_1a }}</td>
+                        <td class="px-6 py-4">
+                            {{ optional($formulario->mujer15a49yOtrosGrupos->where('grupo', 'otros_grupos')->where('tipo_dosis', '1a')->first())->fecha_vacunacion ?? 'No registrada' }}
+                        </td>
                     </tr>
                     <!-- Agrega más filas según los campos que tengas -->
                 </table>

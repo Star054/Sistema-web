@@ -109,22 +109,17 @@ class FormularioController3CS extends Controller
     }
 
 
-    // Mostrar la lista de formularios
     public function index()
     {
-        $formularios = Modelo3CS::all();
+        // Obtener los formularios que corresponden al código FOR-SIGSA-3CS
+        $formularios = Modelo3CS::whereHas('tiposFormulario', function ($query) {
+            $query->where('codigo_formulario', 'FOR-SIGSA-3CS');
+        })->get();
+
         return view('formularios.crud3CS.index', compact('formularios'));
     }
 
 
-//    // Mostrar la vista de edición
-//    public function edit($id)
-//    {
-//        $formulario = Modelo3CS::findOrFail($id);
-//        return view('formularios.crud3CS.edit', compact('formulario'));
-//    }
-
-// Mostrar la vista de edición
     public function edit($id)
     {
         // Cargar el formulario junto con la relación de residencia

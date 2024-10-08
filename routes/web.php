@@ -6,6 +6,7 @@ use App\Http\Controllers\VacunaController;
 use App\Http\Controllers\FormularioController5bA;
 use App\Http\Controllers\FormularioController3CS;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ConsultaVacunasController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -37,6 +38,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('formularios-3cs', FormularioController3CS::class);
 
 
+
+// Ruta para mostrar el formulario de filtros
+    Route::get('/filtros-vacunas', [ConsultaVacunasController::class, 'mostrarFiltros'])->name('vacunas.filtros');
+
+// Ruta para procesar los filtros y mostrar los resultados de los pacientes vacunados
+    Route::get('/resultados-vacunas', [ConsultaVacunasController::class, 'mostrarResultados'])->name('vacunas.resultados');
 
     // Vista de formulario exitoso
     Route::get('/formulario-exitoso', function () {

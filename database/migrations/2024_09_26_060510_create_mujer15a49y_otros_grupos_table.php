@@ -15,19 +15,14 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('formulario_base_id'); // Relación con formulario base
 
-            // Campos para mujeres de 15 a 49 años
-            $table->date('vacuna_mujer_15_49_1a')->nullable();  // 1a vacuna mujer 15 a 49 años
-            $table->date('vacuna_mujer_15_49_2a')->nullable();  // 2a vacuna mujer 15 a 49 años
-            $table->date('vacuna_mujer_15_49_3a')->nullable();  // 3a vacuna mujer 15 a 49 años
-            $table->date('vacuna_mujer_15_49_r1')->nullable();  // Refuerzo 1 mujer 15 a 49 años
-            $table->date('vacuna_mujer_15_49_r2')->nullable();  // Refuerzo 2 mujer 15 a 49 años
+            // Grupo de la persona
+            $table->enum('grupo', ['mujer_15_49', 'otros_grupos']);
 
-            // Campos para otros grupos
-            $table->date('vacuna_otros_grupos_1a')->nullable();  // 1a vacuna otros grupos
-            $table->date('vacuna_otros_grupos_2a')->nullable();  // 2a vacuna otros grupos
-            $table->date('vacuna_otros_grupos_3a')->nullable();  // 3a vacuna otros grupos
-            $table->date('vacuna_otros_grupos_r1')->nullable();  // Refuerzo 1 otros grupos
-            $table->date('vacuna_otros_grupos_r2')->nullable();  // Refuerzo 2 otros grupos
+            // Fecha de vacunación
+            $table->date('fecha_vacunacion');
+
+            // Tipo de dosis
+            $table->enum('tipo_dosis', ['1a', '2a', '3a', 'r1', 'r2']);
 
             $table->timestamps();
 
@@ -41,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mujer15a49y_otros_grupos');
+        Schema::dropIfExists('dosis_vacunacion');
     }
 };

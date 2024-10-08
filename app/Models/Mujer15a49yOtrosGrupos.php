@@ -13,17 +13,10 @@ class Mujer15a49yOtrosGrupos extends Model
 
     // Lista de campos que se pueden asignar de manera masiva
     protected $fillable = [
-        'formulario_base_id',  // Relación con el formulario
-        'vacuna_mujer_15_49_1a',
-        'vacuna_mujer_15_49_2a',
-        'vacuna_mujer_15_49_3a',
-        'vacuna_mujer_15_49_r1',
-        'vacuna_mujer_15_49_r2',
-        'vacuna_otros_grupos_1a',
-        'vacuna_otros_grupos_2a',
-        'vacuna_otros_grupos_3a',
-        'vacuna_otros_grupos_r1',
-        'vacuna_otros_grupos_r2',
+        'formulario_base_id',
+        'grupo',               // Grupo: 'mujer_15_49' o 'otros_grupos'
+        'fecha_vacunacion',
+        'tipo_dosis',          // Tipo de dosis: '1a', '2a', '3a', 'r1', 'r2'
     ];
 
     // Relación con el modelo FormularioSIGSA5b

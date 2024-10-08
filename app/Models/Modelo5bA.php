@@ -13,6 +13,7 @@ class Modelo5bA extends Model
 
     // Definir los campos rellenables (fillable)
     protected $fillable = [
+        'vacuna',
         'codigo_formulario',     // Código del formulario
         'nombre_paciente',       // Nombre del paciente
         'cui',                   // CUI del paciente

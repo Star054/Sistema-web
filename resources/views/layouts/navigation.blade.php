@@ -18,6 +18,9 @@
                     <x-nav-link :href="route('vacunas.create')" :active="request()->routeIs('form.create')">
                         {{ __('Vacunas') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('vacunas.filtros')" :active="request()->routeIs('vacunas.filtros')">
+                        {{ __('Consultas Informes') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -125,6 +128,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('vacunas.create')" :active="request()->routeIs('vacunas.create')">
                 {{ __('Vacunas') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('vacunas.resultados')" :active="request()->routeIs('vacunas.resultados')">
+                {{ __('Consultas Informes') }}
             </x-responsive-nav-link>
         </div>
 
