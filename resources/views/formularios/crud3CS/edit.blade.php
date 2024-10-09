@@ -55,6 +55,7 @@
 
                     <div class="mb-4">
                         <label for="municipio" class="block text-sm font-medium text-gray-700">Municipio</label>
+                        <label for="municipio" class="block text-sm font-medium text-gray-700">Municipio</label>
                         <input type="text" name="municipio" id="municipio" value="{{ old('municipio', $formulario->municipio) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                     </div>
 
@@ -190,6 +191,18 @@
                         </x-primary-button>
                     </div>
                 </form>
+
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
             </div>
         </div>
     </div>

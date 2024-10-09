@@ -13,12 +13,33 @@
                     <div class="mt-8">
                         <h4 class="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">Resultados:</h4>
                         <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-md">
-                            @foreach($pacientes as $paciente)
-                                <p class="text-gray-700 dark:text-gray-300">Nombre: {{ $paciente->nombre_paciente }}</p>
-                                <p>Fecha de Administración: {{ $paciente->fecha_administracion }}</p> <!-- Correcto -->
-                                <p class="text-gray-700 dark:text-gray-300">Dosis: {{ $paciente->dosis }}</p>
-                                <p class="text-gray-700 dark:text-gray-300">Vacuna ID: {{ $paciente->vacuna_id }}</p>
-                            @endforeach
+                            <h1>Información de Pacientes</h1>
+
+                            @if($pacientes->isEmpty())
+                                <p>No se encontraron pacientes.</p>
+                            @else
+                                @foreach($pacientes as $paciente)
+                                    <h2>Paciente: {{ $paciente->nombre_paciente }}</h2>
+                                    <p>CUI: {{ $paciente->cui }}</p>
+
+                                    <!-- Datos de la tabla residencia -->
+                                    <p>Municipio de Residencia: {{ $paciente->residencia->municipio_residencia ?? 'No registrado' }}</p>
+                                    <p>Comunidad: {{ $paciente->residencia->comunidad_direccion ?? 'No registrada' }}</p>
+
+                                    <!-- Datos de criterios de vacunación -->
+                                    <h3>Criterios de Vacunación</h3>
+                                    @if($paciente->criteriosVacuna->isEmpty())
+                                        <p>No se encontraron criterios de vacunación para este paciente.</p>
+                                    @else
+                                        @foreach ($paciente->criteriosVacuna as $criterio)
+                                            <!-- Accede directamente al campo 'vacuna' en la tabla 'criterios_vacuna' -->
+                                            <p>Vacuna: {{ $criterio->vacuna ?? 'No especificada' }}</p>
+                                            <p>Dosis: {{ $criterio->dosis }}</p>
+                                            <p>Fecha de Administración: {{ $criterio->fecha_administracion }}</p>
+                                        @endforeach
+                                    @endif
+                                @endforeach
+                            @endif
 
 
                         </div>

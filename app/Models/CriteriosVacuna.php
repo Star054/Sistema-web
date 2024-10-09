@@ -14,8 +14,8 @@ class CriteriosVacuna extends Model
 
     // Definir los campos rellenables (fillable)
     protected $fillable = [
-        'formulario_sigsa_base_id', // Relacionado con el formulario base
-        'vacuna_id',                // Relacionado con la tabla vacunas
+        'formulario_sigsa_base_id',
+        'vacuna',
         'grupo_priorizado',
         'fecha_administracion',
         'dosis',

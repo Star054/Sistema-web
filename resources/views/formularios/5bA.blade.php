@@ -78,12 +78,12 @@
 
                                 <!-- Select para la vacuna -->
                                 <td class="border border-black dark:border-white p-0">
-                                    <select name="vacuna_id" id="vacuna_id"
+                                    <select name="vacuna" id="vacuna"
                                             class="w-full h-full border-none p-2 text-black dark:text-white dark:bg-gray-900 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
                                         <option value="">Seleccione una vacuna</option>
-                                        @foreach($vacunas as $vacuna)
-                                            <option value="{{ $vacuna->id }}" {{ old('vacuna_id') == $vacuna->id ? 'selected' : '' }}>
-                                                {{ $vacuna->nombre_vacuna }}
+                                        @foreach($vacunas as $vacunaItem)
+                                            <option value="{{ $vacunaItem->nombre_vacuna }}" {{ request()->input('vacuna') == $vacunaItem->nombre_vacuna ? 'selected' : '' }}>
+                                                {{ $vacunaItem->nombre_vacuna }}
                                             </option>
                                         @endforeach
                                     </select>

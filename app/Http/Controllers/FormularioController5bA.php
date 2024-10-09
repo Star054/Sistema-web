@@ -36,7 +36,7 @@ class FormularioController5bA extends Controller
 
     public function edit($id)
     {
-        $formulario = Modelo5bA::findOrFail($id);
+        $formulario = Modelo5bA::with('criteriosVacuna')->findOrFail($id);
         $vacunas = Vacuna::all(); // Obtener todas las vacunas para el select
 
         return view('formularios.crud5bA.edit', compact('formulario', 'vacunas'));
@@ -77,10 +77,12 @@ class FormularioController5bA extends Controller
             'municipio_residencia' => 'nullable|string',
             'agricola_migrante' => 'nullable|boolean',
             'embarazada' => 'nullable|boolean',
-            'vacuna_id' => 'required|exists:vacunas,id',
+
+            'vacuna' => 'required|exists:vacunas,nombre_vacuna',
             'grupo_priorizado' => 'required|string',
             'fecha_administracion' => 'required|date',
-            'dosis' => 'required|numeric|min:0',
+            'dosis' => 'required|String',
+
         ]);
 
         // Guardar el tipo de formulario en la tabla `tipo_formularios`
@@ -121,19 +123,22 @@ class FormularioController5bA extends Controller
             'formulario_base_id' => $formulario->id,  // Relacionar con el formulario correctamente
         ]);
 
-        // Guardar los criterios de selección en `criterios_vacuna`
+
         CriteriosVacuna::create([
-            'formulario_sigsa_base_id' => $formulario->id,  // Relacionar con el formulario
-            'vacuna_id' => $validated['vacuna_id'],
+
+            'formulario_sigsa_base_id' => $formulario->id,
+            'vacuna' => $validated['vacuna'],  // Incluir 'vacuna' en la creación
             'grupo_priorizado' => $validated['grupo_priorizado'],
             'fecha_administracion' => $validated['fecha_administracion'],
             'dosis' => $validated['dosis'],
         ]);
 
 
+
         // Redirigir a la vista de creación con un mensaje de éxito
         return redirect()->route('for-sigsa-5bA.create')->with('status', 'Formulario guardado correctamente.');
     }
+
 
     // Método para actualizar el formulario
     public function update(Request $request, $id)
@@ -147,30 +152,22 @@ class FormularioController5bA extends Controller
             'responsable_informacion' => 'nullable|string',
             'cargo_responsable' => 'nullable|string',
             'anio' => 'required|string',
-            'no_orden' => 'nullable|integer',
             'nombre_paciente' => 'required|string|max:255',
             'cui' => 'required|string|max:13',
             'sexo' => 'nullable|string|max:1',
-            'pueblo' => 'nullable|string',
             'fecha_nacimiento' => 'nullable|date',
-            'comunidad_linguistica' => 'nullable|string',
-            'orientacion_sexual' => 'nullable|string',
-            'escolaridad' => 'nullable|string',
-            'profesion_oficio' => 'nullable|string',
+            'vacuna' => 'required|exists:vacunas,nombre_vacuna',
+            'grupo_priorizado' => 'required|string',
+            'fecha_administracion' => 'required|date',
+            'dosis' => 'required|string',
             'comunidad_direccion' => 'nullable|string',
             'municipio_residencia' => 'nullable|string',
             'agricola_migrante' => 'nullable|boolean',
             'embarazada' => 'nullable|boolean',
-            'vacuna' => 'required|string',
-            'grupo_priorizado' => 'required|string',
-            'fecha_administracion' => 'required|date',
-            'dosis' => 'required|numeric|min:0',
         ]);
 
-        // Buscar el formulario por ID
+        // Actualizar los datos generales del formulario
         $formulario = Modelo5bA::findOrFail($id);
-
-        // Actualizar los datos generales del formulario en `formulario_sigsa_base`
         $formulario->update([
             'area_salud' => $validated['area_salud'] ?? null,
             'distrito_salud' => $validated['distrito_salud'] ?? null,
@@ -179,16 +176,10 @@ class FormularioController5bA extends Controller
             'responsable_informacion' => $validated['responsable_informacion'] ?? null,
             'cargo_responsable' => $validated['cargo_responsable'] ?? null,
             'anio' => $validated['anio'],
-            'no_orden' => $validated['no_orden'] ?? null,
             'nombre_paciente' => $validated['nombre_paciente'],
             'cui' => $validated['cui'],
             'sexo' => $validated['sexo'] ?? null,
-            'pueblo' => $validated['pueblo'] ?? null,
             'fecha_nacimiento' => $validated['fecha_nacimiento'] ?? null,
-            'comunidad_linguistica' => $validated['comunidad_linguistica'] ?? null,
-            'orientacion_sexual' => $validated['orientacion_sexual'] ?? null,
-            'escolaridad' => $validated['escolaridad'] ?? null,
-            'profesion_oficio' => $validated['profesion_oficio'] ?? null,
         ]);
 
         // Actualizar los datos de Residencia si ya existen
@@ -209,33 +200,33 @@ class FormularioController5bA extends Controller
             ]);
         }
 
-        // Actualizar o crear los criterios de selección en `criterios_vacuna`
-        $criteriosVacuna = $formulario->criteriosVacuna->first(); // Obtener el primer registro relacionado
 
+        $criteriosVacuna = $formulario->criteriosVacuna->first();
         if ($criteriosVacuna) {
             $criteriosVacuna->update([
-                'nombre_vacuna' => $validated['vacuna'],
+                'vacuna' => $validated['vacuna'],  // Asegúrate de incluir 'vacuna'
                 'grupo_priorizado' => $validated['grupo_priorizado'],
                 'fecha_administracion' => $validated['fecha_administracion'],
                 'dosis' => $validated['dosis'],
             ]);
         } else {
-            // Si no existe el registro en `criterios_vacuna`, crear uno nuevo
             CriteriosVacuna::create([
                 'formulario_sigsa_base_id' => $formulario->id,
-                'nombre_vacuna' => $validated['vacuna'],
+                'vacuna' => $validated['vacuna'],  // Incluir 'vacuna' en la creación
                 'grupo_priorizado' => $validated['grupo_priorizado'],
                 'fecha_administracion' => $validated['fecha_administracion'],
                 'dosis' => $validated['dosis'],
+
             ]);
         }
 
-        // Redirigir con mensaje de éxito
+// Redirigir al índice con mensaje de éxito
         return redirect()->route('for-sigsa-5bA.index')->with('success', 'Formulario actualizado correctamente.');
-    }
+
+        }
 
 
-    // Método para eliminar un formulario
+        // Método para eliminar un formulario
     public function destroy($id)
     {
         // Buscar el formulario por ID y eliminarlo junto con sus relaciones en cascada

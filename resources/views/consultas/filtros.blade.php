@@ -9,7 +9,6 @@
         <x-barra-busqueda/>
     </div>
 
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -22,13 +21,14 @@
                             <label for="tipo_formulario" class="block text-lg font-medium text-gray-700 dark:text-gray-300">Seleccionar tipo de formulario:</label>
                             <select name="tipo_formulario" id="tipo_formulario" required class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-gray-300">
                                 <option value="SIGSA5b" {{ request()->input('tipo_formulario') == 'SIGSA5b' ? 'selected' : '' }}>SIGSA5b</option>
-                                <option value="SIGSA3CS" {{ request()->input('tipo_formulario') == 'SIGSA5bA' ? 'selected' : '' }}>SIGSA3CS</option>
+                                <option value="SIGSA5bA" {{ request()->input('tipo_formulario') == 'SIGSA5bA' ? 'selected' : '' }}>SIGSA5bA</option>
                             </select>
                         </div>
 
                         <!-- Campo para seleccionar la vacuna -->
                         <div class="space-y-2">
                             <label for="vacuna" class="block text-lg font-medium text-gray-700 dark:text-gray-300">Seleccionar vacuna:</label>
+
                             <select name="vacuna" id="vacuna" required class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-gray-300">
                                 @foreach($vacunas as $vacunaItem)
                                     <option value="{{ $vacunaItem->nombre_vacuna }}" {{ request()->input('vacuna') == $vacunaItem->nombre_vacuna ? 'selected' : '' }}>
@@ -36,6 +36,7 @@
                                     </option>
                                 @endforeach
                             </select>
+
                         </div>
 
                         <!-- Campo para seleccionar el mes -->
@@ -53,15 +54,20 @@
                     </form>
 
                     <!-- Mostrar los resultados filtrados -->
-                    @if(isset($resultados))
+                    @if(isset($pacientes) && count($pacientes) > 0)
                         <div class="mt-8">
                             <h4 class="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">Resultados:</h4>
                             <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-md">
-                                @foreach($resultados as $resultado)
-                                    <p class="text-gray-700 dark:text-gray-300">{{ $resultado->campo_deseado }}</p> <!-- Reemplaza 'campo_deseado' por el campo real -->
+                                @foreach($pacientes as $paciente)
+                                    <p>Nombre: {{ $paciente->formularioSIGSA5bA->nombre_paciente }}</p>
+                                    <p>Fecha de Administración: {{ $paciente->fecha_administracion ?? 'No disponible' }}</p>
+                                    <p>Dosis: {{ $paciente->dosis ?? 'No disponible' }}</p>
+                                    <p>Vacuna: {{ $paciente->vacuna->nombre_vacuna ?? 'No disponible' }}</p>
                                 @endforeach
                             </div>
                         </div>
+                    @else
+                        <p class="text-gray-500">No se encontraron resultados.</p>
                     @endif
                 </div>
             </div>

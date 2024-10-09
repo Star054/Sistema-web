@@ -127,13 +127,12 @@ class FormularioController3CS extends Controller
         return view('formularios.crud3CS.edit', compact('formulario'));
     }
 
-
     public function update(Request $request, $id)
     {
-        // Validar los datos del formulario
+        // Validar los datos que pertenecen a la tabla formulario_sigsa_base
         $validated = $request->validate([
             'nombre_paciente' => 'required|string|max:255',
-            'cui' => 'required|string|max:13|unique:formulario_sigsa_base,cui,'.$id,
+            'cui' => 'required|string|max:13|unique:formulario_sigsa_base,cui,' . $id,
             'sexo' => 'required|string|max:1',
             'dia_consulta' => 'required|date',
             'no_historia_clinica' => 'required|string|max:255',
@@ -151,10 +150,10 @@ class FormularioController3CS extends Controller
             'orientacion_sexual' => 'nullable|string|max:255',
             'escolaridad' => 'nullable|string|max:255',
             'profesion_oficio' => 'nullable|string|max:255',
-            'comunidad_direccion' => 'nullable|string', // Cambiar a opcional
+            'comunidad_direccion' => 'nullable|string',
             'municipio_residencia' => 'required|string',
             'agricola_migrante' => 'nullable|boolean',
-            // Otros campos de consulta
+            // Los campos que pertenecen a la tabla `consulta` se validarán pero no se incluirán en esta actualización
             'consulta' => 'nullable|string',
             'control' => 'nullable|string',
             'semana_gestacion' => 'nullable|integer',
@@ -172,26 +171,45 @@ class FormularioController3CS extends Controller
         // Buscar el formulario por ID
         $formulario = Modelo3CS::findOrFail($id);
 
-        // Actualizar los datos generales del formulario
-        $formulario->update($validated);
+        // Actualizar los datos generales del formulario que pertenecen a `formulario_sigsa_base`
+        $formulario->update([
+            'nombre_paciente' => $validated['nombre_paciente'],
+            'cui' => $validated['cui'],
+            'sexo' => $validated['sexo'],
+            'dia_consulta' => $validated['dia_consulta'],
+            'no_historia_clinica' => $validated['no_historia_clinica'],
+            'area_salud' => $validated['area_salud'] ?? null,
+            'distrito_salud' => $validated['distrito_salud'] ?? null,
+            'municipio' => $validated['municipio'] ?? null,
+            'servicio_salud' => $validated['servicio_salud'] ?? null,
+            'responsable_informacion' => $validated['responsable_informacion'] ?? null,
+            'cargo_responsable' => $validated['cargo_responsable'] ?? null,
+            'anio' => $validated['anio'] ?? null,
+            'no_orden' => $validated['no_orden'] ?? null,
+            'pueblo' => $validated['pueblo'] ?? null,
+            'fecha_nacimiento' => $validated['fecha_nacimiento'] ?? null,
+            'comunidad_linguistica' => $validated['comunidad_linguistica'] ?? null,
+            'orientacion_sexual' => $validated['orientacion_sexual'] ?? null,
+            'escolaridad' => $validated['escolaridad'] ?? null,
+            'profesion_oficio' => $validated['profesion_oficio'] ?? null,
+        ]);
 
         // Actualizar los datos de residencia
         if ($formulario->residencia) {
             $formulario->residencia->update([
-                'comunidad_direccion' => $validated['comunidad_direccion'] ?? null, // Cambiar a opcional
+                'comunidad_direccion' => $validated['comunidad_direccion'] ?? null,
                 'municipio_residencia' => $validated['municipio_residencia'],
                 'agricola_migrante' => $validated['agricola_migrante'] ?? null,
             ]);
         } else {
-            // Crear si no existe
             $formulario->residencia()->create([
-                'comunidad_direccion' => $validated['comunidad_direccion'] ?? null, // Cambiar a opcional
+                'comunidad_direccion' => $validated['comunidad_direccion'] ?? null,
                 'municipio_residencia' => $validated['municipio_residencia'],
                 'agricola_migrante' => $validated['agricola_migrante'] ?? null,
             ]);
         }
 
-        // Actualizar o crear los datos de consulta
+        // Actualizar los datos de consulta si existen, o crear nuevos si no existen
         if ($formulario->consulta) {
             $formulario->consulta->update([
                 'consulta' => $validated['consulta'] ?? null,
@@ -208,7 +226,6 @@ class FormularioController3CS extends Controller
                 'nombre_acompanante' => $validated['nombre_acompanante'] ?? null,
             ]);
         } else {
-            // Crear si no existe
             Consulta::create([
                 'formulario_sigsa_base_id' => $formulario->id,
                 'consulta' => $validated['consulta'] ?? null,
@@ -226,7 +243,7 @@ class FormularioController3CS extends Controller
             ]);
         }
 
-        // Redirigir con mensaje de éxito
+        // Redirigir con un mensaje de éxito
         return redirect()->route('formularios-3cs.index')->with('status', 'Formulario actualizado correctamente.');
     }
 
