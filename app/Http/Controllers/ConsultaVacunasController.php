@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FormularioSIGSA5b;
 use Illuminate\Http\Request;
 use App\Models\Vacuna;
 use Illuminate\Support\Facades\DB;
@@ -41,6 +42,24 @@ class ConsultaVacunasController extends Controller
                     ->get();
                 break;
 
+            case 'SIGSA5bA':
+                // Consulta con el filtro de vacuna desde criterios_vacuna
+                $pacientes = DB::table('formulario_sigsa_base')
+                    ->join('residencia', 'formulario_sigsa_base.id', '=', 'residencia.formulario_base_id')
+                    ->join('criterios_vacuna', 'formulario_sigsa_base.id', '=', 'criterios_vacuna.formulario_sigsa_base_id') // Ajuste aquí
+                    ->join('vacunas', 'criterios_vacuna.vacuna_id', '=', 'vacunas.id') // Join con la tabla de vacunas para obtener el nombre
+                    ->where('vacunas.nombre_vacuna', $vacuna)
+                    ->whereMonth('criterios_vacuna.fecha_administracion', Carbon::parse($mes)->month)
+                    ->whereYear('criterios_vacuna.fecha_administracion', Carbon::parse($mes)->year)
+                    ->select(
+                        'formulario_sigsa_base.*',
+                        'residencia.*',
+                        'criterios_vacuna.fecha_administracion',
+                        'criterios_vacuna.dosis',
+                        'vacunas.nombre_vacuna'
+                    )
+                    ->get();
+                break;
             default:
                 // Si no se selecciona un tipo de formulario válido
                 $pacientes = collect(); // Devuelve una colección vacía
@@ -53,4 +72,22 @@ class ConsultaVacunasController extends Controller
         // Retornar la vista con los resultados
         return view('consultas.resultados', compact('pacientes', 'vacunas', 'vacuna', 'mes', 'tipoFormulario'));
     }
+
+    public function buscar(Request $request)
+    {
+        $busqueda = $request->input('buscar');
+
+        // Realizar el inner join usando Eloquent
+        $pacientes = FormularioSIGSA5b::join('formulario_sigsa_tipo_formulario', 'formulario_sigsa_base.id', '=', 'formulario_sigsa_tipo_formulario.formulario_sigsa_base_id')
+            ->join('tipo_formularios', 'formulario_sigsa_tipo_formulario.tipo_formulario_id', '=', 'tipo_formularios.id')
+            ->where(function($query) use ($busqueda) {
+                $query->where('formulario_sigsa_base.cui', 'LIKE', "%{$busqueda}%")
+                    ->orWhere('formulario_sigsa_base.nombre_paciente', 'LIKE', "%{$busqueda}%");
+            })
+            ->select('formulario_sigsa_base.*', 'tipo_formularios.codigo_formulario as tipo_formulario')
+            ->get();
+
+        return view('busqueda-resultados', compact('pacientes'));
+    }
+
 }

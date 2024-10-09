@@ -41,9 +41,10 @@ Route::middleware('auth')->group(function () {
 
 // Ruta para mostrar el formulario de filtros
     Route::get('/filtros-vacunas', [ConsultaVacunasController::class, 'mostrarFiltros'])->name('vacunas.filtros');
-
-// Ruta para procesar los filtros y mostrar los resultados de los pacientes vacunados
     Route::get('/resultados-vacunas', [ConsultaVacunasController::class, 'mostrarResultados'])->name('vacunas.resultados');
+    Route::get('/busqueda-resultados', [ConsultaVacunasController::class, 'buscar'])->name('busqueda.resultados');
+    Route::get('/resultados-5ba/pdf', [ConsultaVacunasController::class, 'generarPDF'])->name('vacunas.pdf_5ba');
+
 
     // Vista de formulario exitoso
     Route::get('/formulario-exitoso', function () {

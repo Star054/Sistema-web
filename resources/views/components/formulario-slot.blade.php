@@ -61,10 +61,6 @@
                     <input type="text" name="cargo_responsable" class="w-full border-none border-b border-black dark:border-white dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                 </td>
                 <td class="p-2">
-                    <label class="text-gray-700 dark:text-gray-300">Firma:</label>
-                    <div class="text-center">  </div>
-                </td>
-                <td class="p-2">
                     <label class="text-gray-700 dark:text-gray-300">Año:</label>
                     <input type="text" name="anio" class="w-full border-none border-b border-black dark:border-white dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                 </td>
