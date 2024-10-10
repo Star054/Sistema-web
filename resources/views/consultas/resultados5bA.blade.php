@@ -18,39 +18,59 @@
                             @if($pacientes->isEmpty())
                                 <p>No se encontraron pacientes.</p>
                             @else
-                                @foreach($pacientes as $paciente)
-                                    <h2>Paciente: {{ $paciente->nombre_paciente }}</h2>
-                                    <p>CUI: {{ $paciente->cui }}</p>
-
-                                    <!-- Datos de la tabla residencia -->
-                                    <p>Municipio de Residencia: {{ $paciente->residencia->municipio_residencia ?? 'No registrado' }}</p>
-                                    <p>Comunidad: {{ $paciente->residencia->comunidad_direccion ?? 'No registrada' }}</p>
-
-                                    <!-- Datos de criterios de vacunación -->
-                                    <h3>Criterios de Vacunación</h3>
-                                    @if($paciente->criteriosVacuna->isEmpty())
-                                        <p>No se encontraron criterios de vacunación para este paciente.</p>
-                                    @else
+                                <!-- Aquí se organizará la información de los pacientes en una tabla -->
+                                <table class="min-w-full bg-white dark:bg-gray-800">
+                                    <thead>
+                                    <tr>
+                                        <th class="px-4 py-2">Paciente</th>
+                                        <th class="px-4 py-2">CUI</th>
+                                        <th class="px-4 py-2">Municipio de Residencia</th>
+                                        <th class="px-4 py-2">Comunidad</th>
+                                        <th class="px-4 py-2">Vacuna</th>
+                                        <th class="px-4 py-2">Dosis</th>
+                                        <th class="px-4 py-2">Fecha de Administración</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($pacientes as $paciente)
                                         @foreach ($paciente->criteriosVacuna as $criterio)
-                                            <!-- Accede directamente al campo 'vacuna' en la tabla 'criterios_vacuna' -->
-                                            <p>Vacuna: {{ $criterio->vacuna ?? 'No especificada' }}</p>
-                                            <p>Dosis: {{ $criterio->dosis }}</p>
-                                            <p>Fecha de Administración: {{ $criterio->fecha_administracion }}</p>
+                                            <tr>
+                                                <td class="border px-4 py-2">{{ $paciente->nombre_paciente ?? 'No registrado' }}</td>
+                                                <td class="border px-4 py-2">{{ $paciente->cui ?? 'No registrado' }}</td>
+                                                <td class="border px-4 py-2">{{ $paciente->residencia->municipio_residencia ?? 'No registrado' }}</td>
+                                                <td class="border px-4 py-2">{{ $paciente->residencia->comunidad_direccion ?? 'No registrada' }}</td>
+                                                <td class="border px-4 py-2">{{ $criterio->vacuna ?? 'No especificada' }}</td>
+                                                <td class="border px-4 py-2">{{ $criterio->dosis ?? 'No especificada' }}</td>
+                                                <td class="border px-4 py-2">{{ $criterio->fecha_administracion ?? 'No especificada' }}</td>
+                                            </tr>
                                         @endforeach
-                                    @endif
-                                @endforeach
+                                    @endforeach
+                                    </tbody>
+                                </table>
                             @endif
-
-
                         </div>
                     </div>
+                    <form action="{{ route('vacunas.generarPDF') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="mes" value="{{ request('mes') }}">
+                        <input type="hidden" name="vacuna" value="{{ request('vacuna') }}">
+                        <input type="hidden" name="tipo_formulario" value="{{ request('tipo_formulario') }}">
+                        <input type="hidden" name="generar_pdf" value="1">
+                        <button type="submit" class="btn btn-primary">Generar PDF</button>
+                    </form>
 
-                    <!-- Botón para generar PDF -->
-                    <div class="mt-4">
-                        <a href="{{ route('vacunas.pdf_5ba', ['pacientes' => $pacientes]) }}" class="px-4 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-500">
-                            Generar PDF
-                        </a>
-                    </div>
+
+
+
+                @if($errors->any())
+                        <div class="alert alert-danger">
+                            @foreach($errors->all() as $error)
+                                <p>{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    @endif
+
+
                 </div>
             </div>
         </div>

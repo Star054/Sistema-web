@@ -12,7 +12,7 @@ class FormularioSIGSA5b extends Model
     protected $table = 'formulario_sigsa_base'; // Tabla base
 
     protected $fillable = [
-        'codigo_formulario',     // Código del formulario
+        'codigo_formulario',
         'nombre_paciente',
         'vacuna',
         'codigo_formulario',
@@ -52,4 +52,7 @@ class FormularioSIGSA5b extends Model
     {
         return $this->belongsToMany(TipoFormulario::class, 'formulario_sigsa_tipo_formulario', 'formulario_sigsa_base_id', 'tipo_formulario_id');
     }
+
+
+
 }

@@ -1,14 +1,13 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
+use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Models\FormularioSIGSA5b;
 use App\Models\Modelo5bA;
-use Illuminate\Http\Request;
-use App\Models\Vacuna;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-use App\Models\CriteriosVacuna;
 
 class ConsultaVacunasController extends Controller
 {
@@ -24,46 +23,99 @@ class ConsultaVacunasController extends Controller
         // Capturar los valores del formulario
         $tipoFormulario = $request->input('tipo_formulario');
         $vacuna = $request->input('vacuna');
-        $mes = Carbon::parse($request->input('mes'))->month;  // Extrae solo el número del mes
-        $anio = Carbon::parse($request->input('mes'))->year;   // Extrae solo el año
+        $fecha = $request->input('mes');  // Capturamos el formato 'YYYY-MM'
+
+        try {
+            $mes = Carbon::createFromFormat('Y-m', $fecha)->month;
+            $anio = Carbon::createFromFormat('Y-m', $fecha)->year;
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['mes' => 'Fecha no válida.']);
+        }
 
         // Lógica de consulta dependiendo del formulario
         switch ($tipoFormulario) {
             case 'SIGSA5b':
-                // Consulta con relaciones Eloquent en lugar de un join manual
                 $pacientes = FormularioSIGSA5b::with(['residencia', 'mujer15a49yOtrosGrupos'])
                     ->whereHas('mujer15a49yOtrosGrupos', function ($query) use ($vacuna, $mes, $anio) {
-                        $query->where('fecha_vacunacion', 'like', "{$anio}-{$mes}%")
-                            ->where('vacuna', $vacuna);  // Aquí asumimos que 'vacuna' es el campo de la tabla relacionada
+                        $query->whereMonth('fecha_vacunacion', $mes)
+                            ->whereYear('fecha_vacunacion', $anio)
+                            ->where('vacuna', $vacuna);
                     })
                     ->get();
 
-                // Retornar la vista del formulario 5b
-                return view('consultas.resultados', compact('pacientes', 'vacuna', 'mes', 'tipoFormulario'));
+                // Retornar la vista de resultados
+                return view('consultas.resultados', compact('pacientes', 'vacuna', 'mes', 'anio', 'tipoFormulario'));
                 break;
 
             case 'SIGSA5bA':
-                // Consulta utilizando el nombre de la vacuna en la tabla `criterios_vacuna`
                 $pacientes = Modelo5bA::with(['residencia', 'criteriosVacuna'])
                     ->whereHas('criteriosVacuna', function ($query) use ($vacuna, $mes, $anio) {
-                        $query->where('fecha_administracion', 'like', "{$anio}-{$mes}%")
-                            ->where('vacuna', $vacuna); // Filtrar por el nombre de la vacuna en lugar de vacuna_id
+                        $query->whereMonth('fecha_administracion', $mes)
+                            ->whereYear('fecha_administracion', $anio)
+                            ->where('vacuna', $vacuna);
                     })
                     ->get();
 
-                // Retornar la vista del formulario 5bA
+                // Retornar la vista de resultados
                 return view('consultas.resultados5bA', compact('pacientes', 'vacuna', 'mes', 'anio', 'tipoFormulario'));
                 break;
 
             default:
-                // Devuelve una colección vacía si no se selecciona un tipo válido
-                $pacientes = collect();
-                // Retornar la vista por defecto
-                return view('consultas.resultados', compact('pacientes', 'vacuna', 'mes', 'tipoFormulario'));
-                break;
+                return view('consultas.resultados', ['pacientes' => collect()]);
         }
     }
 
+    public function generarPDF(Request $request)
+    {
+
+        // Capturar los valores del formulario (los mismos que para la vista de resultados)
+        $tipoFormulario = $request->input('tipo_formulario');
+        $vacuna = $request->input('vacuna');
+        $fecha = $request->input('mes');
+
+
+
+        // Verificar el formato del mes
+        try {
+            $mes = Carbon::createFromFormat('Y-m', $fecha)->month;
+            $anio = Carbon::createFromFormat('Y-m', $fecha)->year;
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['mes' => 'Fecha no válida.']);
+        }
+
+        // Generar el PDF basado en los mismos resultados del filtro
+        switch ($tipoFormulario) {
+            case 'SIGSA5b':
+                $pacientes = FormularioSIGSA5b::with(['residencia', 'mujer15a49yOtrosGrupos'])
+                    ->whereHas('mujer15a49yOtrosGrupos', function ($query) use ($vacuna, $mes, $anio) {
+                        $query->whereMonth('fecha_vacunacion', $mes)
+                            ->whereYear('fecha_vacunacion', $anio)
+                            ->where('vacuna', $vacuna);
+                    })
+                    ->get();
+
+                $pdf = PDF::loadView('pdf.resultados5b', compact('pacientes', 'vacuna', 'mes', 'anio', 'tipoFormulario'));
+                break;
+
+            case 'SIGSA5bA':
+                $pacientes = Modelo5bA::with(['residencia', 'criteriosVacuna'])
+                    ->whereHas('criteriosVacuna', function ($query) use ($vacuna, $mes, $anio) {
+                        $query->whereMonth('fecha_administracion', $mes)
+                            ->whereYear('fecha_administracion', $anio)
+                            ->where('vacuna', $vacuna);
+                    })
+                    ->get();
+
+                $pdf = PDF::loadView('pdf.resultados5bA', compact('pacientes', 'vacuna', 'mes', 'anio', 'tipoFormulario'));
+                break;
+
+            default:
+                abort(404, 'Formulario no encontrado.');
+        }
+
+        // Descargar el PDF
+        return $pdf->download('pacientes_filtrados_vacunacion.pdf');
+    }
 
     public function buscar(Request $request)
     {
@@ -83,4 +135,5 @@ class ConsultaVacunasController extends Controller
 
         return view('busqueda-resultados', compact('pacientes'));
     }
+
 }

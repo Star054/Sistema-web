@@ -8,84 +8,53 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg p-6">
-                <table class="min-w-full bg-white dark:bg-gray-800">
-                    <thead>
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Nombre del Paciente
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            CUI
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Fecha de Nacimiento
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Sexo
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Pueblo
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Escolaridad
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Profesión u Oficio
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Vacuna
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Acciones
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach ($formularios as $formulario)
+                <!-- Contenedor responsive para la tabla -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white dark:bg-gray-800 table-auto">
+                        <thead>
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                {{ $formulario->nombre_paciente }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $formulario->cui }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $formulario->fecha_nacimiento }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $formulario->sexo }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $formulario->pueblo }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $formulario->escolaridad }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $formulario->profesion_oficio }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $formulario->nombre_vacuna}}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <!-- Botones de acción: Ver, Editar, Eliminar -->
-                                <a href="{{ route('for-sigsa-5bA.show', $formulario->id) }}" class="text-blue-600 hover:text-blue-900">Ver</a>
-                                <a href="{{ route('for-sigsa-5bA.edit', $formulario->id) }}" class="text-yellow-600 hover:text-yellow-900 ml-4">Editar</a>
-                                <form action="{{ route('for-sigsa-5bA.destroy', $formulario->id) }}" method="POST" class="inline-block" onsubmit="return confirm('¿Estás seguro de eliminar este formulario?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-900 ml-4">Eliminar</button>
-                                </form>
-                            </td>
+                            <th class="px-4 py-2 text-left text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">Nombre del Paciente</th>
+                            <th class="px-4 py-2 text-left text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">CUI</th>
+                            <th class="px-4 py-2 text-left text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">Fecha de Nacimiento</th>
+                            <th class="px-4 py-2 text-left text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">Sexo</th>
+                            <th class="px-4 py-2 text-left text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">Pueblo</th>
+                            <th class="px-4 py-2 text-left text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">Escolaridad</th>
+                            <th class="px-4 py-2 text-left text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">Profesión u Oficio</th>
+                            <th class="px-4 py-2 text-left text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">Vacuna</th>
+                            <th class="px-4 py-2 text-left text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">Acciones</th>
                         </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        @foreach ($formularios as $formulario)
+                            <tr class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600">
+                                <td class="px-4 py-2 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $formulario->nombre_paciente }}</td>
+                                <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{{ $formulario->cui }}</td>
+                                <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{{ $formulario->fecha_nacimiento }}</td>
+                                <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{{ $formulario->sexo }}</td>
+                                <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{{ $formulario->pueblo }}</td>
+                                <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{{ $formulario->escolaridad }}</td>
+                                <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{{ $formulario->profesion_oficio }}</td>
+                                <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{{ $formulario->nombre_vacuna }}</td>
+                                <td class="px-4 py-2 text-sm font-medium space-x-2">
+                                    <a href="{{ route('for-sigsa-5bA.show', $formulario->id) }}" class="text-blue-500 hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-300">Ver</a>
+                                    <a href="{{ route('for-sigsa-5bA.edit', $formulario->id) }}" class="text-yellow-500 hover:text-yellow-400 dark:text-yellow-400 dark:hover:text-yellow-300">Editar</a>
+                                    <form action="{{ route('for-sigsa-5bA.destroy', $formulario->id) }}" method="POST" class="inline-block" onsubmit="return confirm('¿Estás seguro de eliminar este formulario?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-500 hover:text-red-400 dark:text-red-400 dark:hover:text-red-300">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <br>
+
             <!-- Botones CRUD para la navegación -->
-            <div class="bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out hover:shadow-xl">
+            <div class="bg-gray-50 dark:bg-gray-900 p-6 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out hover:shadow-xl">
                 <div class="container mx-auto px-3 py-5 space-y-5">
                     <div class="flex justify-center space-x-5 mt-5">
                         <!-- Botón Crear Nuevo Formulario -->

@@ -7,6 +7,8 @@ use App\Http\Controllers\FormularioController5bA;
 use App\Http\Controllers\FormularioController3CS;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConsultaVacunasController;
+use App\Http\Controllers\PDFController;
+use App\Http\Controllers\PDFTestController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -38,13 +40,18 @@ Route::middleware('auth')->group(function () {
     Route::resource('formularios-3cs', FormularioController3CS::class);
 
 
-
 // Ruta para mostrar el formulario de filtros
     Route::get('/filtros-vacunas', [ConsultaVacunasController::class, 'mostrarFiltros'])->name('vacunas.filtros');
     Route::get('/resultados-vacunas', [ConsultaVacunasController::class, 'mostrarResultados'])->name('vacunas.resultados');
     Route::get('/busqueda-resultados', [ConsultaVacunasController::class, 'buscar'])->name('busqueda.resultados');
-    Route::get('/resultados-5ba/pdf', [ConsultaVacunasController::class, 'generarPDF'])->name('vacunas.pdf_5ba');
 
+    Route::post('/generar-pdf-filtro', [ConsultaVacunasController::class, 'generarPDF'])->name('vacunas.generarPDF');
+
+// Ruta para la generación de PDFs
+    Route::get('/generar-pdf', [PDFController::class, 'generarPDFFiltro'])->name('vacunas.generarPDF.get');
+
+
+    Route::get('/pdf-prueba', [PDFTestController::class, 'generarPDF']);
 
     // Vista de formulario exitoso
     Route::get('/formulario-exitoso', function () {
