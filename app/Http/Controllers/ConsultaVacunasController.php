@@ -1,6 +1,7 @@
 <?php
 
 
+
 namespace App\Http\Controllers;
 
 use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
@@ -8,6 +9,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\FormularioSIGSA5b;
 use App\Models\Modelo5bA;
+use App\Models\Vacuna;
 
 class ConsultaVacunasController extends Controller
 {
@@ -23,7 +25,7 @@ class ConsultaVacunasController extends Controller
         // Capturar los valores del formulario
         $tipoFormulario = $request->input('tipo_formulario');
         $vacuna = $request->input('vacuna');
-        $fecha = $request->input('mes');  // Capturamos el formato 'YYYY-MM'
+        $fecha = $request->input('mes');
 
         try {
             $mes = Carbon::createFromFormat('Y-m', $fecha)->month;
@@ -36,10 +38,10 @@ class ConsultaVacunasController extends Controller
         switch ($tipoFormulario) {
             case 'SIGSA5b':
                 $pacientes = FormularioSIGSA5b::with(['residencia', 'mujer15a49yOtrosGrupos'])
-                    ->whereHas('mujer15a49yOtrosGrupos', function ($query) use ($vacuna, $mes, $anio) {
+                    ->where('vacuna', $vacuna) // Filtrar por la vacuna en la tabla correcta
+                    ->whereHas('mujer15a49yOtrosGrupos', function ($query) use ($mes, $anio) {
                         $query->whereMonth('fecha_vacunacion', $mes)
-                            ->whereYear('fecha_vacunacion', $anio)
-                            ->where('vacuna', $vacuna);
+                            ->whereYear('fecha_vacunacion', $anio);
                     })
                     ->get();
 
@@ -67,15 +69,11 @@ class ConsultaVacunasController extends Controller
 
     public function generarPDF(Request $request)
     {
-
-        // Capturar los valores del formulario (los mismos que para la vista de resultados)
+        // Capturar los valores del formulario
         $tipoFormulario = $request->input('tipo_formulario');
         $vacuna = $request->input('vacuna');
         $fecha = $request->input('mes');
 
-
-
-        // Verificar el formato del mes
         try {
             $mes = Carbon::createFromFormat('Y-m', $fecha)->month;
             $anio = Carbon::createFromFormat('Y-m', $fecha)->year;
@@ -131,9 +129,6 @@ class ConsultaVacunasController extends Controller
             ->select('formulario_sigsa_base.*', 'tipo_formularios.codigo_formulario as tipo_formulario')
             ->get();
 
-
-
         return view('busqueda-resultados', compact('pacientes'));
     }
-
 }

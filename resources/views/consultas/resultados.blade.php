@@ -1,6 +1,5 @@
 <x-app-layout>
     <div class="container">
-        <!-- Resultados si existen -->
         @if(isset($pacientes) && !$pacientes->isEmpty())
             <h3>Pacientes vacunados con {{ $vacuna }} en {{ \Carbon\Carbon::parse($mes)->format('F, Y') }}</h3>
             <table class="table table-striped table-bordered">
@@ -19,10 +18,10 @@
                     <tr>
                         <td>{{ $paciente->nombre_paciente }}</td>
                         <td>{{ $paciente->cui }}</td>
-                        <td>{{ optional($paciente->residencia)->municipio_residencia ?? 'No registrado' }}</td>
                         <td>{{ optional($paciente->residencia)->comunidad_direccion ?? 'No registrada' }}</td>
-                        <td>{{ optional($paciente->mujer15a49yOtrosGrupos->first())->fecha_vacunacion ? \Carbon\Carbon::parse(optional($paciente->mujer15a49yOtrosGrupos->first())->fecha_vacunacion)->format('d-m-Y') : 'No registrada' }}</td>
-                        <td>{{ optional($paciente->mujer15a49yOtrosGrupos->first())->dosis ?? 'No registrada' }}</td>
+                        <td>{{ optional($paciente->residencia)->municipio_residencia ?? 'No registrado' }}</td>
+                        <td>{{ optional($paciente->mujer15a49yOtrosGrupos)->fecha_vacunacion ? \Carbon\Carbon::parse(optional($paciente->mujer15a49yOtrosGrupos)->fecha_vacunacion)->format('d-m-Y') : 'No registrada' }}</td>
+                        <td>{{ optional($paciente->mujer15a49yOtrosGrupos)->tipo_dosis ?? 'No registrada' }}</td>
                     </tr>
                 @endforeach
 
@@ -34,7 +33,6 @@
             </div>
         @endif
 
-
         <form action="{{ route('vacunas.generarPDF') }}" method="POST">
             @csrf
             <input type="hidden" name="mes" value="{{ request('mes') }}">
@@ -43,6 +41,5 @@
             <input type="hidden" name="generar_pdf" value="1">
             <button type="submit" class="btn btn-primary">Generar PDF</button>
         </form>
-
     </div>
 </x-app-layout>
