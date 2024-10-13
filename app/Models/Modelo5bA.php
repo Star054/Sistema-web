@@ -52,4 +52,5 @@ class Modelo5bA extends Model
     {
         return $this->belongsToMany(TipoFormulario::class, 'formulario_sigsa_tipo_formulario', 'formulario_sigsa_base_id', 'tipo_formulario_id');
     }
+
 }

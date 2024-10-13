@@ -15,7 +15,6 @@ class FormularioSIGSA5b extends Model
         'codigo_formulario',
         'nombre_paciente',
         'vacuna',
-        'codigo_formulario',
         'nombre_paciente',
         'cui',
         'area_salud',
@@ -41,11 +40,15 @@ class FormularioSIGSA5b extends Model
         return $this->hasOne(Residencia::class, 'formulario_base_id');
     }
 
-    // Relación con la tabla `mujer15a49y_otros_grupos` (uno a uno)
+
     public function mujer15a49yOtrosGrupos()
     {
-        return $this->hasOne(Mujer15a49yOtrosGrupos::class, 'formulario_base_id');
+
+        return $this->hasMany(Mujer15a49yOtrosGrupos::class, 'formulario_base_id', 'id');
     }
+
+
+
 
     // Relación many-to-many con `TipoFormulario`
     public function tipoFormularios()

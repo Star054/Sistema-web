@@ -18,45 +18,49 @@
                             @if($pacientes->isEmpty())
                                 <p>No se encontraron pacientes.</p>
                             @else
-                                <!-- Aquí se organizará la información de los pacientes en una tabla -->
-                                <table class="min-w-full bg-white dark:bg-gray-800">
+                                <table>
                                     <thead>
                                     <tr>
-                                        <th class="px-4 py-2">Paciente</th>
-                                        <th class="px-4 py-2">CUI</th>
-                                        <th class="px-4 py-2">Municipio de Residencia</th>
-                                        <th class="px-4 py-2">Comunidad</th>
-                                        <th class="px-4 py-2">Vacuna</th>
-                                        <th class="px-4 py-2">Dosis</th>
-                                        <th class="px-4 py-2">Fecha de Administración</th>
+                                        <th>Nombre Paciente</th>
+                                        <th>CUI</th>
+                                        <th>Municipio</th>
+                                        <th>Comunidad</th>
+                                        <th>Vacuna</th>
+                                        <th>Dosis</th>
+                                        <th>Fecha Vacunación</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @foreach($pacientes as $paciente)
-                                        @foreach ($paciente->criteriosVacuna as $criterio)
+                                        @if ($paciente->mujer15a49yOtrosGrupos->isNotEmpty())
+                                            @foreach($paciente->mujer15a49yOtrosGrupos as $grupo)
+                                                <tr>
+                                                    <td>{{ $paciente->nombre_paciente }}</td>
+                                                    <td>{{ $paciente->cui }}</td>
+                                                    <td>{{ $paciente->residencia->municipio_residencia ?? 'N/A' }}</td>
+                                                    <td>{{ $paciente->residencia->comunidad_direccion ?? 'N/A' }}</td>
+                                                    <td>{{ $paciente->vacuna }}</td>
+                                                    <td>{{ $grupo->tipo_dosis }}</td>
+                                                    <td>{{ $grupo->fecha_vacunacion }}</td>
+                                                </tr>
+                                            @endforeach
+                                        @else
                                             <tr>
-                                                <td class="border px-4 py-2">{{ $paciente->nombre_paciente ?? 'No registrado' }}</td>
-                                                <td class="border px-4 py-2">{{ $paciente->cui ?? 'No registrado' }}</td>
-                                                <td class="border px-4 py-2">{{ $paciente->residencia->municipio_residencia ?? 'No registrado' }}</td>
-                                                <td class="border px-4 py-2">{{ $paciente->residencia->comunidad_direccion ?? 'No registrada' }}</td>
-                                                <td class="border px-4 py-2">{{ $criterio->vacuna ?? 'No especificada' }}</td>
-                                                <td class="border px-4 py-2">{{ $criterio->dosis ?? 'No especificada' }}</td>
-                                                <td class="border px-4 py-2">{{ $criterio->fecha_administracion ?? 'No especificada' }}</td>
+                                                <td colspan="7">No se encontraron registros en Mujer 15 a 49</td>
                                             </tr>
-                                        @endforeach
+                                        @endif
                                     @endforeach
                                     </tbody>
                                 </table>
                             @endif
+
                         </div>
                     </div>
-                    <form action="{{ route('vacunas.generarPDF') }}" method="POST">
+                    <form action="{{ route('pdf.generar5b') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="mes" value="{{ request('mes') }}">
                         <input type="hidden" name="vacuna" value="{{ request('vacuna') }}">
-                        <input type="hidden" name="tipo_formulario" value="{{ request('tipo_formulario') }}">
-                        <input type="hidden" name="generar_pdf" value="1">
-                        <button type="submit" class="btn btn-primary">Generar PDF</button>
+                        <input type="hidden" name="mes" value="{{ request('mes') }}">
+                        <button type="submit">Generar PDF Formulario 5b</button>
                     </form>
 
 

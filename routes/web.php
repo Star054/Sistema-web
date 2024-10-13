@@ -47,8 +47,10 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/generar-pdf-filtro', [ConsultaVacunasController::class, 'generarPDF'])->name('vacunas.generarPDF');
 
-// Ruta para la generación de PDFs
-    Route::get('/generar-pdf', [PDFController::class, 'generarPDFFiltro'])->name('vacunas.generarPDF.get');
+
+
+    Route::post('/generar-pdf-5b', [PDFController::class, 'generarPDF5b'])->name('pdf.generar5b');
+    Route::post('/generar-pdf-5bA', [PDFController::class, 'generarPDF5bA'])->name('pdf.generar5bA');
 
 
     Route::get('/pdf-prueba', [PDFTestController::class, 'generarPDF']);

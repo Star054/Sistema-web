@@ -1,15 +1,14 @@
 <?php
 
 
-
 namespace App\Http\Controllers;
 
-use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\FormularioSIGSA5b;
 use App\Models\Modelo5bA;
 use App\Models\Vacuna;
+use TCPDF;
 
 class ConsultaVacunasController extends Controller
 {
@@ -67,54 +66,7 @@ class ConsultaVacunasController extends Controller
         }
     }
 
-    public function generarPDF(Request $request)
-    {
-        // Capturar los valores del formulario
-        $tipoFormulario = $request->input('tipo_formulario');
-        $vacuna = $request->input('vacuna');
-        $fecha = $request->input('mes');
-
-        try {
-            $mes = Carbon::createFromFormat('Y-m', $fecha)->month;
-            $anio = Carbon::createFromFormat('Y-m', $fecha)->year;
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['mes' => 'Fecha no válida.']);
-        }
-
-        // Generar el PDF basado en los mismos resultados del filtro
-        switch ($tipoFormulario) {
-            case 'SIGSA5b':
-                $pacientes = FormularioSIGSA5b::with(['residencia', 'mujer15a49yOtrosGrupos'])
-                    ->whereHas('mujer15a49yOtrosGrupos', function ($query) use ($vacuna, $mes, $anio) {
-                        $query->whereMonth('fecha_vacunacion', $mes)
-                            ->whereYear('fecha_vacunacion', $anio)
-                            ->where('vacuna', $vacuna);
-                    })
-                    ->get();
-
-                $pdf = PDF::loadView('pdf.resultados5b', compact('pacientes', 'vacuna', 'mes', 'anio', 'tipoFormulario'));
-                break;
-
-            case 'SIGSA5bA':
-                $pacientes = Modelo5bA::with(['residencia', 'criteriosVacuna'])
-                    ->whereHas('criteriosVacuna', function ($query) use ($vacuna, $mes, $anio) {
-                        $query->whereMonth('fecha_administracion', $mes)
-                            ->whereYear('fecha_administracion', $anio)
-                            ->where('vacuna', $vacuna);
-                    })
-                    ->get();
-
-                $pdf = PDF::loadView('pdf.resultados5bA', compact('pacientes', 'vacuna', 'mes', 'anio', 'tipoFormulario'));
-                break;
-
-            default:
-                abort(404, 'Formulario no encontrado.');
-        }
-
-        // Descargar el PDF
-        return $pdf->download('pacientes_filtrados_vacunacion.pdf');
-    }
-
+    // Función de búsqueda
     public function buscar(Request $request)
     {
         $busqueda = $request->input('buscar');
