@@ -7,18 +7,20 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Contenedor adaptado al modo oscuro y claro -->
+            <!-- Contenedor principal con el mismo color de fondo -->
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-                <div class="p-6 sm:px-20 bg-white dark:bg-gray-800 border-b border-gray-300 dark:border-gray-700">
+                <!-- Sección superior -->
+                <div class="p-6 sm:px-20 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                     <div class="mt-8 text-2xl text-gray-800 dark:text-gray-100">
                         Formulario para registrar una nueva vacuna
                     </div>
 
-                    <div class="mt-6 text-gray-600 dark:text-gray-400">
+                    <div class="mt-6 text-gray-500 dark:text-gray-400">
                         Completa los datos para registrar una nueva vacuna en el sistema.
                     </div>
                 </div>
 
+                <!-- Contenedor interior con el mismo color que el contenedor exterior -->
                 <div class="p-6 bg-white dark:bg-gray-800">
                     <!-- Mostrar mensajes de éxito -->
                     @if (session('status') === 'form-saved')
@@ -33,7 +35,7 @@
                             <p><strong>¡Error!</strong> Por favor corrige los siguientes errores:</p>
                             <ul>
                                 @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li> <!-- Aquí se listarán todos los errores -->
+                                    <li>{{ $error }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -45,11 +47,8 @@
 
                         <!-- Nombre de la vacuna -->
                         <div class="mb-4">
-                            <label for="nombre_vacuna" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
-                                Nombre de la Vacuna:
-                            </label>
-                            <input type="text" name="nombre_vacuna" id="nombre_vacuna" value="{{ old('nombre_vacuna') }}"
-                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline @error('nombre_vacuna') border-red-500 dark:border-red-700 @enderror" required>
+                            <label for="nombre_vacuna" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Nombre de la Vacuna:</label>
+                            <input type="text" name="nombre_vacuna" id="nombre_vacuna" value="{{ old('nombre_vacuna') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('nombre_vacuna') border-red-500 @enderror" required>
 
                             <!-- Mostrar errores específicos del campo 'nombre_vacuna' -->
                             @error('nombre_vacuna')
@@ -59,11 +58,8 @@
 
                         <!-- Descripción -->
                         <div class="mb-4">
-                            <label for="descripcion" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
-                                Descripción (Opcional):
-                            </label>
-                            <textarea name="descripcion" id="descripcion" rows="3"
-                                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline @error('descripcion') border-red-500 dark:border-red-700 @enderror">{{ old('descripcion') }}</textarea>
+                            <label for="descripcion" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Descripción (Opcional):</label>
+                            <textarea name="descripcion" id="descripcion" rows="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('descripcion') border-red-500 @enderror">{{ old('descripcion') }}</textarea>
 
                             <!-- Mostrar errores específicos del campo 'descripcion' -->
                             @error('descripcion')
@@ -73,8 +69,7 @@
 
                         <!-- Botón de guardar -->
                         <div class="flex items-center justify-between">
-                            <button type="submit"
-                                    class="bg-blue-500 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 Guardar
                             </button>
                         </div>

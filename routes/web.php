@@ -19,23 +19,20 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-
-    // Rutas de perfil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Rutas para vacunas utilizando Route::resource
+
     Route::resource('vacunas', VacunaController::class)->only(['create', 'store', 'index']);
     Route::post('/formulario-sigsa', [FormularioSIGSAController::class, 'store'])->name('formulario-sigsa.store');
 
-    // Rutas para el formulario FOR-SIGSA-5b utilizando Route::resource
+
     Route::resource('for-sigsa-5b', FormularioSIGSAController::class);
 
-    // Rutas para el formulario FOR-SIGSA-5bA utilizando Route::resource
+
     Route::resource('for-sigsa-5bA', FormularioController5bA::class);
 
-    // Rutas para el formulario FOR-SIGSA-3CS utilizando Route::resource
 
     Route::resource('formularios-3cs', FormularioController3CS::class);
 

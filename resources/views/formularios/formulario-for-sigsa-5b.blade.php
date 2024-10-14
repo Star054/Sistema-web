@@ -19,29 +19,32 @@
                     <div class="flex justify-end items-center mt-2 space-x-2">
                         <label for="vacuna" class="text-sm text-gray-600 dark:text-gray-400">Seleccione la vacuna:</label>
                         <select name="vacuna" id="vacuna" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-1 rounded-md text-sm w-auto">
-                        <option value="" disabled selected>Seleccione una vacuna</option> <!-- Opción deshabilitada -->
+                            <option value="" disabled selected>Seleccione una vacuna</option> <!-- Opción deshabilitada -->
                             @foreach($vacunas as $vacuna)
                                 <option value="{{ $vacuna->nombre_vacuna }}">{{ $vacuna->nombre_vacuna }}</option>
                             @endforeach
                         </select>
-
-
-
                     </div>
                 </x-formulario-slot>
             </div>
 
-
             <!-- Mensajes de validación -->
             @if ($errors->any())
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                    <strong class="font-bold">¡Oops!</strong>
-                    <span class="block sm:inline">Hay algunos problemas con tus datos:</span>
-                    <ul class="mt-2">
+                <div class="bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg border border-red-400 dark:border-red-700 transition-all duration-300 ease-in-out hover:shadow-xl">
+                    <strong class="text-red-600 dark:text-red-400">¡Oops!</strong>
+                    <span class="block text-sm text-gray-600 dark:text-gray-300">Hay algunos problemas con tus datos:</span>
+                    <ul class="mt-2 list-disc list-inside text-red-600 dark:text-red-400">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
                     </ul>
+                </div>
+            @endif
+
+            <!-- Mensajes de éxito -->
+            @if (session('status') === 'form-saved')
+                <div class="bg-green-100 dark:bg-green-900 p-6 shadow-lg rounded-lg border border-green-400 dark:border-green-700 transition-all duration-300 ease-in-out hover:shadow-xl">
+                    <p class="text-green-700 dark:text-green-300">{{ __('Vacuna guardada exitosamente.') }}</p>
                 </div>
             @endif
 
@@ -72,27 +75,16 @@
                     {{ __('Guardar') }}
                 </x-primary-button>
 
-
+                <!-- Alerta de notificación -->
                 @if (session('alert'))
-                    <div class="alert alert-warning">
-                        {{ session('alert') }}
+                    <div class="bg-yellow-100 dark:bg-yellow-900 p-6 shadow-lg rounded-lg border border-yellow-400 dark:border-yellow-700 transition-all duration-300 ease-in-out hover:shadow-xl">
+                        <p class="text-yellow-700 dark:text-yellow-300">{{ session('alert') }}</p>
                     </div>
-                @endif
-
-
-            @if (session('status') === 'form-saved')
-                    <p
-                        x-data="{ show: true }"
-                        x-show="show"
-                        x-transition
-                        x-init="setTimeout(() => show = false, 2000)"
-                        class="text-sm text-gray-600 dark:text-gray-400 transition-opacity duration-300"
-                    >{{ __('Guardado.') }}</p>
                 @endif
             </div>
         </form> <!-- Fin del formulario -->
-        <br>
 
+        <br>
 
         <!-- Botones CRUD para la navegación -->
         <div class="bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out hover:shadow-xl">
