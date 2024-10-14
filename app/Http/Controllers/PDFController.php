@@ -138,61 +138,56 @@ class PDFController extends Controller
         // Añadir los datos de los pacientes
         $pdf->SetFont('helvetica', '', 8);
         foreach ($pacientes as $paciente) {
+            // Ahora recorremos todas las dosis del paciente
+            foreach ($paciente->mujer15a49yOtrosGrupos as $grupo) {
+                $rowData = [
+                    'no' => $paciente->no_orden,
+                    'nombre_paciente' => $paciente->nombre_paciente,
+                    'cui' => $paciente->cui,
+                    'sexo' => $paciente->sexo,
+                    'pueblo' => $paciente->pueblo ?? 'N/A',
+                    'fecha_nacimiento' => $paciente->fecha_nacimiento ? Carbon::parse($paciente->fecha_nacimiento)->format('d-m-Y') : 'N/A',
+                    'comunidad_linguistica' => $paciente->comunidad_linguistica ?? 'N/A',
+                    'orientacion_sexual' => $paciente->orientacion_sexual ?? 'N/A',
+                    'escolaridad' => $paciente->escolaridad ?? 'N/A',
+                    'profesion_oficio' => $paciente->profesion_oficio ?? 'N/A',
+                    'comunidad_direccion' => $paciente->residencia->comunidad_direccion ?? 'N/A',
+                    'municipio_residencia' => $paciente->residencia->municipio_residencia ?? 'N/A',
+                    'agricola_migrante' => $paciente->residencia->agricola_migrante ?? 'N/A',
+                    'embarazada' => $paciente->residencia->embarazada ?? 'N/A',
+                    'grupo' => $grupo->grupo,
+                    'fecha_vacunacion' => isset($grupo->fecha_vacunacion) ? Carbon::parse($grupo->fecha_vacunacion)->format('d-m-Y') : 'N/A',
+                    'tipo_dosis' => $grupo->tipo_dosis ?? 'N/A',
+                ];
 
-            $rowData = [
-                'no' => $paciente->no_orden,
-                'nombre_paciente' => $paciente->nombre_paciente,
-                'cui' => $paciente->cui,
-                'sexo' => $paciente->sexo,
-                'pueblo' => $paciente->pueblo ?? 'N/A',
-                'fecha_nacimiento' => $paciente->fecha_nacimiento ? Carbon::parse($paciente->fecha_nacimiento)->format('d-m-Y') : 'N/A',
-                'comunidad_linguistica' => $paciente->comunidad_linguistica ?? 'N/A',
-                'orientacion_sexual' => $paciente->orientacion_sexual ?? 'N/A',
-                'escolaridad' => $paciente->escolaridad ?? 'N/A',
-                'profesion_oficio' => $paciente->profesion_oficio ?? 'N/A',
-                'comunidad_direccion' => $paciente->residencia->comunidad_direccion ?? 'N/A',
-                'municipio_residencia' => $paciente->residencia->municipio_residencia ?? 'N/A',
-                'agricola_migrante' => $paciente->residencia->agricola_migrante ?? 'N/A',
-                'embarazada' => $paciente->residencia->embarazada ?? 'N/A',
-                'grupo' => 'N/A',
-                'fecha_vacunacion' => 'N/A',
-                'tipo_dosis' => 'N/A',
-            ];
+                // Calculamos la altura máxima de la fila
+                $maxHeight = $this->getMaxRowHeight($pdf, $rowData, $columnWidths);
 
-            // Si hay datos en mujer15a49yOtrosGrupos
-            if ($paciente->mujer15a49yOtrosGrupos->isNotEmpty()) {
-                $grupo = $paciente->mujer15a49yOtrosGrupos->first();
-                $rowData['grupo'] = $grupo->grupo;
-                $rowData['fecha_vacunacion'] = isset($grupo->fecha_vacunacion) ? Carbon::parse($grupo->fecha_vacunacion)->format('d-m-Y') : 'N/A';
-                $rowData['tipo_dosis'] = $grupo->tipo_dosis ?? 'N/A';
+                // Escribimos cada celda utilizando MultiCell para ajustar la altura
+                $pdf->MultiCell($columnWidths['no'], $maxHeight, $rowData['no'], 1, 'C', 0, 0);
+                $pdf->MultiCell($columnWidths['nombre_paciente'], $maxHeight, $rowData['nombre_paciente'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['cui'], $maxHeight, $rowData['cui'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['sexo'], $maxHeight, $rowData['sexo'], 1, 'C', 0, 0);
+                $pdf->MultiCell($columnWidths['pueblo'], $maxHeight, $rowData['pueblo'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['fecha_nacimiento'], $maxHeight, $rowData['fecha_nacimiento'], 1, 'C', 0, 0);
+                $pdf->MultiCell($columnWidths['comunidad_linguistica'], $maxHeight, $rowData['comunidad_linguistica'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['orientacion_sexual'], $maxHeight, $rowData['orientacion_sexual'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['escolaridad'], $maxHeight, $rowData['escolaridad'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['profesion_oficio'], $maxHeight, $rowData['profesion_oficio'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['comunidad_direccion'], $maxHeight, $rowData['comunidad_direccion'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['municipio_residencia'], $maxHeight, $rowData['municipio_residencia'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['agricola_migrante'], $maxHeight, $rowData['agricola_migrante'], 1, 'C', 0, 0);
+                $pdf->MultiCell($columnWidths['embarazada'], $maxHeight, $rowData['embarazada'], 1, 'C', 0, 0);
+                $pdf->MultiCell($columnWidths['grupo'], $maxHeight, $rowData['grupo'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['fecha_vacunacion'], $maxHeight, $rowData['fecha_vacunacion'], 1, 'C', 0, 0);
+                $pdf->MultiCell($columnWidths['tipo_dosis'], $maxHeight, $rowData['tipo_dosis'], 1, 'L', 0, 1);
             }
-
-            // Calculamos la altura máxima de la fila
-            $maxHeight = $this->getMaxRowHeight($pdf, $rowData, $columnWidths);
-
-            // Escribimos cada celda utilizando MultiCell para ajustar la altura
-            $pdf->MultiCell($columnWidths['no'], $maxHeight, $rowData['no'], 1, 'C', 0, 0);
-            $pdf->MultiCell($columnWidths['nombre_paciente'], $maxHeight, $rowData['nombre_paciente'], 1, 'L', 0, 0);
-            $pdf->MultiCell($columnWidths['cui'], $maxHeight, $rowData['cui'], 1, 'L', 0, 0);
-            $pdf->MultiCell($columnWidths['sexo'], $maxHeight, $rowData['sexo'], 1, 'C', 0, 0);
-            $pdf->MultiCell($columnWidths['pueblo'], $maxHeight, $rowData['pueblo'], 1, 'L', 0, 0);
-            $pdf->MultiCell($columnWidths['fecha_nacimiento'], $maxHeight, $rowData['fecha_nacimiento'], 1, 'C', 0, 0);
-            $pdf->MultiCell($columnWidths['comunidad_linguistica'], $maxHeight, $rowData['comunidad_linguistica'], 1, 'L', 0, 0);
-            $pdf->MultiCell($columnWidths['orientacion_sexual'], $maxHeight, $rowData['orientacion_sexual'], 1, 'L', 0, 0);
-            $pdf->MultiCell($columnWidths['escolaridad'], $maxHeight, $rowData['escolaridad'], 1, 'L', 0, 0);
-            $pdf->MultiCell($columnWidths['profesion_oficio'], $maxHeight, $rowData['profesion_oficio'], 1, 'L', 0, 0);
-            $pdf->MultiCell($columnWidths['comunidad_direccion'], $maxHeight, $rowData['comunidad_direccion'], 1, 'L', 0, 0);
-            $pdf->MultiCell($columnWidths['municipio_residencia'], $maxHeight, $rowData['municipio_residencia'], 1, 'L', 0, 0);
-            $pdf->MultiCell($columnWidths['agricola_migrante'], $maxHeight, $rowData['agricola_migrante'], 1, 'C', 0, 0);
-            $pdf->MultiCell($columnWidths['embarazada'], $maxHeight, $rowData['embarazada'], 1, 'C', 0, 0);
-            $pdf->MultiCell($columnWidths['grupo'], $maxHeight, $rowData['grupo'], 1, 'L', 0, 0);
-            $pdf->MultiCell($columnWidths['fecha_vacunacion'], $maxHeight, $rowData['fecha_vacunacion'], 1, 'C', 0, 0);
-            $pdf->MultiCell($columnWidths['tipo_dosis'], $maxHeight, $rowData['tipo_dosis'], 1, 'L', 0, 1);
         }
 
         // Descargar el PDF
         $pdf->Output('reporte_pacientes_5b.pdf', 'D');
     }
+
 
     // Función para obtener la altura máxima de una fila
     private function getMaxRowHeight($pdf, $rowData, $columnWidths)

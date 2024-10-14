@@ -28,7 +28,7 @@
 
     <!-- Custom Styles for Dark Mode and Light Mode Switch -->
     <style>
-        /* Transición suave entre modos claro y oscuro */
+
         html {
             transition: background-color 0.3s ease, color 0.3s ease;
         }

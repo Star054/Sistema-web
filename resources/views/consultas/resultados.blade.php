@@ -1,4 +1,4 @@
-{{--<x-app-layout>--}}
+<x-app-layout>
 
 <table>
     <thead>
@@ -71,4 +71,4 @@
 
 
 </table>
-{{--</x-app-layout>--}}
+</x-app-layout>
