@@ -32,6 +32,7 @@ class FormularioSIGSA5b extends Model
         'orientacion_sexual',
         'escolaridad',
         'profesion_oficio',
+        'discapacidad',
     ];
 
     // Relación con la tabla `residencia` (uno a uno)

@@ -12,11 +12,7 @@ class Modelo3CS extends Model
     protected $table = 'formulario_sigsa_base'; // Si esta tabla es la correcta
 
     protected $fillable = [
-        'nombre_paciente',
-        'cui',
-        'sexo',
-        'dia_consulta',
-        'no_historia_clinica',
+
         'area_salud',
         'distrito_salud',
         'municipio',
@@ -24,26 +20,17 @@ class Modelo3CS extends Model
         'responsable_informacion',
         'cargo_responsable',
         'anio',
-        'no_orden',
+        'dia_consulta',
+        'no_historia_clinica',
+        'nombre_paciente',
+        'cui',
+        'sexo',
         'pueblo',
         'fecha_nacimiento',
         'comunidad_linguistica',
         'orientacion_sexual',
         'escolaridad',
         'profesion_oficio',
-
-        'consulta',
-        'control',
-        'semana_gestacion',
-        'referido_a',
-        'diagnostico',
-        'codigo_cie',
-        'tratamiento_descripcion',
-        'tratamiento_presentacion',
-        'cantidad_recetada',
-        'notificacion_lugar',
-        'notificacion_numero',
-        'nombre_acompanante',
 
     ];
 
@@ -64,5 +51,4 @@ class Modelo3CS extends Model
     {
         return $this->belongsToMany(TipoFormulario::class, 'formulario_sigsa_tipo_formulario', 'formulario_sigsa_base_id', 'tipo_formulario_id');
     }
-
 }

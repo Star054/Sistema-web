@@ -24,7 +24,6 @@ class Modelo5bA extends Model
         'responsable_informacion',// Responsable de la información
         'cargo_responsable',     // Cargo del responsable
         'anio',                  // Año
-        'no_orden',              // Número de orden
         'sexo',                  // Sexo del paciente
         'pueblo',                // Pueblo
         'fecha_nacimiento',      // Fecha de nacimiento

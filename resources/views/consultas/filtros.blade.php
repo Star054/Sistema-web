@@ -28,8 +28,7 @@
                             <select name="tipo_formulario" id="tipo_formulario" required class="block w-full px-2 py-1 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-white dark:bg-gray-700 dark:text-gray-300">
                                 <option value="SIGSA5b" {{ request()->input('tipo_formulario') == 'SIGSA5b' ? 'selected' : '' }}>SIGSA5b</option>
                                 <option value="SIGSA5bA" {{ request()->input('tipo_formulario') == 'SIGSA5bA' ? 'selected' : '' }}>SIGSA5bA</option>
-                                <option value="SIGSA5bA" {{ request()->input('tipo_formulario') == 'SIGSA5bA' ? 'selected' : '' }}>SIGSA3CS</option>
-                                <option value="SIGSA5bA" {{ request()->input('tipo_formulario') == 'SIGSA5bA' ? 'selected' : '' }}>SIGSA5a</option>
+                                <option value="SIGSA3CS" {{ request()->input('tipo_formulario') == 'SIGSA3CS' ? 'selected' : '' }}>SIGSA3CS</option>
                             </select>
                         </div>
 

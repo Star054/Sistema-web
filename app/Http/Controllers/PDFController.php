@@ -98,19 +98,20 @@ class PDFController extends Controller
             'nombre_paciente' => 50, // Aumentamos el ancho para el nombre
             'cui' => 26,
             'sexo' => 12, // Reducido
-            'pueblo' => 15, // Reducido
-            'fecha_nacimiento' => 18, // Reducido
-            'comunidad_linguistica' => 21, // Reducido
-            'orientacion_sexual' => 21, // Reducido
-            'escolaridad' => 20, // Reducido
-            'profesion_oficio' => 15, // Reducido
+            'pueblo' => 14, // Reducido
+            'fecha_nacimiento' => 18,
+            'comunidad_linguistica' => 21,
+            'orientacion_sexual' => 16,
+            'escolaridad' => 15,
+            'profesion_oficio' => 15,
+            'discapacidad' => 16,
             'comunidad_direccion' => 25,
             'municipio_residencia' => 25,
             'agricola_migrante' => 15,
             'embarazada' => 15,
             'grupo' => 20,
             'fecha_vacunacion' => 18,
-            'tipo_dosis' => 18,
+            'tipo_dosis' => 14,
         ];
 
         // Agregar los encabezados de las columnas
@@ -123,10 +124,11 @@ class PDFController extends Controller
         $pdf->MultiCell($columnWidths['sexo'], 7, 'Sexo', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['pueblo'], 7, 'Pueblo', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['fecha_nacimiento'], 7, 'Fecha Nac.', 1, 'C', 0, 0);
-        $pdf->MultiCell($columnWidths['comunidad_linguistica'], 7, 'Lingüística', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['comunidad_linguistica'], 7, 'Comunidad Lingüística', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['orientacion_sexual'], 7, 'Orient. Sexual', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['escolaridad'], 7, 'Escolaridad', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['profesion_oficio'], 7, 'Prof./Oficio', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['discapacidad'], 7, 'Discapacidad', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['comunidad_direccion'], 7, 'Comunidad', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['municipio_residencia'], 7, 'Municipio Res.', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['agricola_migrante'], 7, 'Agri. Migrante', 1, 'C', 0, 0);
@@ -151,6 +153,7 @@ class PDFController extends Controller
                     'orientacion_sexual' => $paciente->orientacion_sexual ?? 'N/A',
                     'escolaridad' => $paciente->escolaridad ?? 'N/A',
                     'profesion_oficio' => $paciente->profesion_oficio ?? 'N/A',
+                    'discapacidad' => $paciente->discapacidad ?? 'N/A',
                     'comunidad_direccion' => $paciente->residencia->comunidad_direccion ?? 'N/A',
                     'municipio_residencia' => $paciente->residencia->municipio_residencia ?? 'N/A',
                     'agricola_migrante' => $paciente->residencia->agricola_migrante ?? 'N/A',
@@ -174,6 +177,8 @@ class PDFController extends Controller
                 $pdf->MultiCell($columnWidths['orientacion_sexual'], $maxHeight, $rowData['orientacion_sexual'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['escolaridad'], $maxHeight, $rowData['escolaridad'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['profesion_oficio'], $maxHeight, $rowData['profesion_oficio'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['discapacidad'], $maxHeight, $rowData['discapacidad'], 1, 'C', 0, 0);
+
                 $pdf->MultiCell($columnWidths['comunidad_direccion'], $maxHeight, $rowData['comunidad_direccion'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['municipio_residencia'], $maxHeight, $rowData['municipio_residencia'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['agricola_migrante'], $maxHeight, $rowData['agricola_migrante'], 1, 'C', 0, 0);
@@ -200,15 +205,14 @@ class PDFController extends Controller
     }
 
 
-
-        // Generar PDF para el formulario SIGSA5bA
     public function generarPDF5bA(Request $request)
     {
-        // Capturar los valores del formulario
+        // Capturar los valores del formulario para filtrar pacientes
         $vacuna = $request->input('vacuna');
         $mes = Carbon::createFromFormat('Y-m', $request->input('mes'))->month;
         $anio = Carbon::createFromFormat('Y-m', $request->input('mes'))->year;
 
+        // Obtener los pacientes que coincidan con los filtros
         $pacientes = Modelo5bA::with(['residencia', 'criteriosVacuna'])
             ->whereHas('criteriosVacuna', function ($query) use ($vacuna, $mes, $anio) {
                 $query->whereMonth('fecha_administracion', $mes)
@@ -221,22 +225,160 @@ class PDFController extends Controller
             return redirect()->back()->withErrors(['mensaje' => 'No se encontraron pacientes para generar el PDF.']);
         }
 
+        // Obtener el primer paciente
+        $primerPaciente = $pacientes->first();
+        $area_salud = $primerPaciente->area_salud;
+        $distrito_salud = $primerPaciente->distrito_salud;
+        $municipio = $primerPaciente->municipio;
+        $servicio_salud = $primerPaciente->servicio_salud;
+        $responsable_informacion = $primerPaciente->responsable_informacion;
+        $cargo_responsable = $primerPaciente->cargo_responsable;
+        $anio = $primerPaciente->anio;
+
         // Crear PDF con TCPDF en formato horizontal (Landscape) y tamaño oficio (Legal)
         $pdf = new TCPDF('L', PDF_UNIT, 'LEGAL', true, 'UTF-8', false);
+        $pdf->SetMargins(5, 5, 5);
 
         // Establecer información del documento
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor('Sistema de Vacunación');
         $pdf->SetTitle('Reporte de Pacientes Vacunados - SIGSA5bA');
 
-        // Establecer márgenes
-        $pdf->SetMargins(10, 10, 10);
-
-        // Agregar página en formato horizontal (landscape) con tamaño oficio
+        // Añadir página
         $pdf->AddPage();
 
-        // Aquí añades la lógica de generación del PDF
-        // (similar a la que ya tienes)
+        // Logos
+        $pdf->Image(public_path('logos/logo.jpg'), 10, 10, 20);
+        $pdf->Image(public_path('logos/logo2.jpg'), 40, 10, 20);
+
+        $pdf->SetFont('helvetica', 'B', 14);
+        $pdf->Cell(0, 15, 'Reporte de Vacunación - Formulario SIGSA5bA', 0, 1, 'C');
+
+        // Vacuna a la derecha
+        $pdf->SetFont('helvetica', '', 8);
+        $pdf->SetXY(140, 25);
+        $pdf->Cell(0, 10, 'Vacuna: ' . $vacuna, 0, 0, 'L');
+
+        // Información del formulario (Código, Versión, Vigencia)
+        $pdf->SetFont('helvetica', '', 8);
+        $pdf->SetY(10);
+        $pdf->SetX(-60);
+        $pdf->MultiCell(50, 5, "Código: FOR-SIGSA-5bA\nVersión: 3.0\nVigente a partir de: Noviembre 2017", 0, 'R');
+
+        $pdf->Ln(10);
+
+        $pdf->SetFont('helvetica', '', 8);
+        $cellWidth = 90;
+
+        // Primera fila de información adicional
+        $pdf->Cell($cellWidth, 6, 'Área de Salud: ' . $area_salud, 0, 0, 'L');
+        $pdf->Cell($cellWidth, 6, 'Distrito de Salud: ' . $distrito_salud, 0, 0, 'L');
+        $pdf->Cell($cellWidth, 6, 'Municipio: ' . $municipio, 0, 0, 'L');
+        $pdf->Cell($cellWidth, 6, 'Servicio de Salud: ' . $servicio_salud, 0, 1, 'L');
+
+        // Segunda fila de información adicional
+        $pdf->Cell($cellWidth, 6, 'Responsable de la Información: ' . $responsable_informacion, 0, 0, 'L');
+        $pdf->Cell($cellWidth, 6, 'Cargo: ' . $cargo_responsable, 0, 0, 'L');
+        $pdf->Cell($cellWidth, 6, 'Año: ' . $anio, 0, 0, 'L');
+        $pdf->Cell($cellWidth, 6, 'Firma: .......................', 0, 1, 'L');
+        $pdf->Ln(5);
+
+        // Definir los anchos de las columnas ajustados
+        $columnWidths = [
+            'no' => 8,
+            'nombre_paciente' => 41,
+            'cui' => 21,
+            'sexo' => 8,
+            'pueblo' => 11,
+            'fecha_nacimiento' => 18,
+            'comunidad_linguistica' => 21,
+            'orientacion_sexual' => 16,
+            'escolaridad' => 16,
+            'profesion_oficio' => 16,
+            'comunidad_direccion' => 25,
+            'municipio_residencia' => 25,
+            'agricola_migrante' => 15,
+            'residencia' => 25,
+            'embarazada' => 15,
+            'vacuna' => 15,
+            'grupo_priorizado' => 20,
+            'fecha_administracion' => 16,
+            'dosis' => 12,
+        ];
+
+        // Agregar los encabezados de las columnas
+        $pdf->SetFont('helvetica', 'B', 7);
+        $pdf->MultiCell($columnWidths['no'], 7, 'No', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['nombre_paciente'], 7, 'Nombre Paciente', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['cui'], 7, 'CUI', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['sexo'], 7, 'Sexo', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['pueblo'], 7, 'Pueblo', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['fecha_nacimiento'], 7, 'Fecha Nac.', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['comunidad_linguistica'], 7, 'Comunidad Lingüística', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['orientacion_sexual'], 7, 'Orient. Sexual', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['escolaridad'], 7, 'Escolaridad', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['profesion_oficio'], 7, 'Prof./Oficio', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['comunidad_direccion'], 7, 'Comunidad', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['municipio_residencia'], 7, 'Municipio Res.', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['agricola_migrante'], 7, 'Agri. Migrante', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['residencia'], 7, 'Residencia', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['embarazada'], 7, 'Embarazada', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['vacuna'], 7, 'Vacuna', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['grupo_priorizado'], 7, 'Grupo Prior.', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['fecha_administracion'], 7, 'Fecha Admin.', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['dosis'], 7, 'Dosis', 1, 'C', 0, 1);
+
+        // Añadir los datos de los pacientes
+        $pdf->SetFont('helvetica', '', 7);
+        foreach ($pacientes as $paciente) {
+            foreach ($paciente->criteriosVacuna as $criterio) {
+                $rowData = [
+                    'no' => $paciente->no_orden,
+                    'nombre_paciente' => $paciente->nombre_paciente,
+                    'cui' => $paciente->cui,
+                    'sexo' => $paciente->sexo,
+                    'pueblo' => $paciente->pueblo ?? 'N/A',
+                    'fecha_nacimiento' => $paciente->fecha_nacimiento ? Carbon::parse($paciente->fecha_nacimiento)->format('d-m-Y') : 'N/A',
+                    'comunidad_linguistica' => $paciente->comunidad_linguistica ?? 'N/A',
+                    'orientacion_sexual' => $paciente->orientacion_sexual ?? 'N/A',
+                    'escolaridad' => $paciente->escolaridad ?? 'N/A',
+                    'profesion_oficio' => $paciente->profesion_oficio ?? 'N/A',
+                    'comunidad_direccion' => $paciente->residencia->comunidad_direccion ?? 'N/A',
+                    'municipio_residencia' => $paciente->residencia->municipio_residencia ?? 'N/A',
+                    'agricola_migrante' => $paciente->residencia->agricola_migrante ?? 'N/A',
+                    'residencia' => $paciente->residencia->comunidad_direccion ?? 'N/A',
+                    'embarazada' => $paciente->residencia->embarazada ?? 'N/A',
+                    'vacuna' => $criterio->vacuna ?? 'N/A',
+                    'grupo_priorizado' => $criterio->grupo_priorizado ?? 'N/A',
+                    'fecha_administracion' => isset($criterio->fecha_administracion) ? Carbon::parse($criterio->fecha_administracion)->format('d-m-Y') : 'N/A',
+                    'dosis' => $criterio->dosis ?? 'N/A',
+                ];
+
+                // Calculamos la altura máxima de la fila
+                $maxHeight = max($this->getMaxRowHeight($pdf, $rowData, $columnWidths), 5);
+
+                // Escribimos cada celda utilizando MultiCell para ajustar la altura
+                $pdf->MultiCell($columnWidths['no'], $maxHeight, $rowData['no'], 1, 'C', 0, 0);
+                $pdf->MultiCell($columnWidths['nombre_paciente'], $maxHeight, $rowData['nombre_paciente'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['cui'], $maxHeight, $rowData['cui'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['sexo'], $maxHeight, $rowData['sexo'], 1, 'C', 0, 0);
+                $pdf->MultiCell($columnWidths['pueblo'], $maxHeight, $rowData['pueblo'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['fecha_nacimiento'], $maxHeight, $rowData['fecha_nacimiento'], 1, 'C', 0, 0);
+                $pdf->MultiCell($columnWidths['comunidad_linguistica'], $maxHeight, $rowData['comunidad_linguistica'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['orientacion_sexual'], $maxHeight, $rowData['orientacion_sexual'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['escolaridad'], $maxHeight, $rowData['escolaridad'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['profesion_oficio'], $maxHeight, $rowData['profesion_oficio'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['comunidad_direccion'], $maxHeight, $rowData['comunidad_direccion'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['municipio_residencia'], $maxHeight, $rowData['municipio_residencia'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['agricola_migrante'], $maxHeight, $rowData['agricola_migrante'], 1, 'C', 0, 0);
+                $pdf->MultiCell($columnWidths['residencia'], $maxHeight, $rowData['residencia'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['embarazada'], $maxHeight, $rowData['embarazada'], 1, 'C', 0, 0);
+                $pdf->MultiCell($columnWidths['vacuna'], $maxHeight, $rowData['vacuna'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['grupo_priorizado'], $maxHeight, $rowData['grupo_priorizado'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['fecha_administracion'], $maxHeight, $rowData['fecha_administracion'], 1, 'C', 0, 0);
+                $pdf->MultiCell($columnWidths['dosis'], $maxHeight, $rowData['dosis'], 1, 'C', 0, 1);
+            }
+        }
 
         // Descargar el PDF
         $pdf->Output('reporte_pacientes_5bA.pdf', 'D');

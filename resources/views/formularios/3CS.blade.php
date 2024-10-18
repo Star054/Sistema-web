@@ -1,5 +1,7 @@
+
 <x-app-layout>
     <div class="container mx-auto px-4 py-6 space-y-8">
+
 
         <!-- Iniciar el formulario -->
         <form action="{{ route('formularios-3cs.store') }}" method="POST">
@@ -11,6 +13,7 @@
             <!-- Encabezado dinámico usando slot para el título y select -->
             <div class="bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out hover:shadow-xl">
                 <x-formulario-slot
+                    :mostrarMes="true"
                     codigo="FOR-SIGSA-3CS"
                     version="3.0"
                     vigencia="Noviembre del 2017">
@@ -34,7 +37,7 @@
             <br>
             <!-- Componente de datos paciente -->
             <div class="bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out hover:shadow-xl">
-                <x-datosPaciente5b :mostrarNoOrden="false"  :mostrarHistoriaClinica="true" :mostrar-dia-consulta="true" />
+                <x-datosPaciente5b :mostrarNoOrden="false"  :mostrarHistoriaClinica="true" :mostrar-dia-consulta="true" :mostrar-discapacidad="false" />
             </div>
 
             <br>
@@ -56,7 +59,7 @@
 
                 <div>
                     <div class="bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out hover:shadow-xl">
-                        <x-ComponenteDiagnosticoTratamiento />
+                        <x-ComponenteDiagnosticoTratamiento :vacunas="$vacunas" />
                     </div>
 
                     <br>

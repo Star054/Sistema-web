@@ -5,16 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\FormularioSIGSA5b;
 use App\Models\TipoFormulario;
 use App\Models\Consulta;
+use App\Models\Vacuna;
 use Illuminate\Http\Request;
 use App\Models\Residencia;
 use App\Models\Modelo3CS;
-
 class FormularioController3CS extends Controller
 {
     // Mostrar el formulario FOR-SIGSA-3CS (incluyendo la consulta)
     public function create()
     {
-        return view('formularios.3CS');  // Mostrar la vista para el formulario FOR-SIGSA-3CS
+        $vacunas = Vacuna::all();
+        return view('formularios.3CS', compact('vacunas'));
     }
 
     // Almacenar un nuevo formulario en la base de datos
@@ -23,42 +24,49 @@ class FormularioController3CS extends Controller
         // Validar los datos generales del formulario y la consulta
         $validated = $request->validate([
             'codigo_formulario' => 'required|string',
-            'nombre_paciente' => 'required|string|max:255',
-            'cui' => 'required|string|max:13|unique:formulario_sigsa_base,cui',
-            'sexo' => 'required|string|max:1',
-            'dia_consulta' => 'required|date',
-            'no_historia_clinica' => 'required|string|max:255',
-            'area_salud' => 'nullable|string|max:255',
-            'distrito_salud' => 'nullable|string|max:255',
-            'municipio' => 'nullable|string|max:255',
-            'servicio_salud' => 'nullable|string|max:255',
-            'responsable_informacion' => 'nullable|string|max:255',
-            'cargo_responsable' => 'nullable|string|max:255',
-            'anio' => 'nullable|integer|between:2000,2030',
-            'no_orden' => 'nullable|integer',
-            'pueblo' => 'nullable|string|max:255',
+            'area_salud' => 'nullable|string',
+            'distrito_salud' => 'nullable|string',
+            'municipio' => 'nullable|string',
+            'servicio_salud' => 'nullable|string',
+            'responsable_informacion' => 'nullable|string',
+            'cargo_responsable' => 'nullable|string',
+            'anio' => 'required|string',
+            'dia_consulta' => 'nullable|string',
+            'no_historia_clinica' => 'nullable|string',
+            'nombre_paciente' => 'required|string|max:150',
             'fecha_nacimiento' => 'nullable|date',
-            'comunidad_linguistica' => 'nullable|string|max:255',
-            'orientacion_sexual' => 'nullable|string|max:255',
-            'escolaridad' => 'nullable|string|max:255',
-            'profesion_oficio' => 'nullable|string|max:255',
-            'comunidad_direccion' => 'required|string',
-            'municipio_residencia' => 'required|string',
-            'agricola_migrante' => 'nullable|boolean',
+            'cui' => 'nullable|string',
+            'sexo' => 'nullable|string|in:M,F',
+            'pueblo' => 'nullable|integer|in:1,2,3,4,5,6',
+            'comunidad_linguistica' => 'nullable|integer|in:1,2,3,...,23',
+            'escolaridad' => 'nullable|integer|in:0,1,2,3,4,5,6,7',
+            'profesion_oficio' => 'nullable|in:0,1,2,3,4,5,6,7,8',
+            'discapacidad' => 'nullable|integer|in:0,1,2,3,4,5',
+            'orientacion_sexual' => 'nullable|integer|in:0,1,2,3,4,5',
+            'comunidad_direccion' => 'nullable|string',
+            'municipio_residencia' => 'nullable|string',
+            'agricola_migrante' => 'nullable|string',
+            'embarazada' => 'nullable|string',
+
+
+
 
             // Otros campos relacionados con la consulta
-            'consulta' => 'nullable|string',
-            'control' => 'nullable|string',
-            'semana_gestacion' => 'nullable|integer',
+            'consulta' => 'nullable|in:1,2,3,4',
+            'control' => 'nullable|in:0,1,2,3,4,5,6',
+            'semana_gestacion' => 'nullable|integer|between:1,42',
+            'viene' => 'nullable|in:0,1,2', // 0 - No aplica, 1 - Viene Referido, 2 - Viene Contra Referido
+            'fue' => 'nullable|in:0,1,2', // 0 - No aplica, 1 - Fue Referido, 2 - Fue Contra Referido
             'referido_a' => 'nullable|string|max:255',
             'diagnostico' => 'nullable|string',
             'codigo_cie' => 'nullable|string|max:255',
-            'tratamiento_descripcion' => 'nullable|string',
-            'tratamiento_presentacion' => 'nullable|string|max:255',
+            'tratamiento_descripcion' => 'required|exists:vacunas,nombre_vacuna',
+            'tratamiento_presentacion' => 'nullable|numeric',
             'cantidad_recetada' => 'nullable|integer',
-            'notificacion_lugar' => 'nullable|string|max:255',
+            'notificacion_lugar' => 'nullable|in:0,1,2,3',
             'notificacion_numero' => 'nullable|string|max:255',
             'nombre_acompanante' => 'nullable|string|max:255',
+
         ]);
 
         // Guardar el tipo de formulario en la tabla `tipo_formularios`
@@ -66,16 +74,34 @@ class FormularioController3CS extends Controller
             'codigo_formulario' => $validated['codigo_formulario'],
         ]);
 
-        // Remover los campos que no están en formulario_sigsa_base
-        $datosFormulario = collect($validated)->except([
-            'codigo_formulario', 'consulta', 'control', 'semana_gestacion',
-            'referido_a', 'diagnostico', 'codigo_cie', 'tratamiento_descripcion',
-            'tratamiento_presentacion', 'cantidad_recetada', 'notificacion_lugar',
-            'notificacion_numero', 'nombre_acompanante'
-        ])->toArray();
+        // Guardar directamente los datos generales en `formulario_sigsa_base`
+        $formulario = Modelo3CS::create([
+        'area_salud' => $validated['area_salud'] ?? null,
+            'distrito_salud' => $validated['distrito_salud'] ?? null,
+            'municipio' => $validated['municipio'] ?? null,
+            'servicio_salud' => $validated['servicio_salud'] ?? null,
+            'responsable_informacion' => $validated['responsable_informacion'] ?? null,
+            'cargo_responsable' => $validated['cargo_responsable'] ?? null,
+            'anio' => $validated['anio'],
+            'dia_consulta' => $validated['dia_consulta'] ?? null,
+            'no_historia_clinica' => $validated['no_historia_clinica'] ?? null,
+            'nombre_paciente' => $validated['nombre_paciente'],
+            'cui' => $validated['cui'],
+            'sexo' => $validated['sexo'] ?? null,
+            'pueblo' => $validated['pueblo'] ?? null,
+            'fecha_nacimiento' => $validated['fecha_nacimiento'] ?? null,
+            'comunidad_linguistica' => $validated['comunidad_linguistica'] ?? null,
+            'escolaridad' => $validated['escolaridad'] !== '' ? $validated['escolaridad'] : null,
 
-        // Guardar los datos generales del formulario en `formulario_sigsa_base`
-        $formulario = Modelo3CS::create($datosFormulario);
+            'profesion_oficio' => $validated['profesion_oficio'] ?? null,
+            'discapacidad' => $validated['discapacidad'] ?? null,
+
+            'comunidad_direccion' => 'nullable|string',
+            'municipio_residencia' => 'nullable|string',
+            'agricola_migrante' => 'nullable|string',
+
+           ]);
+
 
         // Establecer la relación en la tabla pivote con `tipo_formulario`
         $formulario->tiposFormulario()->attach($tipoFormulario->id);
@@ -87,7 +113,7 @@ class FormularioController3CS extends Controller
             'agricola_migrante' => $validated['agricola_migrante'] ?? null,
         ]);
 
-        // Guardar los datos de la tabla `consulta`
+        // Guardar los datos de Consulta
         Consulta::create([
             'formulario_sigsa_base_id' => $formulario->id,
             'consulta' => $validated['consulta'] ?? null,
@@ -96,18 +122,22 @@ class FormularioController3CS extends Controller
             'referido_a' => $validated['referido_a'] ?? null,
             'diagnostico' => $validated['diagnostico'] ?? null,
             'codigo_cie' => $validated['codigo_cie'] ?? null,
+
+            'viene' => $validated['viene'] ?? null,
+            'fue' => $validated['fue'] ?? null,
+
             'tratamiento_descripcion' => $validated['tratamiento_descripcion'] ?? null,
             'tratamiento_presentacion' => $validated['tratamiento_presentacion'] ?? null,
             'cantidad_recetada' => $validated['cantidad_recetada'] ?? null,
             'notificacion_lugar' => $validated['notificacion_lugar'] ?? null,
             'notificacion_numero' => $validated['notificacion_numero'] ?? null,
             'nombre_acompanante' => $validated['nombre_acompanante'] ?? null,
+
         ]);
 
         // Redirigir con mensaje de éxito
         return redirect()->route('formularios-3cs.create')->with('status', 'Formulario y consulta guardados correctamente.');
     }
-
 
     public function index()
     {
@@ -122,48 +152,61 @@ class FormularioController3CS extends Controller
 
     public function edit($id)
     {
-        // Cargar el formulario junto con la relación de residencia
-        $formulario = Modelo3CS::with('residencia')->findOrFail($id);
-        return view('formularios.crud3CS.edit', compact('formulario'));
+        // Obtener el formulario por ID junto con la relación de residencia y consulta
+        $formulario = Modelo3CS::with('residencia', 'consulta')->findOrFail($id);
+
+        // Obtener todas las vacunas disponibles
+        $vacunas = Vacuna::all();
+
+        // Pasar el formulario y las vacunas a la vista
+        return view('formularios.crud3CS.edit', compact('formulario', 'vacunas'));
     }
+
+
+
 
     public function update(Request $request, $id)
     {
         // Validar los datos que pertenecen a la tabla formulario_sigsa_base
         $validated = $request->validate([
-            'nombre_paciente' => 'required|string|max:255',
-            'cui' => 'required|string|max:13|unique:formulario_sigsa_base,cui,' . $id,
-            'sexo' => 'required|string|max:1',
-            'dia_consulta' => 'required|date',
-            'no_historia_clinica' => 'required|string|max:255',
-            'area_salud' => 'nullable|string|max:255',
-            'distrito_salud' => 'nullable|string|max:255',
-            'municipio' => 'nullable|string|max:255',
-            'servicio_salud' => 'nullable|string|max:255',
-            'responsable_informacion' => 'nullable|string|max:255',
-            'cargo_responsable' => 'nullable|string|max:255',
-            'anio' => 'nullable|integer|between:2000,2030',
-            'no_orden' => 'nullable|integer',
-            'pueblo' => 'nullable|string|max:255',
+
+            'area_salud' => 'nullable|string',
+            'distrito_salud' => 'nullable|string',
+            'municipio' => 'nullable|string',
+            'servicio_salud' => 'nullable|string',
+            'responsable_informacion' => 'nullable|string',
+            'cargo_responsable' => 'nullable|string',
+            'anio' => 'required|string',
+            'dia_consulta' => 'nullable|string',
+            'no_historia_clinica' => 'nullable|string',
+            'nombre_paciente' => 'required|string|max:150',
             'fecha_nacimiento' => 'nullable|date',
-            'comunidad_linguistica' => 'nullable|string|max:255',
-            'orientacion_sexual' => 'nullable|string|max:255',
-            'escolaridad' => 'nullable|string|max:255',
-            'profesion_oficio' => 'nullable|string|max:255',
+            'cui' => 'nullable|string',
+            'sexo' => 'nullable|string|in:M,F',
+            'pueblo' => 'nullable|integer|in:1,2,3,4,5,6',
+            'comunidad_linguistica' => 'nullable|integer|in:1,2,3,...,23',
+            'escolaridad' => 'nullable|integer|in:0,1,2,3,4,5,6,7',
+            'profesion_oficio' => 'nullable|in:0,1,2,3,4,5,6,7,8',
+            'discapacidad' => 'nullable|integer|in:0,1,2,3,4,5',
+            'orientacion_sexual' => 'nullable|integer|in:0,1,2,3,4,5',
             'comunidad_direccion' => 'nullable|string',
-            'municipio_residencia' => 'required|string',
-            'agricola_migrante' => 'nullable|boolean',
-            // Los campos que pertenecen a la tabla `consulta` se validarán pero no se incluirán en esta actualización
-            'consulta' => 'nullable|string',
-            'control' => 'nullable|string',
-            'semana_gestacion' => 'nullable|integer',
+            'municipio_residencia' => 'nullable|string',
+            'agricola_migrante' => 'nullable|string',
+            'embarazada' => 'nullable|string',
+
+            // Otros campos relacionados con la consulta
+            'consulta' => 'nullable|in:1,2,3,4',
+            'control' => 'nullable|in:0,1,2,3,4,5,6',
+            'semana_gestacion' => 'nullable|integer|between:1,42',
+            'viene' => 'nullable|in:0,1,2', // 0 - No aplica, 1 - Viene Referido, 2 - Viene Contra Referido
+            'fue' => 'nullable|in:0,1,2', // 0 - No aplica, 1 - Fue Referido, 2 - Fue Contra Referido
             'referido_a' => 'nullable|string|max:255',
             'diagnostico' => 'nullable|string',
             'codigo_cie' => 'nullable|string|max:255',
-            'tratamiento_descripcion' => 'nullable|string',
-            'tratamiento_presentacion' => 'nullable|string|max:255',
+            'tratamiento_descripcion' => 'required|exists:vacunas,nombre_vacuna',
+            'tratamiento_presentacion' => 'nullable|numeric',
             'cantidad_recetada' => 'nullable|integer',
-            'notificacion_lugar' => 'nullable|string|max:255',
+            'notificacion_lugar' => 'nullable|in:0,1,2,3',
             'notificacion_numero' => 'nullable|string|max:255',
             'nombre_acompanante' => 'nullable|string|max:255',
         ]);
@@ -171,37 +214,19 @@ class FormularioController3CS extends Controller
         // Buscar el formulario por ID
         $formulario = Modelo3CS::findOrFail($id);
 
-        // Actualizar los datos generales del formulario que pertenecen a `formulario_sigsa_base`
-        $formulario->update([
-            'nombre_paciente' => $validated['nombre_paciente'],
-            'cui' => $validated['cui'],
-            'sexo' => $validated['sexo'],
-            'dia_consulta' => $validated['dia_consulta'],
-            'no_historia_clinica' => $validated['no_historia_clinica'],
-            'area_salud' => $validated['area_salud'] ?? null,
-            'distrito_salud' => $validated['distrito_salud'] ?? null,
-            'municipio' => $validated['municipio'] ?? null,
-            'servicio_salud' => $validated['servicio_salud'] ?? null,
-            'responsable_informacion' => $validated['responsable_informacion'] ?? null,
-            'cargo_responsable' => $validated['cargo_responsable'] ?? null,
-            'anio' => $validated['anio'] ?? null,
-            'no_orden' => $validated['no_orden'] ?? null,
-            'pueblo' => $validated['pueblo'] ?? null,
-            'fecha_nacimiento' => $validated['fecha_nacimiento'] ?? null,
-            'comunidad_linguistica' => $validated['comunidad_linguistica'] ?? null,
-            'orientacion_sexual' => $validated['orientacion_sexual'] ?? null,
-            'escolaridad' => $validated['escolaridad'] ?? null,
-            'profesion_oficio' => $validated['profesion_oficio'] ?? null,
-        ]);
+        // Actualizar los datos generales en `formulario_sigsa_base`
+        $formulario->update($validated);
 
-        // Actualizar los datos de residencia
+        // Actualizar o crear la relación en `residencia`
         if ($formulario->residencia) {
+            // Si ya existe la residencia, actualizamos los datos
             $formulario->residencia->update([
                 'comunidad_direccion' => $validated['comunidad_direccion'] ?? null,
                 'municipio_residencia' => $validated['municipio_residencia'],
                 'agricola_migrante' => $validated['agricola_migrante'] ?? null,
             ]);
         } else {
+            // Si no existe, la creamos
             $formulario->residencia()->create([
                 'comunidad_direccion' => $validated['comunidad_direccion'] ?? null,
                 'municipio_residencia' => $validated['municipio_residencia'],
@@ -209,8 +234,9 @@ class FormularioController3CS extends Controller
             ]);
         }
 
-        // Actualizar los datos de consulta si existen, o crear nuevos si no existen
+        // Actualizar o crear la relación en `consulta`
         if ($formulario->consulta) {
+            // Si ya existe la consulta, actualizamos los datos
             $formulario->consulta->update([
                 'consulta' => $validated['consulta'] ?? null,
                 'control' => $validated['control'] ?? null,
@@ -218,14 +244,20 @@ class FormularioController3CS extends Controller
                 'referido_a' => $validated['referido_a'] ?? null,
                 'diagnostico' => $validated['diagnostico'] ?? null,
                 'codigo_cie' => $validated['codigo_cie'] ?? null,
+
+                'viene' => $validated['viene'] ?? null,
+                'fue' => $validated['fue'] ?? null,
+
                 'tratamiento_descripcion' => $validated['tratamiento_descripcion'] ?? null,
                 'tratamiento_presentacion' => $validated['tratamiento_presentacion'] ?? null,
                 'cantidad_recetada' => $validated['cantidad_recetada'] ?? null,
                 'notificacion_lugar' => $validated['notificacion_lugar'] ?? null,
                 'notificacion_numero' => $validated['notificacion_numero'] ?? null,
                 'nombre_acompanante' => $validated['nombre_acompanante'] ?? null,
+
             ]);
         } else {
+            // Si no existe, la creamos
             Consulta::create([
                 'formulario_sigsa_base_id' => $formulario->id,
                 'consulta' => $validated['consulta'] ?? null,
@@ -234,6 +266,9 @@ class FormularioController3CS extends Controller
                 'referido_a' => $validated['referido_a'] ?? null,
                 'diagnostico' => $validated['diagnostico'] ?? null,
                 'codigo_cie' => $validated['codigo_cie'] ?? null,
+
+                'viene' => $validated['viene'] ?? null,
+                'fue' => $validated['fue'] ?? null,
                 'tratamiento_descripcion' => $validated['tratamiento_descripcion'] ?? null,
                 'tratamiento_presentacion' => $validated['tratamiento_presentacion'] ?? null,
                 'cantidad_recetada' => $validated['cantidad_recetada'] ?? null,
@@ -243,12 +278,17 @@ class FormularioController3CS extends Controller
             ]);
         }
 
+
+        $buscar = $request->input('buscar');
+        if ($buscar) {
+            return redirect()->route('busqueda.resultados', ['buscar' => $buscar])
+                ->with('success', 'Formulario actualizado correctamente.');
+        }
+
         // Redirigir con un mensaje de éxito
         return redirect()->route('formularios-3cs.index')->with('status', 'Formulario actualizado correctamente.');
     }
 
-
-    // Eliminar un formulario existente
     public function destroy($id)
     {
         // Buscar el formulario por ID

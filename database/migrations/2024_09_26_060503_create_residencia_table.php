@@ -16,8 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('formulario_base_id'); // Relación con formulario base
             $table->string('comunidad_direccion')->nullable();
             $table->string('municipio_residencia')->nullable();
-            $table->boolean('agricola_migrante')->nullable();
-            $table->boolean('embarazada')->nullable();
+            $table->String('agricola_migrante')->nullable();
+            $table->String('embarazada')->nullable();
             $table->timestamps();
 
             // Clave foránea hacia formulario_sigsa_base

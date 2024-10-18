@@ -19,47 +19,41 @@
                     </div>
                 @endif
 
-                <!-- Formulario de edición -->
-                <form action="{{ route('for-sigsa-5bA.update', $formulario->id) }}" method="POST">
+                <form action="{{ route('for-sigsa-5bA.update', ['for_sigsa_5bA' => $formulario->id]) }}" method="POST">
                     @csrf
-                    @method('PUT') <!-- Directiva para actualizar -->
+                    @method('PUT')
+
+                    <input type="hidden" name="buscar" value="{{ request('buscar') }}">
 
                     <!-- Sección de Información del Formulario -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Información adicional -->
                         <div class="mb-4">
                             <label for="area_salud" class="block text-gray-700 dark:text-gray-400">Área de Salud</label>
-                            <input type="text" name="area_salud" id="area_salud" value="{{ old('area_salud', $formulario->area_salud) }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                            <input type="text" name="area_salud" id="area_salud" value="{{ $formulario->area_salud }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
                         </div>
-
                         <div class="mb-4">
                             <label for="distrito_salud" class="block text-gray-700 dark:text-gray-400">Distrito de Salud</label>
-                            <input type="text" name="distrito_salud" id="distrito_salud" value="{{ old('distrito_salud', $formulario->distrito_salud) }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                            <input type="text" name="distrito_salud" id="distrito_salud" value="{{ $formulario->distrito_salud }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
                         </div>
-
                         <div class="mb-4">
                             <label for="municipio" class="block text-gray-700 dark:text-gray-400">Municipio</label>
-                            <input type="text" name="municipio" id="municipio" value="{{ old('municipio', $formulario->municipio) }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                            <input type="text" name="municipio" id="municipio" value="{{ $formulario->municipio }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
                         </div>
-
                         <div class="mb-4">
                             <label for="servicio_salud" class="block text-gray-700 dark:text-gray-400">Servicio de Salud</label>
-                            <input type="text" name="servicio_salud" id="servicio_salud" value="{{ old('servicio_salud', $formulario->servicio_salud) }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                            <input type="text" name="servicio_salud" id="servicio_salud" value="{{ $formulario->servicio_salud }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
                         </div>
-
                         <div class="mb-4">
                             <label for="responsable_informacion" class="block text-gray-700 dark:text-gray-400">Responsable de la Información</label>
-                            <input type="text" name="responsable_informacion" id="responsable_informacion" value="{{ old('responsable_informacion', $formulario->responsable_informacion) }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                            <input type="text" name="responsable_informacion" id="responsable_informacion" value="{{ $formulario->responsable_informacion }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
                         </div>
-
                         <div class="mb-4">
                             <label for="cargo_responsable" class="block text-gray-700 dark:text-gray-400">Cargo del Responsable</label>
-                            <input type="text" name="cargo_responsable" id="cargo_responsable" value="{{ old('cargo_responsable', $formulario->cargo_responsable) }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                            <input type="text" name="cargo_responsable" id="cargo_responsable" value="{{ $formulario->cargo_responsable }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
                         </div>
-
                         <div class="mb-4">
                             <label for="anio" class="block text-gray-700 dark:text-gray-400">Año</label>
-                            <input type="text" name="anio" id="anio" value="{{ old('anio', $formulario->anio) }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                            <input type="text" name="anio" id="anio" value="{{ $formulario->anio }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
                         </div>
                     </div>
 
@@ -73,46 +67,85 @@
                             </div>
                             <div class="mb-4">
                                 <label for="nombre_paciente" class="block text-gray-700 dark:text-gray-400">Nombre del Paciente</label>
-                                <input type="text" name="nombre_paciente" id="nombre_paciente" value="{{ old('nombre_paciente', $formulario->nombre_paciente) }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                <input type="text" name="nombre_paciente" id="nombre_paciente" value="{{ $formulario->nombre_paciente }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
                             </div>
-
                             <div class="mb-4">
                                 <label for="cui" class="block text-gray-700 dark:text-gray-400">CUI</label>
-                                <input type="text" name="cui" id="cui" value="{{ old('cui', $formulario->cui) }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                <input type="text" name="cui" id="cui" value="{{ $formulario->cui }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
                             </div>
-
                             <div class="mb-4">
                                 <label for="fecha_nacimiento" class="block text-gray-700 dark:text-gray-400">Fecha de Nacimiento</label>
-                                <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" value="{{ old('fecha_nacimiento', $formulario->fecha_nacimiento) }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" value="{{ $formulario->fecha_nacimiento }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
                             </div>
-
                             <div class="mb-4">
                                 <label for="sexo" class="block text-gray-700 dark:text-gray-400">Sexo</label>
                                 <select name="sexo" id="sexo" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                    <option value="" {{ is_null($formulario->sexo) ? 'selected' : '' }}>Seleccione el sexo</option>
                                     <option value="M" {{ $formulario->sexo === 'M' ? 'selected' : '' }}>Masculino</option>
                                     <option value="F" {{ $formulario->sexo === 'F' ? 'selected' : '' }}>Femenino</option>
                                 </select>
                             </div>
-
                             <div class="mb-4">
                                 <label for="pueblo" class="block text-gray-700 dark:text-gray-400">Pueblo</label>
-                                <input type="text" name="pueblo" id="pueblo" value="{{ old('pueblo', $formulario->pueblo) }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                <select name="pueblo" id="pueblo" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                    <option value="" {{ is_null($formulario->pueblo) ? 'selected' : '' }}>Seleccione</option>
+                                    <option value="1" {{ $formulario->pueblo == 1 ? 'selected' : '' }}>Mestizo, Ladino</option>
+                                    <option value="2" {{ $formulario->pueblo == 2 ? 'selected' : '' }}>Maya</option>
+                                    <option value="3" {{ $formulario->pueblo == 3 ? 'selected' : '' }}>Garífuna</option>
+                                    <option value="4" {{ $formulario->pueblo == 4 ? 'selected' : '' }}>Xinca</option>
+                                    <option value="5" {{ $formulario->pueblo == 5 ? 'selected' : '' }}>Otro</option>
+                                </select>
                             </div>
-
                             <div class="mb-4">
                                 <label for="comunidad_linguistica" class="block text-gray-700 dark:text-gray-400">Comunidad Lingüística</label>
-                                <input type="text" name="comunidad_linguistica" id="comunidad_linguistica" value="{{ old('comunidad_linguistica', $formulario->comunidad_linguistica) }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                <input type="text" name="comunidad_linguistica" id="comunidad_linguistica" value="{{ $formulario->comunidad_linguistica }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
                             </div>
+                            <div class="mb-4">
+                                <label for="orientacion_sexual" class="block text-gray-700 dark:text-gray-400">Orientación Sexual</label>
+                                <select name="orientacion_sexual" id="orientacion_sexual" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                    <option value="" {{ is_null($formulario->orientacion_sexual) ? 'selected' : '' }}>Seleccione</option>
+                                    <option value="0" {{ strval($formulario->orientacion_sexual) === '0' ? 'selected' : '' }}>No aplica</option>
+                                    <option value="1" {{ strval($formulario->orientacion_sexual) === '1' ? 'selected' : '' }}>Heterosexual</option>
+                                    <option value="2" {{ strval($formulario->orientacion_sexual) === '2' ? 'selected' : '' }}>Bisexual</option>
+                                    <option value="3" {{ strval($formulario->orientacion_sexual) === '3' ? 'selected' : '' }}>Homosexual</option>
+                                    <option value="4" {{ strval($formulario->orientacion_sexual) === '4' ? 'selected' : '' }}>Trans</option>
+                                    <option value="5" {{ strval($formulario->orientacion_sexual) === '5' ? 'selected' : '' }}>Otro</option>
+                                </select>
+                            </div>
+
+
 
                             <div class="mb-4">
                                 <label for="escolaridad" class="block text-gray-700 dark:text-gray-400">Escolaridad</label>
-                                <input type="text" name="escolaridad" id="escolaridad" value="{{ old('escolaridad', $formulario->escolaridad) }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                <select name="escolaridad" id="escolaridad" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                    <option value="" {{ is_null($formulario->escolaridad) ? 'selected' : '' }}>Seleccione</option>
+                                    <option value="0" {{ $formulario->escolaridad == 0 ? 'selected' : '' }}>No aplica</option>
+                                    <option value="1" {{ $formulario->escolaridad == 1 ? 'selected' : '' }}>Pre Primaria</option>
+                                    <option value="2" {{ $formulario->escolaridad == 2 ? 'selected' : '' }}>Primaria</option>
+                                    <option value="3" {{ $formulario->escolaridad == 3 ? 'selected' : '' }}>Básicos</option>
+                                    <option value="4" {{ $formulario->escolaridad == 4 ? 'selected' : '' }}>Diversificado</option>
+                                    <option value="5" {{ $formulario->escolaridad == 5 ? 'selected' : '' }}>Universidad</option>
+                                    <option value="6" {{ $formulario->escolaridad == 6 ? 'selected' : '' }}>Ninguno</option>
+                                    <option value="7" {{ $formulario->escolaridad == 7 ? 'selected' : '' }}>Otro</option>
+                                </select>
                             </div>
 
                             <div class="mb-4">
                                 <label for="profesion_oficio" class="block text-gray-700 dark:text-gray-400">Profesión u Oficio</label>
-                                <input type="text" name="profesion_oficio" id="profesion_oficio" value="{{ old('profesion_oficio', $formulario->profesion_oficio) }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                <select name="profesion_oficio" id="profesion_oficio" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                    <option value="" {{ is_null($formulario->profesion_oficio) ? 'selected' : '' }}>Seleccione</option>
+                                    <option value="0" {{ $formulario->profesion_oficio == 0 ? 'selected' : '' }}>No aplica</option>
+                                    <option value="1" {{ $formulario->profesion_oficio == 1 ? 'selected' : '' }}>Ama de Casa</option>
+                                    <option value="2" {{ $formulario->profesion_oficio == 2 ? 'selected' : '' }}>Mujer Trabajadora Sexual</option>
+                                    <option value="3" {{ $formulario->profesion_oficio == 3 ? 'selected' : '' }}>Hombre trabajador sexual</option>
+                                    <option value="4" {{ $formulario->profesion_oficio == 4 ? 'selected' : '' }}>Persona Privada de Libertad</option>
+                                    <option value="5" {{ $formulario->profesion_oficio == 5 ? 'selected' : '' }}>Joven en riesgo social</option>
+                                    <option value="6" {{ $formulario->profesion_oficio == 6 ? 'selected' : '' }}>Uniformados</option>
+                                    <option value="7" {{ $formulario->profesion_oficio == 7 ? 'selected' : '' }}>Migrantes</option>
+                                    <option value="8" {{ $formulario->profesion_oficio == 8 ? 'selected' : '' }}>Otros</option>
+                                </select>
                             </div>
+
                         </div>
                     </div>
 
@@ -126,26 +159,25 @@
                                        value="{{ old('comunidad_direccion', $formulario->residencia->comunidad_direccion ?? '') }}"
                                        class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
                             </div>
-
                             <div class="mb-4">
                                 <label for="municipio_residencia" class="block text-gray-700 dark:text-gray-400">Municipio Residencia</label>
                                 <input type="text" name="municipio_residencia" id="municipio_residencia"
                                        value="{{ old('municipio_residencia', $formulario->residencia->municipio_residencia ?? '') }}"
                                        class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
                             </div>
-
                             <div class="mb-4">
                                 <label for="agricola_migrante" class="block text-gray-700 dark:text-gray-400">Agrícola Migrante</label>
-                                <input type="checkbox" name="agricola_migrante" id="agricola_migrante"
-                                       value="1" {{ old('agricola_migrante', $formulario->residencia->agricola_migrante ?? false) ? 'checked' : '' }}
-                                       class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md">
+                                <input type="text" name="agricola_migrante" id="agricola_migrante"
+                                       value="{{ $formulario->residencia->agricola_migrante ?? '' }}"
+                                       class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full"
+                                       placeholder="Ingrese 'X' si es aplicable">
                             </div>
-
                             <div class="mb-4">
                                 <label for="embarazada" class="block text-gray-700 dark:text-gray-400">Embarazada</label>
-                                <input type="checkbox" name="embarazada" id="embarazada"
-                                       value="1" {{ old('embarazada', $formulario->residencia->embarazada ?? false) ? 'checked' : '' }}
-                                       class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md">
+                                <input type="text" name="embarazada" id="embarazada"
+                                       value="{{ $formulario->residencia->embarazada ?? '' }}"
+                                       class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full"
+                                       placeholder="Ingrese 'X' si es aplicable">
                             </div>
                         </div>
                     </div>
@@ -153,12 +185,10 @@
                     <!-- Sección de Criterios de selección según vacuna administrada -->
                     <div class="mt-8">
                         <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Criterios de selección según vacuna administrada</h3>
-
-                        <!-- Select para la vacuna -->
                         <div class="mb-4">
-                            <label for="vacuna_id" class="block text-gray-700 dark:text-gray-400">Vacuna</label>
+                            <label for="vacuna" class="block text-gray-700 dark:text-gray-400">Vacuna</label>
                             <select name="vacuna" id="vacuna" required
-                                    class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400">
+                                    class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
                                 @foreach($vacunas as $vacuna)
                                     <option value="{{ $vacuna->nombre_vacuna }}" {{ optional($formulario->criteriosVacuna->first())->vacuna == $vacuna->nombre_vacuna ? 'selected' : '' }}>
                                         {{ $vacuna->nombre_vacuna }}
@@ -166,9 +196,6 @@
                                 @endforeach
                             </select>
                         </div>
-
-
-                        <!-- Grupo priorizado -->
                         <div class="mb-4">
                             <label for="grupo_priorizado" class="block text-gray-700 dark:text-gray-400">Grupo Priorizado</label>
                             <input type="text" name="grupo_priorizado" id="grupo_priorizado"
@@ -176,16 +203,12 @@
                                    class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full"
                                    placeholder="Grupo priorizado">
                         </div>
-
-                        <!-- Fecha de administración -->
                         <div class="mb-4">
                             <label for="fecha_administracion" class="block text-gray-700 dark:text-gray-400">Fecha de Administración</label>
                             <input type="date" name="fecha_administracion" id="fecha_administracion"
                                    value="{{ old('fecha_administracion', optional($formulario->criteriosVacuna->first())->fecha_administracion) }}"
                                    class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
                         </div>
-
-
                         <div class="mb-4">
                             <label for="dosis" class="block text-gray-700 dark:text-gray-400">Dosis</label>
                             <input type="text" name="dosis" id="dosis"
@@ -194,12 +217,12 @@
                                    placeholder="Dosis">
                         </div>
 
-
                         <!-- Botón para actualizar -->
-                    <div class="mt-8">
-                        <x-primary-button type="submit" class="bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-opacity-50 text-white font-semibold rounded-lg py-2 px-4 transition-all duration-300 ease-in-out">
-                            {{ __('Actualizar') }}
-                        </x-primary-button>
+                        <div class="mt-8">
+                            <x-primary-button type="submit" class="bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-opacity-50 text-white font-semibold rounded-lg py-2 px-4 transition-all duration-300 ease-in-out">
+                                {{ __('Actualizar') }}
+                            </x-primary-button>
+                        </div>
                     </div>
                 </form>
             </div>

@@ -12,9 +12,9 @@ class VacunaController extends Controller
      */
     public function index()
     {
-        // Opcional: Mostrar una lista de todas las vacunas
+        // Mostrar una lista de todas las vacunas
         $vacunas = Vacuna::all();
-        return view('vacunas.create', compact('vacunas'));
+        return view('vacunas.index', compact('vacunas'));
     }
 
     /**
@@ -31,24 +31,16 @@ class VacunaController extends Controller
      */
     public function store(Request $request)
     {
-        // Inicializamos un array para almacenar los errores
-        $errors = [];
-
-        // Validación para nombres que sean solo números
-        if (preg_match('/^\d+$/', $request->nombre_vacuna)) {
-            // Si el nombre de la vacuna es solo números
-            $errors['nombre_vacuna'][] = 'Error: no se puede registrar solo números como nombre de vacuna.';
-        }
-
-        // Validación de unicidad manual
-        if (Vacuna::where('nombre_vacuna', $request->nombre_vacuna)->exists()) {
-            $errors['nombre_vacuna'][] = 'El nombre de la vacuna ya ha sido registrado.';
-        }
-
-        // Si hay errores, redirigir de vuelta con los errores
-        if (!empty($errors)) {
-            return redirect()->back()->withErrors($errors)->withInput();
-        }
+        $request->validate([
+            'nombre_vacuna' => [
+                'required',
+                'string',
+                'max:255',
+                'unique:vacunas,nombre_vacuna',
+                'not_regex:/^\d+$/'
+            ],
+            'descripcion' => 'nullable|string|max:1000',
+        ]);
 
         // Si no hay errores, guardar los datos en la base de datos
         Vacuna::create($request->only('nombre_vacuna', 'descripcion'));
@@ -57,24 +49,12 @@ class VacunaController extends Controller
         return redirect()->route('vacunas.create')->with('status', 'form-saved');
     }
 
-
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Vacuna $vacuna)
-    {
-        // Opcional: Mostrar detalles de una vacuna específica
-        return view('vacunas.show', compact('vacuna'));
-    }
-
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Vacuna $vacuna)
     {
-        // Opcional: Mostrar un formulario de edición para una vacuna específica
+        // Mostrar un formulario de edición para una vacuna específica
         return view('vacunas.edit', compact('vacuna'));
     }
 
@@ -83,16 +63,15 @@ class VacunaController extends Controller
      */
     public function update(Request $request, Vacuna $vacuna)
     {
-        // Validar los datos actualizados del formulario
-        $validated = $request->validate([
-            'nombre_vacuna' => 'required|string|max:255',
+        $request->validate([
+            'nombre_vacuna' => 'required|string|max:255|not_regex:/^\d+$/|unique:vacunas,nombre_vacuna,' . $vacuna->id,
             'descripcion' => 'nullable|string|max:1000',
         ]);
 
         // Actualizar los datos de la vacuna
-        $vacuna->update($validated);
+        $vacuna->update($request->only('nombre_vacuna', 'descripcion'));
 
-        // Redirigir a la vista de la vacuna o a la lista
+        // Redirigir a la lista con un mensaje de éxito
         return redirect()->route('vacunas.index')->with('success', 'Vacuna actualizada exitosamente.');
     }
 

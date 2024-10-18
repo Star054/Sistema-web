@@ -10,26 +10,31 @@ class CreateFormularioSigsaBaseTable extends Migration
     {
         Schema::create('formulario_sigsa_base', function (Blueprint $table) {
             $table->id();  // Llave primaria
+
             // Campos del componente <x-formulario-slot>
-            $table->string('vacuna')->nullable();  // Vacuna seleccionada
-            $table->string('area_salud')->nullable();  // Área de salud
-            $table->string('distrito_salud')->nullable();  // Distrito de salud
-            $table->string('municipio')->nullable();  // Municipio
-            $table->string('servicio_salud')->nullable();  // Servicio de salud
-            $table->string('responsable_informacion')->nullable();  // Responsable de la información
-            $table->string('cargo_responsable')->nullable();  // Cargo del responsable
+            $table->string('vacuna')->nullable();
+            $table->string('area_salud')->nullable();
+            $table->string('distrito_salud')->nullable();
+            $table->string('municipio')->nullable();
+            $table->string('servicio_salud')->nullable();
+            $table->string('responsable_informacion')->nullable();
+            $table->string('cargo_responsable')->nullable();
             $table->year('anio')->nullable();  // Año
+            $table->string('mes')->nullable();
 
             // Campos de datos del paciente
-            $table->string('no_orden')->nullable();  // Número de orden
-            $table->string('cui')->nullable();  // Código Único de Identificación
-            $table->string('nombre_paciente');  // Nombre del paciente
-            $table->enum('sexo', ['M', 'F']);  // Sexo ('M' o 'F')
-            $table->string('pueblo')->nullable();  // Pueblo (opcional)
-            $table->date('fecha_nacimiento')->nullable();  // Fecha de nacimiento
-            $table->string('comunidad_linguistica')->nullable();  // Comunidad lingüística (opcional)
-            $table->string('escolaridad')->nullable();  // Escolaridad (opcional)
-            $table->string('profesion_oficio')->nullable();  // Profesión u oficio (opcional)
+            $table->string('no_orden')->nullable();
+            $table->string('cui')->nullable();
+            $table->string('nombre_paciente');
+            $table->enum('sexo', ['M', 'F'])->nullable();
+            $table->integer('pueblo')->nullable();
+
+            $table->date('fecha_nacimiento')->nullable();
+            $table->integer('comunidad_linguistica')->nullable();  // Comunidad lingüística (1-23 según lista)
+            $table->integer('escolaridad')->nullable();  // Escolaridad (0-7 según lista)
+            $table->integer('profesion_oficio')->nullable();  // Profesión u oficio (0-8 según lista)
+            $table->integer('discapacidad')->nullable();
+
 
             $table->timestamps();  // created_at y updated_at
         });

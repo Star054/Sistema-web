@@ -24,7 +24,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
-    Route::resource('vacunas', VacunaController::class)->only(['create', 'store', 'index']);
+    Route::resource('vacunas', VacunaController::class)->only(['create', 'store', 'index', 'edit', 'update', 'destroy']);
+
     Route::post('/formulario-sigsa', [FormularioSIGSAController::class, 'store'])->name('formulario-sigsa.store');
 
 
@@ -40,6 +41,8 @@ Route::middleware('auth')->group(function () {
 // Ruta para mostrar el formulario de filtros
     Route::get('/filtros-vacunas', [ConsultaVacunasController::class, 'mostrarFiltros'])->name('vacunas.filtros');
     Route::get('/resultados-vacunas', [ConsultaVacunasController::class, 'mostrarResultados'])->name('vacunas.resultados');
+
+
     Route::get('/busqueda-resultados', [ConsultaVacunasController::class, 'buscar'])->name('busqueda.resultados');
 
     Route::post('/generar-pdf-filtro', [ConsultaVacunasController::class, 'generarPDF'])->name('vacunas.generarPDF');

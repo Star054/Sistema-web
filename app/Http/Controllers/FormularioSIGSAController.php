@@ -20,6 +20,16 @@ class FormularioSIGSAController extends Controller
         return view('formularios.crud5b.index', compact('formularios'));
     }
 
+
+    public function destroy($id)
+    {
+
+        $formulario = FormularioSIGSA5b::findOrFail($id);
+        $formulario->delete();
+        return redirect()->route('for-sigsa-5b.index')->with('success', 'Formulario eliminado correctamente.');
+    }
+
+
     public function show($id)
     {
         $formulario = FormularioSIGSA5b::with(['residencia', 'mujer15a49yOtrosGrupos'])->findOrFail($id);
@@ -49,20 +59,22 @@ class FormularioSIGSAController extends Controller
             'cargo_responsable' => 'nullable|string',
             'anio' => 'nullable|string',
             'no_orden' => 'nullable|integer',
-            'cui' => 'nullable|string', // El CUI es opcional
+            'cui' => 'nullable|string',
             'fecha_nacimiento' => 'nullable|date',
-            'sexo' => 'nullable|string|max:1',
-            'pueblo' => 'nullable|string',
-            'comunidad_linguistica' => 'nullable|string',
-            'escolaridad' => 'nullable|string',
-            'profesion_oficio' => 'nullable|string',
+            'sexo' => 'nullable|string|in:M,F', // Solo puede ser M o F
+            'pueblo' => 'nullable|integer|in:1,2,3,4,5,6', // Validar pueblo según la lista
+            'comunidad_linguistica' => 'nullable|integer|in:1,2,3,...,23', // Comunidades lingüísticas validas
+            'escolaridad' => 'nullable|integer|in:0,1,2,3,4,5,6,7', // Escolaridad con los valores asignados
+            'profesion_oficio' => 'nullable|integer|in:0,1,2,3,4,5,6,7,8', // Profesión u oficio
+            'discapacidad' => 'nullable|integer|in:0,1,2,3,4,5', // Discapacidad de 0 a 5
+            'orientacion_sexual' => 'nullable|integer|in:0,1,2,3,4,5', // Orientación sexual validada
             'dia_consulta' => 'nullable|date',
             'no_historia_clinica' => 'nullable|string',
-
             'comunidad_direccion' => 'nullable|string',
             'municipio_residencia' => 'nullable|string',
-            'agricola_migrante' => 'nullable|boolean',
-            'embarazada' => 'nullable|boolean',
+            'agricola_migrante' => 'nullable|string',
+            'embarazada' => 'nullable|string',
+
 
             'mujer_15_49' => 'nullable|array',
             'mujer_15_49.*' => 'nullable|date',
@@ -113,8 +125,15 @@ class FormularioSIGSAController extends Controller
             'pueblo' => $validated['pueblo'] ?? null,
             'fecha_nacimiento' => $validated['fecha_nacimiento'] ?? null,
             'comunidad_linguistica' => $validated['comunidad_linguistica'] ?? null,
-            'escolaridad' => $validated['escolaridad'] ?? null,
+            'escolaridad' => $validated['escolaridad'] !== '' ? $validated['escolaridad'] : null,
+
             'profesion_oficio' => $validated['profesion_oficio'] ?? null,
+            'discapacidad' => $validated['discapacidad'] ?? null,
+
+            'comunidad_direccion' => 'nullable|string',
+            'municipio_residencia' => 'nullable|string',
+            'agricola_migrante' => 'nullable|string',
+            'embarazada' => 'nullable|string',
         ]);
 
         // Relacionar el formulario con el tipo de formulario
@@ -171,9 +190,10 @@ class FormularioSIGSAController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validar los datos
+
         $validated = $request->validate([
-            'vacuna' => 'nullable|string',
+            'vacuna' => 'nullable|string|exists:vacunas,nombre_vacuna', // No requerido en la actualización
+            'nombre_paciente' => 'required|string|max:150', // Este es requerido porque es un campo clave
             'area_salud' => 'nullable|string',
             'distrito_salud' => 'nullable|string',
             'municipio' => 'nullable|string',
@@ -182,50 +202,54 @@ class FormularioSIGSAController extends Controller
             'cargo_responsable' => 'nullable|string',
             'anio' => 'nullable|string',
             'no_orden' => 'nullable|integer',
-            'nombre_paciente' => 'required|string|max:150',
-            'cui' => 'nullable|string',
+            'cui' => 'nullable|string', // Opcional en la actualización
             'fecha_nacimiento' => 'nullable|date',
-            'sexo' => 'nullable|string|max:1',
-            'pueblo' => 'nullable|string',
-            'comunidad_linguistica' => 'nullable|string',
-            'escolaridad' => 'nullable|string',
-            'profesion_oficio' => 'nullable|string',
-            'comunidad_direccion' => 'nullable|string',
-            'municipio_residencia' => 'nullable|string',
-            'agricola_migrante' => 'nullable|boolean',
-            'embarazada' => 'nullable|boolean',
-            'vacuna_mujer_15_49' => 'nullable|array',
-            'vacuna_mujer_15_49.*' => 'nullable|date',
-            'vacuna_otros_grupos' => 'nullable|array',
-            'vacuna_otros_grupos.*' => 'nullable|date',
+            'sexo' => 'nullable|string|in:M,F', // Es requerido porque es clave para los datos
+            'pueblo' => 'nullable|integer|in:1,2,3,4,5,6', // También es requerido en la actualización
+            'comunidad_linguistica' => 'nullable|integer|in:1,2,3,...,23', // Opcional
+            'escolaridad' => 'nullable|integer|in:0,1,2,3,4,5,6,7', // Opcional
+            'profesion_oficio' => 'nullable|in:0,1,2,3,4,5,6,7,8',
+            'discapacidad' => 'nullable|integer|in:0,1,2,3,4,5', // Opcional
+            'orientacion_sexual' => 'nullable|integer|in:0,1,2,3,4,5', // Opcional
+            'comunidad_direccion' => 'nullable|string', // Opcional
+            'municipio_residencia' => 'nullable|string', // Opcional
+            'agricola_migrante' => 'nullable|string',
+            'embarazada' => 'nullable|string',
+            'vacuna_mujer_15_49' => 'nullable|array', // Opcional
+            'vacuna_mujer_15_49.*' => 'nullable|date', // Opcional
+            'vacuna_otros_grupos' => 'nullable|array', // Opcional
+            'vacuna_otros_grupos.*' => 'nullable|date', // Opcional
         ]);
-
         // Buscar el formulario
         $formulario = FormularioSIGSA5b::findOrFail($id);
 
         // Actualizar el formulario principal
         $formulario->update([
             'vacuna' => $validated['vacuna'] ?? $formulario->vacuna,
-            'area_salud' => $validated['area_salud'] ?? $formulario->area_salud,
-            'distrito_salud' => $validated['distrito_salud'] ?? $formulario->distrito_salud,
-            'municipio' => $validated['municipio'] ?? $formulario->municipio,
-            'servicio_salud' => $validated['servicio_salud'] ?? $formulario->servicio_salud,
-            'responsable_informacion' => $validated['responsable_informacion'] ?? $formulario->responsable_informacion,
-            'cargo_responsable' => $validated['cargo_responsable'] ?? $formulario->cargo_responsable,
-            'anio' => $validated['anio'] ?? $formulario->anio,
-            'no_orden' => $validated['no_orden'] ?? $formulario->no_orden,
-            'nombre_paciente' => $validated['nombre_paciente'],
-            'cui' => $validated['cui'] ?? $formulario->cui,
-            'fecha_nacimiento' => $validated['fecha_nacimiento'] ?? $formulario->fecha_nacimiento,
-            'sexo' => $validated['sexo'] ?? $formulario->sexo,
-            'pueblo' => $validated['pueblo'] ?? $formulario->pueblo,
-            'comunidad_linguistica' => $validated['comunidad_linguistica'] ?? $formulario->comunidad_linguistica,
-            'escolaridad' => $validated['escolaridad'] ?? $formulario->escolaridad,
-            'profesion_oficio' => $validated['profesion_oficio'] ?? $formulario->profesion_oficio,
+            'nombre_paciente' => $validated['nombre_paciente'], // Campo requerido
+            'area_salud' => $validated['area_salud'] ?? null,
+            'distrito_salud' => $validated['distrito_salud'] ?? null,
+            'municipio' => $validated['municipio'] ?? null,
+            'servicio_salud' => $validated['servicio_salud'] ?? null,
+            'responsable_informacion' => $validated['responsable_informacion'] ?? null,
+            'cargo_responsable' => $validated['cargo_responsable'] ?? null,
+            'anio' => $validated['anio'] ?? null,
+            'orientacion_sexual' => $validated['orientacion_sexual'] ?? null,
+            'no_orden' => $validated['no_orden'] ?? null,
+            'cui' => $validated['cui'] ?? null,
+            'fecha_nacimiento' => $validated['fecha_nacimiento'] ?? null,
+            'sexo' => $validated['sexo'] ?? null,
+            'pueblo' => $validated['pueblo'] ?? null,
+            'comunidad_linguistica' => $validated['comunidad_linguistica'] ?? null,
+            'escolaridad' => $validated['escolaridad'] ?? null,
+            'profesion_oficio' => $validated['profesion_oficio'] ?? null,
+            'discapacidad' => $validated['discapacidad'] ?? null,
         ]);
+
 
         // Actualizar residencia
         $residencia = $formulario->residencia;
+
         if ($residencia) {
             $residencia->update([
                 'comunidad_direccion' => $validated['comunidad_direccion'] ?? $residencia->comunidad_direccion,
@@ -260,7 +284,20 @@ class FormularioSIGSAController extends Controller
                     ['fecha_vacunacion' => $fechaVacunacion]
                 );
             }
+
         }
+
+
+
+        // Actualizar dosis de vacunación para otros grupos
+        foreach ($validated['vacuna_otros_grupos'] as $tipoDosis => $fechaVacunacion) {
+            if ($fechaVacunacion) {
+                Mujer15a49yOtrosGrupos::updateOrCreate(
+                    ['formulario_base_id' => $formulario->id, 'grupo' => 'otros_grupos', 'tipo_dosis' => $tipoDosis],
+                    ['fecha_vacunacion' => $fechaVacunacion]
+                );
+            }
+           }
 
         return redirect()->route('for-sigsa-5b.index')->with('success', 'Formulario actualizado correctamente');
     }

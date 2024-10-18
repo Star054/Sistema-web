@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,7 +16,7 @@ class Consulta extends Model
         'consulta',
         'control',
         'semana_gestacion',
-        'vive',
+        'viene',
         'fue',
         'referido_a',
         'diagnostico',
@@ -29,11 +30,9 @@ class Consulta extends Model
         'formulario_sigsa_base_id',  // Clave foránea
     ];
 
-    // Relación con el formulario SIGSA
+    // Relación con el formulario SIGSA (Modelo3CS)
     public function formulario()
     {
         return $this->belongsTo(Modelo3CS::class, 'formulario_sigsa_base_id');
     }
-    
-
 }

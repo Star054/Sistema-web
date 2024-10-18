@@ -65,18 +65,19 @@ class FormularioController5bA extends Controller
             'anio' => 'required|string',
             'no_orden' => 'nullable|integer',
             'nombre_paciente' => 'required|string|max:150',
-            'cui' => 'nullable|string',
-            'sexo' => 'nullable|string|max:1',
-            'pueblo' => 'nullable|string',
             'fecha_nacimiento' => 'nullable|date',
-            'comunidad_linguistica' => 'nullable|string',
-            'orientacion_sexual' => 'nullable|string',
-            'escolaridad' => 'nullable|string',
-            'profesion_oficio' => 'nullable|string',
-            'comunidad_direccion' => 'nullable|string',
-            'municipio_residencia' => 'nullable|string',
-            'agricola_migrante' => 'nullable|boolean',
-            'embarazada' => 'nullable|boolean',
+            'cui' => 'nullable|string',
+            'sexo' => 'nullable|string|in:M,F', // Es requerido porque es clave para los datos
+            'pueblo' => 'nullable|integer|in:1,2,3,4,5,6', // También es requerido en la actualización
+            'comunidad_linguistica' => 'nullable|integer|in:1,2,3,...,23', // Opcional
+            'escolaridad' => 'nullable|integer|in:0,1,2,3,4,5,6,7', // Opcional
+            'profesion_oficio' => 'nullable|in:0,1,2,3,4,5,6,7,8',
+            'discapacidad' => 'nullable|integer|in:0,1,2,3,4,5', // Opcional
+            'orientacion_sexual' => 'nullable|integer|in:0,1,2,3,4,5', // Opcional
+            'comunidad_direccion' => 'nullable|string', // Opcional
+            'municipio_residencia' => 'nullable|string', // Opcional
+            'agricola_migrante' => 'nullable|string',
+            'embarazada' => 'nullable|string',
 
             'vacuna' => 'required|exists:vacunas,nombre_vacuna',
             'grupo_priorizado' => 'required|string',
@@ -102,13 +103,20 @@ class FormularioController5bA extends Controller
             'no_orden' => $validated['no_orden'] ?? null,
             'nombre_paciente' => $validated['nombre_paciente'],
             'cui' => $validated['cui'],
+
             'sexo' => $validated['sexo'] ?? null,
             'pueblo' => $validated['pueblo'] ?? null,
             'fecha_nacimiento' => $validated['fecha_nacimiento'] ?? null,
             'comunidad_linguistica' => $validated['comunidad_linguistica'] ?? null,
-            'orientacion_sexual' => $validated['orientacion_sexual'] ?? null,
-            'escolaridad' => $validated['escolaridad'] ?? null,
+            'escolaridad' => $validated['escolaridad'] !== '' ? $validated['escolaridad'] : null,
+
             'profesion_oficio' => $validated['profesion_oficio'] ?? null,
+            'discapacidad' => $validated['discapacidad'] ?? null,
+
+            'comunidad_direccion' => 'nullable|string',
+            'municipio_residencia' => 'nullable|string',
+            'agricola_migrante' => 'nullable|string',
+            'embarazada' => 'nullable|string',
         ]);
 
         // Guardar la relación en `formulario_sigsa_tipo_formulario` (tabla pivote)
@@ -147,24 +155,33 @@ class FormularioController5bA extends Controller
         $validated = $request->validate([
             'area_salud' => 'nullable|string',
             'distrito_salud' => 'nullable|string',
+            'no_orden' => 'nullable|integer',
             'municipio' => 'nullable|string',
             'servicio_salud' => 'nullable|string',
             'responsable_informacion' => 'nullable|string',
             'cargo_responsable' => 'nullable|string',
             'anio' => 'required|string',
             'nombre_paciente' => 'required|string|max:255',
-            'cui' => 'required|string|max:13',
-            'sexo' => 'nullable|string|max:1',
+            'cui' => 'nullable|string|max:13',
             'fecha_nacimiento' => 'nullable|date',
+            'sexo' => 'nullable|string|in:M,F', // Es requerido porque es clave para los datos
+            'pueblo' => 'nullable|integer|in:1,2,3,4,5,6', // También es requerido en la actualización
+            'comunidad_linguistica' => 'nullable|integer|in:1,2,3,...,23', // Opcional
+            'escolaridad' => 'nullable|integer|in:0,1,2,3,4,5,6,7', // Opcional
+            'profesion_oficio' => 'nullable|in:0,1,2,3,4,5,6,7,8',
+            'discapacidad' => 'nullable|integer|in:0,1,2,3,4,5', // Opcional
+            'orientacion_sexual' => 'nullable|integer|in:0,1,2,3,4,5', // Opcional
+            'comunidad_direccion' => 'nullable|string', // Opcional
+            'municipio_residencia' => 'nullable|string', // Opcional
+            'agricola_migrante' => 'nullable|string',
+            'embarazada' => 'nullable|string',
+
             'vacuna' => 'required|exists:vacunas,nombre_vacuna',
             'grupo_priorizado' => 'required|string',
             'fecha_administracion' => 'required|date',
-            'dosis' => 'required|string',
-            'comunidad_direccion' => 'nullable|string',
-            'municipio_residencia' => 'nullable|string',
-            'agricola_migrante' => 'nullable|boolean',
-            'embarazada' => 'nullable|boolean',
+            'dosis' => 'required|String',
         ]);
+
 
         // Actualizar los datos generales del formulario
         $formulario = Modelo5bA::findOrFail($id);
@@ -172,6 +189,7 @@ class FormularioController5bA extends Controller
             'area_salud' => $validated['area_salud'] ?? null,
             'distrito_salud' => $validated['distrito_salud'] ?? null,
             'municipio' => $validated['municipio'] ?? null,
+            'no_orden' => $validated['no_orden'] ?? null,
             'servicio_salud' => $validated['servicio_salud'] ?? null,
             'responsable_informacion' => $validated['responsable_informacion'] ?? null,
             'cargo_responsable' => $validated['cargo_responsable'] ?? null,
@@ -179,24 +197,27 @@ class FormularioController5bA extends Controller
             'nombre_paciente' => $validated['nombre_paciente'],
             'cui' => $validated['cui'],
             'sexo' => $validated['sexo'] ?? null,
+            'pueblo' => $validated['pueblo'] ?? null,
             'fecha_nacimiento' => $validated['fecha_nacimiento'] ?? null,
+            'comunidad_linguistica' => $validated['comunidad_linguistica'] ?? null,
+            'orientacion_sexual' => $validated['orientacion_sexual'] ?? null,
+            'escolaridad' => $validated['escolaridad'] ?? null,
+            'profesion_oficio' => $validated['profesion_oficio'] ?? null,
         ]);
-
-        // Actualizar los datos de Residencia si ya existen
         if ($formulario->residencia) {
             $formulario->residencia->update([
                 'comunidad_direccion' => $validated['comunidad_direccion'] ?? null,
                 'municipio_residencia' => $validated['municipio_residencia'] ?? null,
-                'agricola_migrante' => $validated['agricola_migrante'] ?? null,
-                'embarazada' => $validated['embarazada'] ?? null,
+                'agricola_migrante' => $validated['agricola_migrante'],
+                'embarazada' => $validated['embarazada'],
             ]);
         } else {
             // Crear los datos de residencia si no existen
             $formulario->residencia()->create([
                 'comunidad_direccion' => $validated['comunidad_direccion'] ?? null,
                 'municipio_residencia' => $validated['municipio_residencia'] ?? null,
-                'agricola_migrante' => $validated['agricola_migrante'] ?? null,
-                'embarazada' => $validated['embarazada'] ?? null,
+                'agricola_migrante' => $validated['agricola_migrante'],
+                'embarazada' => $validated['embarazada'],
             ]);
         }
 
@@ -220,13 +241,20 @@ class FormularioController5bA extends Controller
             ]);
         }
 
-// Redirigir al índice con mensaje de éxito
-        return redirect()->route('for-sigsa-5bA.index')->with('success', 'Formulario actualizado correctamente.');
-
+        $buscar = $request->input('buscar');
+        if ($buscar) {
+            return redirect()->route('busqueda.resultados', ['buscar' => $buscar])
+                ->with('success', 'Formulario actualizado correctamente.');
         }
 
 
-        // Método para eliminar un formulario
+// Redirigir al índice con mensaje de éxito
+        return redirect()->route('for-sigsa-5bA.index')->with('success', 'Formulario actualizado correctamente.');
+
+    }
+
+
+    // Método para eliminar un formulario
     public function destroy($id)
     {
         // Buscar el formulario por ID y eliminarlo junto con sus relaciones en cascada

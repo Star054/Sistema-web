@@ -17,17 +17,17 @@ class CreateConsultaTable extends Migration
             $table->id();
 
             // Relación con formulario_sigsa_base
-            $table->unsignedBigInteger('formulario_sigsa_base_id');  // Agregar clave foránea
+            $table->unsignedBigInteger('formulario_sigsa_base_id');
             $table->foreign('formulario_sigsa_base_id')
                 ->references('id')->on('formulario_sigsa_base')
                 ->onDelete('cascade');
 
             // Campos relacionados con la consulta
-            $table->string('consulta')->nullable();                 // Consulta
-                $table->String('control')->nullable();
-            $table->integer('semana_gestacion')->nullable();
-            $table->string('vive')->nullable();
-            $table->string('fue')->nullable();
+            $table->integer('consulta')->nullable();                 // 1: Primera consulta, 2: Reconsulta, etc.
+            $table->integer('control')->nullable();                  // 0: No aplica, 1: Prenatal, etc.
+            $table->integer('semana_gestacion')->nullable();         // Semana de gestación
+            $table->string('viene')->nullable();                     // Campo 'viene'
+            $table->string('fue')->nullable();                       // Campo 'fue'
 
             // Campos relacionados con motivo de consulta
             $table->string('referido_a')->nullable();
@@ -37,7 +37,8 @@ class CreateConsultaTable extends Migration
             // Campos relacionados con el tratamiento
             $table->text('tratamiento_descripcion')->nullable();     // Descripción del tratamiento o medicamento
             $table->string('tratamiento_presentacion')->nullable();  // Presentación del tratamiento
-            $table->double('cantidad_recetada')->nullable();         // Cantidad recetada
+            $table->string('cantidad_recetada')->nullable();         // Cantidad recetada
+
 
             // Campos relacionados con la notificación
             $table->string('notificacion_lugar')->nullable();        // Lugar de notificación

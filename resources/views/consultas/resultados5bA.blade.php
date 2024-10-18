@@ -32,37 +32,41 @@
                                     </thead>
                                     <tbody>
                                     @foreach($pacientes as $paciente)
-                                        @if ($paciente->mujer15a49yOtrosGrupos->isNotEmpty())
-                                            @foreach($paciente->mujer15a49yOtrosGrupos as $grupo)
+                                        @if ($paciente->criteriosVacuna && $paciente->criteriosVacuna->isNotEmpty())
+                                            @foreach($paciente->criteriosVacuna as $criterio)
                                                 <tr>
                                                     <td>{{ $paciente->nombre_paciente }}</td>
                                                     <td>{{ $paciente->cui }}</td>
                                                     <td>{{ $paciente->residencia->municipio_residencia ?? 'N/A' }}</td>
                                                     <td>{{ $paciente->residencia->comunidad_direccion ?? 'N/A' }}</td>
-                                                    <td>{{ $paciente->vacuna }}</td>
-                                                    <td>{{ $grupo->tipo_dosis }}</td>
-                                                    <td>{{ $grupo->fecha_vacunacion }}</td>
+                                                    <td>{{ $criterio->vacuna }}</td>
+                                                    <td>{{ $criterio->tipo_dosis }}</td>
+                                                    <td>{{ $criterio->fecha_administracion }}</td>
                                                 </tr>
                                             @endforeach
                                         @else
                                             <tr>
-                                                <td colspan="7">No se encontraron registros en Mujer 15 a 49</td>
+                                                <td colspan="7">No se encontraron registros en Criterios Vacuna</td>
                                             </tr>
                                         @endif
                                     @endforeach
                                     </tbody>
                                 </table>
+
                             @endif
 
                         </div>
                     </div>
-                    <form action="{{ route('pdf.generar5b') }}" method="POST">
+
+
+                    <form action="{{ route('pdf.generar5bA') }}" method="POST">
                         @csrf
                         <input type="hidden" name="vacuna" value="{{ request('vacuna') }}">
                         <input type="hidden" name="mes" value="{{ request('mes') }}">
-                        <button type="submit">Generar PDF Formulario 5b</button>
+                        <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
+                            Generar PDF Formulario 5bA
+                        </button>
                     </form>
-
 
 
 
