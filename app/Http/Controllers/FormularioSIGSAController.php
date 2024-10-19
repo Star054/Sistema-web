@@ -191,6 +191,8 @@ class FormularioSIGSAController extends Controller
     public function update(Request $request, $id)
     {
 
+
+        // Validar los datos del formulario
         $validated = $request->validate([
             'vacuna' => 'nullable|string|exists:vacunas,nombre_vacuna', // No requerido en la actualización
             'nombre_paciente' => 'required|string|max:150', // Este es requerido porque es un campo clave
@@ -220,6 +222,7 @@ class FormularioSIGSAController extends Controller
             'vacuna_otros_grupos' => 'nullable|array', // Opcional
             'vacuna_otros_grupos.*' => 'nullable|date', // Opcional
         ]);
+
         // Buscar el formulario
         $formulario = FormularioSIGSA5b::findOrFail($id);
 
@@ -246,10 +249,8 @@ class FormularioSIGSAController extends Controller
             'discapacidad' => $validated['discapacidad'] ?? null,
         ]);
 
-
         // Actualizar residencia
         $residencia = $formulario->residencia;
-
         if ($residencia) {
             $residencia->update([
                 'comunidad_direccion' => $validated['comunidad_direccion'] ?? $residencia->comunidad_direccion,
@@ -267,38 +268,38 @@ class FormularioSIGSAController extends Controller
         }
 
         // Actualizar dosis de vacunación para mujeres de 15 a 49 años
-        foreach ($validated['vacuna_mujer_15_49'] as $tipoDosis => $fechaVacunacion) {
-            if ($fechaVacunacion) {
-                Mujer15a49yOtrosGrupos::updateOrCreate(
-                    ['formulario_base_id' => $formulario->id, 'grupo' => 'mujer_15_49', 'tipo_dosis' => $tipoDosis],
-                    ['fecha_vacunacion' => $fechaVacunacion]
-                );
+        if (!empty($validated['vacuna_mujer_15_49'])) {
+            foreach ($validated['vacuna_mujer_15_49'] as $tipoDosis => $fechaVacunacion) {
+                if ($fechaVacunacion) {
+                    Mujer15a49yOtrosGrupos::updateOrCreate(
+                        ['formulario_base_id' => $formulario->id, 'grupo' => 'mujer_15_49', 'tipo_dosis' => $tipoDosis],
+                        ['fecha_vacunacion' => $fechaVacunacion]
+                    );
+                }
             }
         }
 
         // Actualizar dosis de vacunación para otros grupos
-        foreach ($validated['vacuna_otros_grupos'] as $tipoDosis => $fechaVacunacion) {
-            if ($fechaVacunacion) {
-                Mujer15a49yOtrosGrupos::updateOrCreate(
-                    ['formulario_base_id' => $formulario->id, 'grupo' => 'otros_grupos', 'tipo_dosis' => $tipoDosis],
-                    ['fecha_vacunacion' => $fechaVacunacion]
-                );
+        if (!empty($validated['vacuna_otros_grupos'])) {
+            foreach ($validated['vacuna_otros_grupos'] as $tipoDosis => $fechaVacunacion) {
+                if ($fechaVacunacion) {
+                    Mujer15a49yOtrosGrupos::updateOrCreate(
+                        ['formulario_base_id' => $formulario->id, 'grupo' => 'otros_grupos', 'tipo_dosis' => $tipoDosis],
+                        ['fecha_vacunacion' => $fechaVacunacion]
+                    );
+                }
             }
-
         }
 
+        // Redirigir de vuelta a la búsqueda si el término de búsqueda está presente
+        $buscar = $request->input('buscar');
+        if ($buscar) {
+            return redirect()->route('busqueda.resultados', ['buscar' => $buscar])
+                ->with('success', 'Formulario actualizado correctamente.');
+        }
 
-
-        // Actualizar dosis de vacunación para otros grupos
-        foreach ($validated['vacuna_otros_grupos'] as $tipoDosis => $fechaVacunacion) {
-            if ($fechaVacunacion) {
-                Mujer15a49yOtrosGrupos::updateOrCreate(
-                    ['formulario_base_id' => $formulario->id, 'grupo' => 'otros_grupos', 'tipo_dosis' => $tipoDosis],
-                    ['fecha_vacunacion' => $fechaVacunacion]
-                );
-            }
-           }
-
+        // Redirigir al índice si no hay un término de búsqueda
         return redirect()->route('for-sigsa-5b.index')->with('success', 'Formulario actualizado correctamente');
     }
+
 }

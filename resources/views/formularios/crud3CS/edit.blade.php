@@ -63,7 +63,7 @@
 
                             <div class="mb-4">
                                 <label for="no_historia_clinica" class="block text-gray-700 dark:text-gray-400">No. Historia clínica</label>
-                                <input type="text" name="no_historia_clinica" id="no_historia_clinica" value="{{ $formulario->dia_consulta }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                <input type="text" name="no_historia_clinica" id="no_historia_clinica" value="{{ $formulario->no_historia_clinica }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
                             </div>
 
                             <div class="mb-4">
@@ -200,146 +200,137 @@
                     <div class="mt-8">
                         <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Campos de Consulta</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Consulta -->
-                            <div class="mb-4">
-                                <label for="consulta" class="block text-gray-700 dark:text-gray-400">Consulta</label>
-                                <select name="consulta" id="consulta" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full focus:border-indigo-500 focus:ring-indigo-500">
-                                    <option value="" {{ is_null($formulario->consulta->consulta) ? 'selected' : '' }}>Sin seleccionar</option>
-                                    <option value="1" {{ $formulario->consulta->consulta == 1 ? 'selected' : '' }}>Primera consulta</option>
-                                    <option value="2" {{ $formulario->consulta->consulta == 2 ? 'selected' : '' }}>Reconsulta</option>
-                                    <option value="3" {{ $formulario->consulta->consulta == 3 ? 'selected' : '' }}>Interconsulta</option>
-                                    <option value="4" {{ $formulario->consulta->consulta == 4 ? 'selected' : '' }}>Emergencia</option>
-                                </select>
-                            </div>
 
-                            <!-- Control -->
-                            <div class="mb-4">
-                                <label for="control" class="block text-gray-700 dark:text-gray-400">Control</label>
-                                <select name="control" id="control" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full focus:border-indigo-500 focus:ring-indigo-500">
-                                    <option value="" {{ is_null($formulario->consulta->control) ? 'selected' : '' }}>Sin seleccionar</option>
-                                    <option value="0" {{ $formulario->consulta->control == 0 ? 'selected' : '' }}>No aplica</option>
-                                    <option value="1" {{ $formulario->consulta->control == 1 ? 'selected' : '' }}>Prenatal</option>
-                                    <option value="2" {{ $formulario->consulta->control == 2 ? 'selected' : '' }}>Puerperio</option>
-                                    <option value="3" {{ $formulario->consulta->control == 3 ? 'selected' : '' }}>Planificación Familiar</option>
-                                    <option value="4" {{ $formulario->consulta->control == 4 ? 'selected' : '' }}>Profilaxia Sexual</option>
-                                    <option value="5" {{ $formulario->consulta->control == 5 ? 'selected' : '' }}>Papanicolaou</option>
-                                    <option value="6" {{ $formulario->consulta->control == 6 ? 'selected' : '' }}>IVAA</option>
-                                </select>
-                            </div>
+                            @foreach($formulario->consulta as $consulta)
+                                <!-- Campos para cada consulta individual -->
+                                <div class="mb-4">
+                                    <label for="consulta_{{ $loop->index }}" class="block text-gray-700 dark:text-gray-400">Consulta</label>
+                                    <select name="consulta[{{ $loop->index }}]" id="consulta_{{ $loop->index }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                        <option value="" {{ is_null($consulta->consulta) ? 'selected' : '' }}>Sin seleccionar</option>
+                                        <option value="1" {{ $consulta->consulta == 1 ? 'selected' : '' }}>Primera consulta</option>
+                                        <option value="2" {{ $consulta->consulta == 2 ? 'selected' : '' }}>Reconsulta</option>
+                                        <option value="3" {{ $consulta->consulta == 3 ? 'selected' : '' }}>Interconsulta</option>
+                                        <option value="4" {{ $consulta->consulta == 4 ? 'selected' : '' }}>Emergencia</option>
+                                    </select>
+                                </div>
+
+                                <!-- Control -->
+                                <div class="mb-4">
+                                    <label for="control_{{ $loop->index }}" class="block text-gray-700 dark:text-gray-400">Control</label>
+                                    <select name="control[{{ $loop->index }}]" id="control_{{ $loop->index }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                        <option value="" {{ is_null($consulta->control) ? 'selected' : '' }}>Sin seleccionar</option>
+                                        <option value="0" {{ $consulta->control == 0 ? 'selected' : '' }}>No aplica</option>
+                                        <option value="1" {{ $consulta->control == 1 ? 'selected' : '' }}>Prenatal</option>
+                                        <option value="2" {{ $consulta->control == 2 ? 'selected' : '' }}>Puerperio</option>
+                                    </select>
+                                </div>
+
+                                <!-- Semana de Gestación -->
+                                <div class="mb-4">
+                                    <label for="semana_gestacion_{{ $loop->index }}" class="block text-gray-700 dark:text-gray-400">Semana de Gestación</label>
+                                    <input type="number" name="semana_gestacion[{{ $loop->index }}]" id="semana_gestacion_{{ $loop->index }}" value="{{ old('semana_gestacion.' . $loop->index, $consulta->semana_gestacion ?? '') }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                </div>
+
+                                <!-- Viene -->
+                                <div class="mb-4">
+                                    <label for="viene_{{ $loop->index }}" class="block text-gray-700 dark:text-gray-400">Viene</label>
+                                    <select name="viene[{{ $loop->index }}]" id="viene_{{ $loop->index }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                        <option value="" {{ is_null($consulta->viene) ? 'selected' : '' }}>Sin seleccionar</option>
+                                        <option value="0" {{ $consulta->viene == 0 ? 'selected' : '' }}>No aplica</option>
+                                        <option value="1" {{ $consulta->viene == 1 ? 'selected' : '' }}>Viene Referido</option>
+                                        <option value="2" {{ $consulta->viene == 2 ? 'selected' : '' }}>Viene Contra Referido</option>
+                                    </select>
+                                </div>
+
+                                <!-- Fue -->
+                                <div class="mb-4">
+                                    <label for="fue_{{ $loop->index }}" class="block text-gray-700 dark:text-gray-400">Fue</label>
+                                    <select name="fue[{{ $loop->index }}]" id="fue_{{ $loop->index }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                        <option value="" {{ is_null($consulta->fue) ? 'selected' : '' }}>Sin seleccionar</option>
+                                        <option value="0" {{ $consulta->fue == 0 ? 'selected' : '' }}>No aplica</option>
+                                        <option value="1" {{ $consulta->fue == 1 ? 'selected' : '' }}>Fue Referido</option>
+                                        <option value="2" {{ $consulta->fue == 2 ? 'selected' : '' }}>Fue Contra Referido</option>
+                                    </select>
+                                </div>
+
+                                <!-- Referido a -->
+                                <div class="mb-4">
+                                    <label for="referido_a_{{ $loop->index }}" class="block text-gray-700 dark:text-gray-400">Referido a</label>
+                                    <input type="text" name="referido_a[{{ $loop->index }}]" id="referido_a_{{ $loop->index }}" value="{{ old('referido_a.' . $loop->index, $consulta->referido_a ?? '') }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                </div>
+
+                                <!-- Diagnóstico -->
+                                <div class="mb-4">
+                                    <label for="diagnostico_{{ $loop->index }}" class="block text-gray-700 dark:text-gray-400">Descripción de Diagnóstico/Control</label>
+                                    <textarea name="diagnostico[{{ $loop->index }}]" id="diagnostico_{{ $loop->index }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">{{ old('diagnostico.' . $loop->index, $consulta->diagnostico ?? '') }}</textarea>
+                                </div>
+
+                                <!-- Código CIE-10 -->
+                                <div class="mb-4">
+                                    <label for="codigo_cie_{{ $loop->index }}" class="block text-gray-700 dark:text-gray-400">Código CIE-10</label>
+                                    <input type="text" name="codigo_cie[{{ $loop->index }}]" id="codigo_cie_{{ $loop->index }}" value="{{ old('codigo_cie.' . $loop->index, $consulta->codigo_cie ?? '') }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                </div>
+
+                                <!-- Descripción (Vacuna) -->
+                                <div class="mb-4">
+                                    <label for="tratamiento_descripcion_{{ $loop->index }}" class="block text-gray-700 dark:text-gray-400">Descripción (Vacuna)</label>
+                                    <select name="tratamiento_descripcion[{{ $loop->index }}]" id="tratamiento_descripcion_{{ $loop->index }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                        <option value="">Sin seleccionar</option>
+                                        @foreach($vacunas as $vacuna)
+                                            <option value="{{ $vacuna->nombre_vacuna }}" {{ old('tratamiento_descripcion.' . $loop->index, $consulta->tratamiento_descripcion ?? '') == $vacuna->nombre_vacuna ? 'selected' : '' }}>
+                                                {{ $vacuna->nombre_vacuna }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <!-- Presentación del Tratamiento -->
+                                <div class="mb-4">
+                                    <label for="tratamiento_presentacion_{{ $loop->index }}" class="block text-gray-700 dark:text-gray-400">Presentación del Tratamiento</label>
+                                    <input type="text" name="tratamiento_presentacion[{{ $loop->index }}]" id="tratamiento_presentacion_{{ $loop->index }}" value="{{ old('tratamiento_presentacion.' . $loop->index, $consulta->tratamiento_presentacion ?? '') }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                </div>
+
+                                <!-- Cantidad Recetada -->
+                                <div class="mb-4">
+                                    <label for="cantidad_recetada_{{ $loop->index }}" class="block text-gray-700 dark:text-gray-400">Cantidad Recetada</label>
+                                    <input type="number" name="cantidad_recetada[{{ $loop->index }}]" id="cantidad_recetada_{{ $loop->index }}" value="{{ old('cantidad_recetada.' . $loop->index, $consulta->cantidad_recetada ?? '') }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                </div>
+
+                                <!-- Lugar de Notificación -->
+                                <div class="mb-4">
+                                    <label for="notificacion_lugar_{{ $loop->index }}" class="block text-gray-700 dark:text-gray-400">Lugar de Notificación</label>
+                                    <select name="notificacion_lugar[{{ $loop->index }}]" id="notificacion_lugar_{{ $loop->index }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                        <option value="" {{ is_null($consulta->notificacion_lugar) ? 'selected' : '' }}>Sin seleccionar</option>
+                                        <option value="0" {{ $consulta->notificacion_lugar == 0 ? 'selected' : '' }}>No aplica</option>
+                                        <option value="1" {{ $consulta->notificacion_lugar == 1 ? 'selected' : '' }}>Ministerio Público</option>
+                                        <option value="2" {{ $consulta->notificacion_lugar == 2 ? 'selected' : '' }}>Procuraduría General de la Nación</option>
+                                        <option value="3" {{ $consulta->notificacion_lugar == 3 ? 'selected' : '' }}>Policía Nacional Civil</option>
+                                    </select>
+                                </div>
+
+                                <!-- Número de Notificación -->
+                                <div class="mb-4">
+                                    <label for="notificacion_numero_{{ $loop->index }}" class="block text-gray-700 dark:text-gray-400">Número de Notificación</label>
+                                    <input type="text" name="notificacion_numero[{{ $loop->index }}]" id="notificacion_numero_{{ $loop->index }}" value="{{ old('notificacion_numero.' . $loop->index, $consulta->notificacion_numero ?? '') }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                </div>
+
+                                <!-- Nombre del Acompañante -->
+                                <div class="mb-4">
+                                    <label for="nombre_acompanante_{{ $loop->index }}" class="block text-gray-700 dark:text-gray-400">Nombre del Acompañante</label>
+                                    <input type="text" name="nombre_acompanante[{{ $loop->index }}]" id="nombre_acompanante_{{ $loop->index }}" value="{{ old('nombre_acompanante.' . $loop->index, $consulta->nombre_acompanante ?? '') }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                </div>
+                            @endforeach
 
 
-                            <!-- Semana de Gestación -->
-                            <div class="mb-4">
-                                <label for="semana_gestacion" class="block text-gray-700 dark:text-gray-400">Semana de Gestación</label>
-                                <input type="number" name="semana_gestacion" id="semana_gestacion" value="{{ old('semana_gestacion', $formulario->consulta->semana_gestacion ?? '') }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full focus:border-indigo-500 focus:ring-indigo-500">
-                            </div>
-
-
-
-                            <!-- Control -->
-                            <div class="mb-4">
-                                <label for="viene" class="block text-gray-700 dark:text-gray-400">Viene</label>
-                                <select name="viene" id="viene" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full focus:border-indigo-500 focus:ring-indigo-500">
-                                    <option value="">Sin seleccionar</option> <!-- Opción vacía -->
-                                    <option value="0">0 - No aplica</option>
-                                    <option value="1">1 - Viene Referido</option>
-                                    <option value="2">2 - Viene Contra Referido</option>
-                                </select>
-                            </div>
-
-
-                            <div class="mb-4">
-                                <label for="fue" class="block text-gray-700 dark:text-gray-400">Fue</label>
-                                <select name="fue" id="fue" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full focus:border-indigo-500 focus:ring-indigo-500">
-                                    <option value="">Sin seleccionar</option> <!-- Opción vacía -->
-                                    <option value="0">0 - No aplica</option>
-                                    <option value="1">1 - Fue Referido</option>
-                                    <option value="2">2 - Fue Contra Referido</option>
-                                </select>
-                            </div>
-
-
-                            <!-- Referido a -->
-                            <div class="mb-4">
-                                <label for="referido_a" class="block text-gray-700 dark:text-gray-400">Referido a</label>
-                                <input type="text" name="referido_a" id="referido_a" value="{{ old('referido_a', $formulario->consulta->referido_a ?? '') }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full focus:border-indigo-500 focus:ring-indigo-500">
-                            </div>
-
-
-                            <!-- Diagnóstico -->
-                            <div class="mb-4">
-                                <label for="diagnostico" class="block text-gray-700 dark:text-gray-400">Descripción de diagnóstico/control</label>
-                                <textarea name="diagnostico" id="diagnostico" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full focus:border-indigo-500 focus:ring-indigo-500">{{ old('diagnostico', $formulario->consulta->diagnostico ?? '') }}</textarea>
-                            </div>
-
-                            <!-- Código CIE -->
-                            <div class="mb-4">
-                                <label for="codigo_cie" class="block text-gray-700 dark:text-gray-400">Código CIE-10</label>
-                                <input type="text" name="codigo_cie" id="codigo_cie" value="{{ old('codigo_cie', $formulario->consulta->codigo_cie ?? '') }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full focus:border-indigo-500 focus:ring-indigo-500">
-                            </div>
-
-
-                            <!-- Descripción (Vacuna) -->
-                            <div class="mb-4">
-                                <label for="tratamiento_descripcion" class="block text-gray-700 dark:text-gray-400">Descripción (Vacuna)</label>
-                                <select name="tratamiento_descripcion" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full focus:border-indigo-500 focus:ring-indigo-500">
-                                    <option value="">Sin seleccionar</option>
-                                    @foreach($vacunas as $vacuna)
-                                        <option value="{{ $vacuna->nombre_vacuna }}" {{ old('tratamiento_descripcion', $formulario->consulta->tratamiento_descripcion ?? '') == $vacuna->nombre_vacuna ? 'selected' : '' }}>
-                                            {{ $vacuna->nombre_vacuna }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @if($errors->has('tratamiento_descripcion'))
-                                    <p class="text-red-600 text-sm mt-2">{{ $errors->first('tratamiento_descripcion') }}</p>
-                                @endif
-                            </div>
-
-                            <!-- Presentación del Tratamiento -->
-                            <div class="mb-4">
-                                <label for="tratamiento_presentacion" class="block text-gray-700 dark:text-gray-400">Presentación del Tratamiento</label>
-                                <input type="text" name="tratamiento_presentacion" id="tratamiento_presentacion" value="{{ old('tratamiento_presentacion', $formulario->consulta->tratamiento_presentacion ?? '') }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full focus:border-indigo-500 focus:ring-indigo-500">
-                            </div>
-
-                            <!-- Cantidad Recetada -->
-                            <div class="mb-4">
-                                <label for="cantidad_recetada" class="block text-gray-700 dark:text-gray-400">Cantidad Recetada</label>
-                                <input type="number" name="cantidad_recetada" id="cantidad_recetada" value="{{ old('cantidad_recetada', $formulario->consulta->cantidad_recetada ?? '') }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full focus:border-indigo-500 focus:ring-indigo-500">
-                            </div>
-
-                            <!-- Lugar de Notificación -->
-                            <div class="mb-4">
-                                <label for="notificacion_lugar" class="block text-gray-700 dark:text-gray-400">15/Lugar</label>
-                                <select name="notificacion_lugar" id="notificacion_lugar" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full focus:border-indigo-500 focus:ring-indigo-500">
-                                    <option value="" {{ is_null($formulario->consulta->notificacion_lugar) ? 'selected' : '' }}>Sin seleccionar</option>
-                                    <option value="0" {{ $formulario->consulta->notificacion_lugar == 0 ? 'selected' : '' }}>No aplica</option>
-                                    <option value="1" {{ $formulario->consulta->notificacion_lugar == 1 ? 'selected' : '' }}>Ministerio Público</option>
-                                    <option value="2" {{ $formulario->consulta->notificacion_lugar == 2 ? 'selected' : '' }}>Procuraduría General de la Nación</option>
-                                    <option value="3" {{ $formulario->consulta->notificacion_lugar == 3 ? 'selected' : '' }}>Policía Nacional Civil</option>
-                                </select>
-                            </div>
-
-                            <!-- Número de Notificación -->
-                            <div class="mb-4">
-                                <label for="notificacion_numero" class="block text-gray-700 dark:text-gray-400">Número</label>
-                                <input type="text" name="notificacion_numero" id="notificacion_numero" value="{{ old('notificacion_numero', $formulario->consulta->notificacion_numero ?? '') }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full focus:border-indigo-500 focus:ring-indigo-500">
-                            </div>
-
-                            <!-- Nombre del Acompañante -->
-                            <div class="mb-4">
-                                <label for="nombre_acompanante" class="block text-gray-700 dark:text-gray-400">Nombres y apellidos del acompañante</label>
-                                <input type="text" name="nombre_acompanante" id="nombre_acompanante" value="{{ old('nombre_acompanante', $formulario->consulta->nombre_acompanante ?? '') }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full focus:border-indigo-500 focus:ring-indigo-500">
-                            </div>
+                                <div class="mt-8">
+                                    <x-primary-button type="submit" class="bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-opacity-50 text-white font-semibold rounded-lg py-2 px-4 transition-all duration-300 ease-in-out">
+                                        {{ __('Actualizar') }}
+                                    </x-primary-button>
+                                </div>
+                        <form/>
                         </div>
                     </div>
 
-                    <div class="mt-8">
-                        <x-primary-button type="submit" class="bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-opacity-50 text-white font-semibold rounded-lg py-2 px-4 transition-all duration-300 ease-in-out">
-                            {{ __('Actualizar') }}
-                        </x-primary-button>
-                    </div>
-                </form>
 
                 @if ($errors->any())
                     <div class="alert alert-danger">

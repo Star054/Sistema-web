@@ -12,7 +12,6 @@ class Modelo3CS extends Model
     protected $table = 'formulario_sigsa_base'; // Si esta tabla es la correcta
 
     protected $fillable = [
-
         'area_salud',
         'distrito_salud',
         'municipio',
@@ -31,7 +30,6 @@ class Modelo3CS extends Model
         'orientacion_sexual',
         'escolaridad',
         'profesion_oficio',
-
     ];
 
     // Relación con Residencia
@@ -43,7 +41,7 @@ class Modelo3CS extends Model
     // Relación con Consulta
     public function consulta()
     {
-        return $this->hasOne(Consulta::class, 'formulario_sigsa_base_id');
+        return $this->hasMany(Consulta::class, 'formulario_sigsa_base_id');
     }
 
     // Relación many-to-many con TipoFormulario

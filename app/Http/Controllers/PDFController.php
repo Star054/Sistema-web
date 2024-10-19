@@ -7,7 +7,7 @@ use TCPDF;
 use App\Models\FormularioSIGSA5b;
 use App\Models\Modelo5bA;
 use Carbon\Carbon;
-
+use App\Models\Modelo3CS;
 
 class PDFController extends Controller
 {
@@ -94,7 +94,7 @@ class PDFController extends Controller
 
         // Definir los anchos de las columnas ajustados
         $columnWidths = [
-            'no' => 8,
+            'no_orden' => 8,
             'nombre_paciente' => 50, // Aumentamos el ancho para el nombre
             'cui' => 26,
             'sexo' => 12, // Reducido
@@ -118,7 +118,7 @@ class PDFController extends Controller
         $pdf->SetFont('helvetica', 'B', 8);
 
         // Usaremos MultiCell en lugar de Cell para poder ajustar la altura
-        $pdf->MultiCell($columnWidths['no'], 7, 'No', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['no_orden'], 7, 'No', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['nombre_paciente'], 7, 'Nombre Paciente', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['cui'], 7, 'CUI', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['sexo'], 7, 'Sexo', 1, 'C', 0, 0);
@@ -143,7 +143,7 @@ class PDFController extends Controller
             // Ahora recorremos todas las dosis del paciente
             foreach ($paciente->mujer15a49yOtrosGrupos as $grupo) {
                 $rowData = [
-                    'no' => $paciente->no_orden,
+                    'no_orden' => $paciente->no_orden,
                     'nombre_paciente' => $paciente->nombre_paciente,
                     'cui' => $paciente->cui,
                     'sexo' => $paciente->sexo,
@@ -167,7 +167,7 @@ class PDFController extends Controller
                 $maxHeight = $this->getMaxRowHeight($pdf, $rowData, $columnWidths);
 
                 // Escribimos cada celda utilizando MultiCell para ajustar la altura
-                $pdf->MultiCell($columnWidths['no'], $maxHeight, $rowData['no'], 1, 'C', 0, 0);
+                $pdf->MultiCell($columnWidths['no_orden'], $maxHeight, $rowData['no_orden'], 1, 'C', 0, 0);
                 $pdf->MultiCell($columnWidths['nombre_paciente'], $maxHeight, $rowData['nombre_paciente'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['cui'], $maxHeight, $rowData['cui'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['sexo'], $maxHeight, $rowData['sexo'], 1, 'C', 0, 0);
@@ -285,7 +285,7 @@ class PDFController extends Controller
 
         // Definir los anchos de las columnas ajustados
         $columnWidths = [
-            'no' => 8,
+            'no_orden' => 8,
             'nombre_paciente' => 41,
             'cui' => 21,
             'sexo' => 8,
@@ -308,7 +308,7 @@ class PDFController extends Controller
 
         // Agregar los encabezados de las columnas
         $pdf->SetFont('helvetica', 'B', 7);
-        $pdf->MultiCell($columnWidths['no'], 7, 'No', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['no_orden'], 7, 'No', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['nombre_paciente'], 7, 'Nombre Paciente', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['cui'], 7, 'CUI', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['sexo'], 7, 'Sexo', 1, 'C', 0, 0);
@@ -333,7 +333,7 @@ class PDFController extends Controller
         foreach ($pacientes as $paciente) {
             foreach ($paciente->criteriosVacuna as $criterio) {
                 $rowData = [
-                    'no' => $paciente->no_orden,
+                    'no_orden' => $paciente->no_orden,
                     'nombre_paciente' => $paciente->nombre_paciente,
                     'cui' => $paciente->cui,
                     'sexo' => $paciente->sexo,
@@ -358,7 +358,7 @@ class PDFController extends Controller
                 $maxHeight = max($this->getMaxRowHeight($pdf, $rowData, $columnWidths), 5);
 
                 // Escribimos cada celda utilizando MultiCell para ajustar la altura
-                $pdf->MultiCell($columnWidths['no'], $maxHeight, $rowData['no'], 1, 'C', 0, 0);
+                $pdf->MultiCell($columnWidths['no_orden'], $maxHeight, $rowData['no_orden'], 1, 'C', 0, 0);
                 $pdf->MultiCell($columnWidths['nombre_paciente'], $maxHeight, $rowData['nombre_paciente'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['cui'], $maxHeight, $rowData['cui'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['sexo'], $maxHeight, $rowData['sexo'], 1, 'C', 0, 0);
@@ -383,4 +383,5 @@ class PDFController extends Controller
         // Descargar el PDF
         $pdf->Output('reporte_pacientes_5bA.pdf', 'D');
     }
+
 }

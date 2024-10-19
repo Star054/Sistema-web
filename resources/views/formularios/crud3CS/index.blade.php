@@ -28,14 +28,21 @@
                                 <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{{ $formulario->nombre_paciente }}</td>
                                 <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{{ $formulario->cui }}</td>
                                 <td class="px-4 py-2 text-sm font-medium space-x-2">
-                                    <a href="{{ route('formularios-3cs.edit', $formulario->id) }}" class="text-blue-500 hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-300">Editar</a>
 
-                                    <form action="{{ route('formularios-3cs.destroy', $formulario->id) }}" method="POST" class="inline-block" onsubmit="return confirm('¿Estás seguro de eliminar este formulario?');">
+                                <td class="px-4 py-2 text-sm font-medium space-x-2">
+                                    <!-- Enlace para editar -->
+                                    <a href="{{ route('formularios-3cs.edit', ['formularios_3c' => $formulario->id]) }}" class="text-blue-500 hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-300">Editar</a>
+
+                                    <!-- Formulario para eliminar -->
+                                    <form action="{{ route('formularios-3cs.destroy', ['formularios_3c' => $formulario->id]) }}" method="POST" class="inline-block" onsubmit="return confirm('¿Estás seguro de eliminar este formulario?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-500 hover:text-red-400 dark:text-red-400 dark:hover:text-red-300">Eliminar</button>
                                     </form>
                                 </td>
+
+
+
                             </tr>
                         @endforeach
                         </tbody>

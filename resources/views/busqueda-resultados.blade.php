@@ -37,17 +37,20 @@
                                     <td>{{ $paciente->tipo_dosis }}</td>
                                     <td>{{ $paciente->tipo_formulario }}</td>
                                     <td>
-                                    <td>
-                                    <td>
-                                    <td>
                                         @if($paciente->tipo_formulario == 'FOR-SIGSA-5b')
+
                                             <a href="{{ route('for-sigsa-5b.edit', ['for_sigsa_5b' => $paciente->id, 'buscar' => request('buscar')]) }}" class="text-indigo-600 hover:underline">Editar</a>
+
                                         @elseif($paciente->tipo_formulario == 'FOR-SIGSA-5bA')
                                             <a href="{{ route('for-sigsa-5bA.edit', ['for_sigsa_5bA' => $paciente->id, 'buscar' => request('buscar')]) }}" class="text-indigo-600 hover:underline">Editar</a>
                                         @elseif($paciente->tipo_formulario == 'FOR-SIGSA-3CS')
-                                            <a href="{{ route('formularios-3cs.edit', ['formularios_3cs' => $paciente->id, 'buscar' => request('buscar')]) }}" class="text-indigo-600 hover:underline">Editar</a>
+{{--                                            <a href="{{ route('formularios-3cs.edit', ['formularios_3cs' => $paciente->id, 'buscar' => request('buscar')]) }}" class="text-indigo-600 hover:underline">Editar</a>--}}
+                                            <a href="{{ route('formularios-3cs.edit', ['formularios_3c' => $paciente->id, 'buscar' => request('buscar')]) }}" class="text-indigo-600 hover:underline">Editar</a>
+
                                         @endif
                                     </td>
+
+
                                 </tr>
                             @endforeach
                             </tbody>

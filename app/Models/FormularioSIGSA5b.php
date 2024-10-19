@@ -58,5 +58,11 @@ class FormularioSIGSA5b extends Model
     }
 
 
+    public function consulta()
+    {
+        return $this->hasMany(Consulta::class, 'formulario_sigsa_base_id');
+    }
+
+
 
 }

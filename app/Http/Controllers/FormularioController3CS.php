@@ -31,7 +31,7 @@ class FormularioController3CS extends Controller
             'responsable_informacion' => 'nullable|string',
             'cargo_responsable' => 'nullable|string',
             'anio' => 'required|string',
-            'dia_consulta' => 'nullable|string',
+            'dia_consulta' => 'nullable|date',
             'no_historia_clinica' => 'nullable|string',
             'nombre_paciente' => 'required|string|max:150',
             'fecha_nacimiento' => 'nullable|date',
@@ -66,6 +66,8 @@ class FormularioController3CS extends Controller
             'notificacion_lugar' => 'nullable|in:0,1,2,3',
             'notificacion_numero' => 'nullable|string|max:255',
             'nombre_acompanante' => 'nullable|string|max:255',
+
+
 
         ]);
 
@@ -164,7 +166,6 @@ class FormularioController3CS extends Controller
 
 
 
-
     public function update(Request $request, $id)
     {
         // Validar los datos que pertenecen a la tabla formulario_sigsa_base
@@ -177,7 +178,7 @@ class FormularioController3CS extends Controller
             'responsable_informacion' => 'nullable|string',
             'cargo_responsable' => 'nullable|string',
             'anio' => 'required|string',
-            'dia_consulta' => 'nullable|string',
+            'dia_consulta' => 'nullable|date',
             'no_historia_clinica' => 'nullable|string',
             'nombre_paciente' => 'required|string|max:150',
             'fecha_nacimiento' => 'nullable|date',
@@ -194,21 +195,21 @@ class FormularioController3CS extends Controller
             'agricola_migrante' => 'nullable|string',
             'embarazada' => 'nullable|string',
 
-            // Otros campos relacionados con la consulta
-            'consulta' => 'nullable|in:1,2,3,4',
-            'control' => 'nullable|in:0,1,2,3,4,5,6',
-            'semana_gestacion' => 'nullable|integer|between:1,42',
-            'viene' => 'nullable|in:0,1,2', // 0 - No aplica, 1 - Viene Referido, 2 - Viene Contra Referido
-            'fue' => 'nullable|in:0,1,2', // 0 - No aplica, 1 - Fue Referido, 2 - Fue Contra Referido
-            'referido_a' => 'nullable|string|max:255',
-            'diagnostico' => 'nullable|string',
-            'codigo_cie' => 'nullable|string|max:255',
-            'tratamiento_descripcion' => 'required|exists:vacunas,nombre_vacuna',
-            'tratamiento_presentacion' => 'nullable|numeric',
-            'cantidad_recetada' => 'nullable|integer',
-            'notificacion_lugar' => 'nullable|in:0,1,2,3',
-            'notificacion_numero' => 'nullable|string|max:255',
-            'nombre_acompanante' => 'nullable|string|max:255',
+            // Validaciones para los campos de consulta
+            'consulta.*' => 'nullable|in:1,2,3,4',
+            'control.*' => 'nullable|in:0,1,2,3,4,5,6',
+            'semana_gestacion.*' => 'nullable|integer|between:1,42',
+            'viene.*' => 'nullable|in:0,1,2',
+            'fue.*' => 'nullable|in:0,1,2',
+            'referido_a.*' => 'nullable|string|max:255',
+            'diagnostico.*' => 'nullable|string',
+            'codigo_cie.*' => 'nullable|string|max:255',
+            'tratamiento_descripcion.*' => 'required|exists:vacunas,nombre_vacuna',
+            'tratamiento_presentacion.*' => 'nullable|numeric',
+            'cantidad_recetada.*' => 'nullable|integer',
+            'notificacion_lugar.*' => 'nullable|in:0,1,2,3',
+            'notificacion_numero.*' => 'nullable|string|max:255',
+            'nombre_acompanante.*' => 'nullable|string|max:255',
         ]);
 
         // Buscar el formulario por ID
@@ -235,59 +236,57 @@ class FormularioController3CS extends Controller
         }
 
         // Actualizar o crear la relación en `consulta`
-        if ($formulario->consulta) {
-            // Si ya existe la consulta, actualizamos los datos
-            $formulario->consulta->update([
-                'consulta' => $validated['consulta'] ?? null,
-                'control' => $validated['control'] ?? null,
-                'semana_gestacion' => $validated['semana_gestacion'] ?? null,
-                'referido_a' => $validated['referido_a'] ?? null,
-                'diagnostico' => $validated['diagnostico'] ?? null,
-                'codigo_cie' => $validated['codigo_cie'] ?? null,
+        if ($formulario->consulta && $formulario->consulta->isNotEmpty()) {
+            // Iterar sobre cada consulta y actualizarla
+            foreach ($formulario->consulta as $index => $consulta) {
+                $consulta->update([
+                    'consulta' => $validated['consulta'][$index] ?? null,
+                    'control' => $validated['control'][$index] ?? null,
+                    'semana_gestacion' => $validated['semana_gestacion'][$index] ?? null,
+                    'referido_a' => $validated['referido_a'][$index] ?? null,
+                    'diagnostico' => $validated['diagnostico'][$index] ?? null,
+                    'codigo_cie' => $validated['codigo_cie'][$index] ?? null,
 
-                'viene' => $validated['viene'] ?? null,
-                'fue' => $validated['fue'] ?? null,
+                    'viene' => $validated['viene'][$index] ?? null,
+                    'fue' => $validated['fue'][$index] ?? null,
 
-                'tratamiento_descripcion' => $validated['tratamiento_descripcion'] ?? null,
-                'tratamiento_presentacion' => $validated['tratamiento_presentacion'] ?? null,
-                'cantidad_recetada' => $validated['cantidad_recetada'] ?? null,
-                'notificacion_lugar' => $validated['notificacion_lugar'] ?? null,
-                'notificacion_numero' => $validated['notificacion_numero'] ?? null,
-                'nombre_acompanante' => $validated['nombre_acompanante'] ?? null,
-
-            ]);
+                    'tratamiento_descripcion' => $validated['tratamiento_descripcion'][$index] ?? null,
+                    'tratamiento_presentacion' => $validated['tratamiento_presentacion'][$index] ?? null,
+                    'cantidad_recetada' => $validated['cantidad_recetada'][$index] ?? null,
+                    'notificacion_lugar' => $validated['notificacion_lugar'][$index] ?? null,
+                    'notificacion_numero' => $validated['notificacion_numero'][$index] ?? null,
+                    'nombre_acompanante' => $validated['nombre_acompanante'][$index] ?? null,
+                ]);
+            }
         } else {
-            // Si no existe, la creamos
-            Consulta::create([
-                'formulario_sigsa_base_id' => $formulario->id,
-                'consulta' => $validated['consulta'] ?? null,
-                'control' => $validated['control'] ?? null,
-                'semana_gestacion' => $validated['semana_gestacion'] ?? null,
-                'referido_a' => $validated['referido_a'] ?? null,
-                'diagnostico' => $validated['diagnostico'] ?? null,
-                'codigo_cie' => $validated['codigo_cie'] ?? null,
+            // Si no existen consultas, las creamos
+            foreach ($validated['consulta'] as $index => $consultaData) {
+                Consulta::create([
+                    'formulario_sigsa_base_id' => $formulario->id,
+                    'consulta' => $consultaData ?? null,
+                    'control' => $validated['control'][$index] ?? null,
+                    'semana_gestacion' => $validated['semana_gestacion'][$index] ?? null,
+                    'referido_a' => $validated['referido_a'][$index] ?? null,
+                    'diagnostico' => $validated['diagnostico'][$index] ?? null,
+                    'codigo_cie' => $validated['codigo_cie'][$index] ?? null,
 
-                'viene' => $validated['viene'] ?? null,
-                'fue' => $validated['fue'] ?? null,
-                'tratamiento_descripcion' => $validated['tratamiento_descripcion'] ?? null,
-                'tratamiento_presentacion' => $validated['tratamiento_presentacion'] ?? null,
-                'cantidad_recetada' => $validated['cantidad_recetada'] ?? null,
-                'notificacion_lugar' => $validated['notificacion_lugar'] ?? null,
-                'notificacion_numero' => $validated['notificacion_numero'] ?? null,
-                'nombre_acompanante' => $validated['nombre_acompanante'] ?? null,
-            ]);
-        }
-
-
-        $buscar = $request->input('buscar');
-        if ($buscar) {
-            return redirect()->route('busqueda.resultados', ['buscar' => $buscar])
-                ->with('success', 'Formulario actualizado correctamente.');
+                    'viene' => $validated['viene'][$index] ?? null,
+                    'fue' => $validated['fue'][$index] ?? null,
+                    'tratamiento_descripcion' => $validated['tratamiento_descripcion'][$index] ?? null,
+                    'tratamiento_presentacion' => $validated['tratamiento_presentacion'][$index] ?? null,
+                    'cantidad_recetada' => $validated['cantidad_recetada'][$index] ?? null,
+                    'notificacion_lugar' => $validated['notificacion_lugar'][$index] ?? null,
+                    'notificacion_numero' => $validated['notificacion_numero'][$index] ?? null,
+                    'nombre_acompanante' => $validated['nombre_acompanante'][$index] ?? null,
+                ]);
+            }
         }
 
         // Redirigir con un mensaje de éxito
         return redirect()->route('formularios-3cs.index')->with('status', 'Formulario actualizado correctamente.');
     }
+
+
 
     public function destroy($id)
     {

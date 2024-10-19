@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConsultaVacunasController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PDFTestController;
+use App\Http\Controllers\PDFController3CS;
 
 Route::get('/', function () {
     return view('welcome');
@@ -51,6 +52,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/generar-pdf-5b', [PDFController::class, 'generarPDF5b'])->name('pdf.generar5b');
     Route::post('/generar-pdf-5bA', [PDFController::class, 'generarPDF5bA'])->name('pdf.generar5bA');
+    Route::post('pdf/3cs', [PDFController3CS::class, 'generarPDF3CS'])->name('generarPDF3CS');
+
 
 
     Route::get('/pdf-prueba', [PDFTestController::class, 'generarPDF']);
