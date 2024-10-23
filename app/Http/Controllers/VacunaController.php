@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Vacuna;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VacunaController extends Controller
 {
@@ -75,15 +76,25 @@ class VacunaController extends Controller
         return redirect()->route('vacunas.index')->with('success', 'Vacuna actualizada exitosamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
+
     public function destroy(Vacuna $vacuna)
     {
-        // Eliminar la vacuna
+        // Verificar si la vacuna está asociada a algún registro en formulario_sigsa_base o criterios_vacuna
+        $asociadaFormulario = DB::table('formulario_sigsa_base')->where('vacuna', $vacuna->nombre_vacuna)->exists();
+        $asociadaCriterios = DB::table('criterios_vacuna')->where('vacuna', $vacuna->nombre_vacuna)->exists();
+
+        if ($asociadaFormulario || $asociadaCriterios) {
+            return redirect()->route('vacunas.index')->withErrors(['error' => 'No se puede eliminar la vacuna porque está asociada a registros existentes.']);
+
+        }
+
+        // Si no hay registros asociados, eliminar la vacuna
         $vacuna->delete();
 
         // Redirigir a la lista de vacunas
-        return redirect()->route('vacunas.index')->with('success', 'Vacuna eliminada exitosamente.');
+        return redirect()->route('vacunas.index')->with('status', 'Vacuna eliminada exitosamente.');
     }
+
+
 }

@@ -34,7 +34,17 @@
                                 <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{{ $formulario->pueblo }}</td>
                                 <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{{ $formulario->escolaridad }}</td>
                                 <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{{ $formulario->profesion_oficio }}</td>
-                                <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{{ $formulario->nombre_vacuna }}</td>
+
+                                <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">
+                                    @if ($formulario->criteriosVacuna->isEmpty())
+                                        Sin vacuna
+                                    @else
+                                        @foreach ($formulario->criteriosVacuna as $vacuna)
+                                            {{ $vacuna->vacuna }}<br> <!-- Muestra el nombre de la vacuna -->
+                                        @endforeach
+                                    @endif
+                                </td>
+
                                 <td class="px-4 py-2 text-sm font-medium space-x-2">
                                     <a href="{{ route('for-sigsa-5bA.show', $formulario->id) }}" class="text-blue-500 hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-300">Ver</a>
                                     <a href="{{ route('for-sigsa-5bA.edit', $formulario->id) }}" class="text-yellow-500 hover:text-yellow-400 dark:text-yellow-400 dark:hover:text-yellow-300">Editar</a>

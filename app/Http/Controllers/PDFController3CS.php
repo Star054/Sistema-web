@@ -88,7 +88,7 @@ class PDFController3CS extends Controller
         $pdf->Ln(10);
 
         $pdf->SetFont('helvetica', '', 7);
-        $cellWidth = 90;
+        $cellWidth = 95;
 
         // Primera fila de información adicional
         $pdf->Cell($cellWidth, 6, 'Área de Salud: ' . $area_salud, 0, 0, 'L');
@@ -101,7 +101,7 @@ class PDFController3CS extends Controller
         $pdf->Cell($cellWidth, 6, 'Cargo: ' . $cargo_responsable, 0, 0, 'L');
 
         // Ajustar el tamaño de las celdas para los campos más cortos
-        $smallCellWidth = 30;
+        $smallCellWidth = 55;
 
         $pdf->Cell($smallCellWidth, 6, 'Año: ' . $anio, 0, 0, 'L');
         $pdf->Cell($smallCellWidth, 6, 'Mes: ' . str_pad($mes, 2, '0', STR_PAD_LEFT), 0, 0, 'L');

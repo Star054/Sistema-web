@@ -171,7 +171,9 @@ class FormularioSIGSAController extends Controller
             }
         }
 
-        return redirect()->route('formulario.exitoso')->with('status', 'Formulario guardado exitosamente');
+        session()->flash('status', 'form-saved');
+//        return redirect()->route('formulario.exitoso')->with('status', 'Formulario guardado exitosamente');
+        return redirect()->route('for-sigsa-5b.create');
     }
 
 
@@ -297,6 +299,7 @@ class FormularioSIGSAController extends Controller
             return redirect()->route('busqueda.resultados', ['buscar' => $buscar])
                 ->with('success', 'Formulario actualizado correctamente.');
         }
+
 
         // Redirigir al índice si no hay un término de búsqueda
         return redirect()->route('for-sigsa-5b.index')->with('success', 'Formulario actualizado correctamente');

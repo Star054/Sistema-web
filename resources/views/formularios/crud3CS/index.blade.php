@@ -17,6 +17,7 @@
                             <th class="px-4 py-2 text-left text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">No. Historia Clínica</th>
                             <th class="px-4 py-2 text-left text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">Nombres y Apellidos</th>
                             <th class="px-4 py-2 text-left text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">CUI</th>
+                            <th class="px-4 py-2 text-left text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">Vacunas</th>
                             <th class="px-4 py-2 text-left text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">Acciones</th>
                         </tr>
                         </thead>
@@ -27,8 +28,11 @@
                                 <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{{ $formulario->no_historia_clinica }}</td>
                                 <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{{ $formulario->nombre_paciente }}</td>
                                 <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{{ $formulario->cui }}</td>
-                                <td class="px-4 py-2 text-sm font-medium space-x-2">
-
+                                <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">
+                                    @foreach ($formulario->consulta as $consulta) <!-- Cambié aquí a consulta -->
+                                    {{ $consulta->tratamiento_descripcion }} @if (!$loop->last), @endif
+                                    @endforeach
+                                </td>
                                 <td class="px-4 py-2 text-sm font-medium space-x-2">
                                     <!-- Enlace para editar -->
                                     <a href="{{ route('formularios-3cs.edit', ['formularios_3c' => $formulario->id]) }}" class="text-blue-500 hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-300">Editar</a>
@@ -40,9 +44,6 @@
                                         <button type="submit" class="text-red-500 hover:text-red-400 dark:text-red-400 dark:hover:text-red-300">Eliminar</button>
                                     </form>
                                 </td>
-
-
-
                             </tr>
                         @endforeach
                         </tbody>
@@ -54,8 +55,6 @@
                 <a href="{{ route('formularios-3cs.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:text-white font-semibold rounded-md shadow hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-300 ease-in-out">
                     Crear nuevo formulario
                 </a>
-
-
             </div>
         </div>
     </div>

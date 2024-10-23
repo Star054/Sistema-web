@@ -1,7 +1,5 @@
-
 <x-app-layout>
     <div class="container mx-auto px-4 py-6 space-y-8">
-
 
         <!-- Iniciar el formulario -->
         <form action="{{ route('formularios-3cs.store') }}" method="POST">
@@ -34,10 +32,18 @@
                 </div>
             @endif
 
+            <!-- Mensaje de éxito -->
+            @if (session('status'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                    <strong class="font-bold">¡Éxito!</strong>
+                    <span class="block sm:inline">{{ session('status') }}</span>
+                </div>
+            @endif
+
             <br>
             <!-- Componente de datos paciente -->
             <div class="bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out hover:shadow-xl">
-                <x-datosPaciente5b :mostrarNoOrden="false"  :mostrarHistoriaClinica="true" :mostrar-dia-consulta="true" :mostrar-discapacidad="false" />
+                <x-datosPaciente5b :mostrarNoOrden="false" :mostrarHistoriaClinica="true" :mostrar-dia-consulta="true" :mostrar-discapacidad="false" />
             </div>
 
             <br>
@@ -49,11 +55,10 @@
 
             <br>
 
-
             <div>
                 <div class="bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out hover:shadow-xl">
-                <x-registroConsulta />
-            </div>
+                    <x-registroConsulta />
+                </div>
 
                 <br>
 
@@ -64,22 +69,14 @@
 
                     <br>
 
-            <!-- Botón de guardar y notificación -->
-            <div class="flex items-center gap-4 mt-6">
-                <x-primary-button type="submit" class="bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-opacity-50 text-white font-semibold rounded-lg py-2 px-4 transition-all duration-300 ease-in-out">
-                    {{ __('Guardar') }}
-                </x-primary-button>
-
-                @if (session('status') === 'form-saved')
-                    <p
-                        x-data="{ show: true }"
-                        x-show="show"
-                        x-transition
-                        x-init="setTimeout(() => show = false, 2000)"
-                        class="text-sm text-gray-600 dark:text-gray-400 transition-opacity duration-300"
-                    >{{ __('Guardado.') }}</p>
-                @endif
-
+                    <!-- Botón de guardar y notificación -->
+                    <div class="flex items-center gap-4 mt-6">
+                        <x-primary-button type="submit" class="bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-opacity-50 text-white font-semibold rounded-lg py-2 px-4 transition-all duration-300 ease-in-out">
+                            {{ __('Guardar') }}
+                        </x-primary-button>
+                    </div>
+                </div>
+            </div>
         </form> <!-- Fin del formulario -->
 
         <!-- Botones CRUD para la navegación -->

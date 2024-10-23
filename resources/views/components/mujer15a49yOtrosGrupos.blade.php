@@ -25,6 +25,11 @@
                 <th class="border border-black dark:border-white p-2 text-center text-gray-900 dark:text-gray-100">3a</th>
                 <th class="border border-black dark:border-white p-2 text-center text-gray-900 dark:text-gray-100">R1</th>
                 <th class="border border-black dark:border-white p-2 text-center text-gray-900 dark:text-gray-100">R2</th>
+                <th class="border border-black dark:border-white p-2 text-center text-gray-900 dark:text-gray-100">1a</th>
+                <th class="border border-black dark:border-white p-2 text-center text-gray-900 dark:text-gray-100">2a</th>
+                <th class="border border-black dark:border-white p-2 text-center text-gray-900 dark:text-gray-100">3a</th>
+                <th class="border border-black dark:border-white p-2 text-center text-gray-900 dark:text-gray-100">R1</th>
+                <th class="border border-black dark:border-white p-2 text-center text-gray-900 dark:text-gray-100">R2</th>
             </tr>
             </thead>
             <tbody>

@@ -14,6 +14,7 @@
 
                     <input type="hidden" name="buscar" value="{{ request('buscar') }}">
 
+
                     <!-- Sección de Información del Formulario -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="mb-4">

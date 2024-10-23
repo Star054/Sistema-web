@@ -8,7 +8,7 @@
             <!-- Inputs ocultos para el tipo de formulario -->
             <input type="hidden" name="codigo_formulario" value="FOR-SIGSA-5b">
 
-            <!-- Encabezado dinámico usando slot para el título y select -->
+            <!-- Encabezado dinámico -->
             <div class="bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out hover:shadow-xl">
                 <x-formulario-slot
                     codigo="FOR-SIGSA-5b"
@@ -19,7 +19,7 @@
                     <div class="flex justify-end items-center mt-2 space-x-2">
                         <label for="vacuna" class="text-sm text-gray-600 dark:text-gray-400">Seleccione la vacuna:</label>
                         <select name="vacuna" id="vacuna" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-1 rounded-md text-sm w-auto">
-                            <option value="" disabled selected>Seleccione una vacuna</option> <!-- Opción deshabilitada -->
+                            <option value="" disabled selected>Seleccione una vacuna</option>
                             @foreach($vacunas as $vacuna)
                                 <option value="{{ $vacuna->nombre_vacuna }}">{{ $vacuna->nombre_vacuna }}</option>
                             @endforeach
@@ -48,6 +48,21 @@
                 </div>
             @endif
 
+            <!-- Alerta de notificación -->
+            @if (session('alert'))
+                <div class="bg-red-100 dark:bg-red-900 p-4 shadow-lg rounded-lg border border-red-400 dark:border-red-700 transition-all duration-300 ease-in-out hover:shadow-xl">
+                    <div class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600 dark:text-red-300 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M12 4a9 9 0 100 18 9 9 0 000-18z" />
+                        </svg>
+                        <p class="text-red-700 dark:text-red-300 font-semibold">
+                            Este paciente ya ha recibido esta vacuna.
+                            Si deseas agregar una segunda dosis o refuerzo, edita el registro existente.
+                        </p>
+                    </div>
+                </div>
+            @endif
+
             <!-- Componente de datos paciente -->
             <div class="bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out hover:shadow-xl">
                 <x-datosPaciente5b />
@@ -69,18 +84,11 @@
 
             <br>
 
-            <!-- Botón de guardar y notificación -->
+            <!-- Botón de guardar -->
             <div class="flex items-center gap-4 mt-6">
                 <x-primary-button type="submit" class="bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-opacity-50 text-white font-semibold rounded-lg py-2 px-4 transition-all duration-300 ease-in-out">
                     {{ __('Guardar') }}
                 </x-primary-button>
-
-                <!-- Alerta de notificación -->
-                @if (session('alert'))
-                    <div class="bg-yellow-100 dark:bg-yellow-900 p-6 shadow-lg rounded-lg border border-yellow-400 dark:border-yellow-700 transition-all duration-300 ease-in-out hover:shadow-xl">
-                        <p class="text-yellow-700 dark:text-yellow-300">{{ session('alert') }}</p>
-                    </div>
-                @endif
             </div>
         </form> <!-- Fin del formulario -->
 

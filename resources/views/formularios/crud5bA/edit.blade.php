@@ -184,19 +184,24 @@
 
                     <!-- Sección de Criterios de selección según vacuna administrada -->
                     <div class="mt-8">
-                        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Criterios de selección según vacuna administrada</h3>
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
+                            Criterios de selección según vacuna administrada
+                        </h3>
                         <div class="mb-4">
                             <label for="vacuna" class="block text-gray-700 dark:text-gray-400">Vacuna</label>
                             <select name="vacuna" id="vacuna" required
                                     class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
                                 @foreach($vacunas as $vacuna)
-                                    <option value="{{ $vacuna->nombre_vacuna }}" {{ optional($formulario->criteriosVacuna->first())->vacuna == $vacuna->nombre_vacuna ? 'selected' : '' }}>
+                                    <option value="{{ $vacuna->nombre_vacuna }}"
+                                        {{ optional($formulario->criteriosVacuna->first())->vacuna == $vacuna->nombre_vacuna ? 'selected' : '' }}>
                                         {{ $vacuna->nombre_vacuna }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="mb-4">
+                    </div>
+
+                    <div class="mb-4">
                             <label for="grupo_priorizado" class="block text-gray-700 dark:text-gray-400">Grupo Priorizado</label>
                             <input type="text" name="grupo_priorizado" id="grupo_priorizado"
                                    value="{{ old('grupo_priorizado', optional($formulario->criteriosVacuna->first())->grupo_priorizado) }}"

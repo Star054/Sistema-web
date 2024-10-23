@@ -139,17 +139,21 @@ class FormularioController3CS extends Controller
 
         // Redirigir con mensaje de éxito
         return redirect()->route('formularios-3cs.create')->with('status', 'Formulario y consulta guardados correctamente.');
+
     }
 
     public function index()
     {
-        // Obtener los formularios que corresponden al código FOR-SIGSA-3CS
+        // Obtener los formularios que corresponden al código FOR-SIGSA-3CS junto con sus consultas
         $formularios = Modelo3CS::whereHas('tiposFormulario', function ($query) {
             $query->where('codigo_formulario', 'FOR-SIGSA-3CS');
-        })->get();
+        })
+            ->with('consulta') // Cargar la relación de consultas
+            ->get();
 
         return view('formularios.crud3CS.index', compact('formularios'));
     }
+
 
 
     public function edit($id)
