@@ -29,7 +29,7 @@
                     <!-- Mostrar mensajes de éxito -->
                     @if (session('status') === 'form-saved')
                         <div class="bg-green-100 dark:bg-green-900 border-l-4 border-green-500 text-green-700 dark:text-green-300 p-4 mb-4" role="alert">
-                            <p>{{ __('Requisición guardada exitosamente.') }}</p>
+                            <p>{{ __('Vacuna guardada exitosamente.') }}</p>
                         </div>
                     @endif
 
@@ -51,11 +51,11 @@
 
                         <!-- Campo de Nombre de Requisición -->
                         <div class="mb-4">
-                            <label for="nombre_requisicion" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Nombre de la Requisición:</label>
-                            <input type="text" name="nombre_requisicion" id="nombre_requisicion" value="{{ old('nombre_requisicion') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('nombre_requisicion') border-red-500 @enderror" required>
+                            <label for="nombre_vacuna" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Nombre de la Requisición:</label>
+                            <input type="text" name="nombre_vacuna" id="nombre_vacuna" value="{{ old('nombre_vacuna') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('nombre_requisicion') border-red-500 @enderror" required>
 
                             <!-- Mostrar errores específicos del campo 'nombre_requisicion' -->
-                            @error('nombre_requisicion')
+                            @error('nombre_vacuna')
                             <p class="text-red-500 dark:text-red-300 text-xs italic mt-2">{{ $message }}</p>
                             @enderror
                         </div>

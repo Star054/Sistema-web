@@ -163,8 +163,8 @@ class PDFController extends Controller
                     'tipo_dosis' => $grupo->tipo_dosis ?? 'N/A',
                 ];
 
-                // Calculamos la altura máxima de la fila
-                $maxHeight = $this->getMaxRowHeight($pdf, $rowData, $columnWidths);
+                $maxHeight = max($this->getMaxRowHeight($pdf, $rowData, $columnWidths), 5);
+
 
                 // Escribimos cada celda utilizando MultiCell para ajustar la altura
                 $pdf->MultiCell($columnWidths['no_orden'], $maxHeight, $rowData['no_orden'], 1, 'C', 0, 0);
@@ -178,7 +178,6 @@ class PDFController extends Controller
                 $pdf->MultiCell($columnWidths['escolaridad'], $maxHeight, $rowData['escolaridad'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['profesion_oficio'], $maxHeight, $rowData['profesion_oficio'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['discapacidad'], $maxHeight, $rowData['discapacidad'], 1, 'C', 0, 0);
-
                 $pdf->MultiCell($columnWidths['comunidad_direccion'], $maxHeight, $rowData['comunidad_direccion'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['municipio_residencia'], $maxHeight, $rowData['municipio_residencia'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['agricola_migrante'], $maxHeight, $rowData['agricola_migrante'], 1, 'C', 0, 0);

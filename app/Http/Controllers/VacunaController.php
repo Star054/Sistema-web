@@ -33,8 +33,7 @@ class VacunaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre_vacuna' => [
-                'required',
+            'nombre_vacuna' => ['required',
                 'string',
                 'max:255',
                 'unique:vacunas,nombre_vacuna',

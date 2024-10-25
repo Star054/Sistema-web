@@ -53,7 +53,7 @@
             </tr>
 
             <tr>
-                <td class="w-1/3 p-2">
+                <td class="w-1/4 p-2">
                     <label class="text-gray-700 dark:text-gray-300">Responsable de la Información:</label>
                     <input type="text" name="responsable_informacion" value="{{ old('responsable_informacion', $formulario->responsable_informacion ?? '') }}" class="w-full border-none border-b border-black dark:border-white dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Ingrese el nombre del responsable">
                 </td>
@@ -81,7 +81,7 @@
                         </select>
                     </td>
                 @endif
-                <td class="{{ $mostrarMes ? 'w-1/4' : 'w-1/2' }} p-2">
+                <td class="{{ $mostrarMes ? 'w-1/5' : 'w-1/4' }} p-2">
                     <label class="text-gray-700 dark:text-gray-300">Año:</label>
                     <input type="text" name="anio" value="{{ old('anio', $formulario->anio ?? '') }}" class="w-full border-none border-b border-black dark:border-white dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Ingrese el año">
                 </td>
