@@ -6,16 +6,13 @@
     </x-slot>
 
     <div class="py-12">
-
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-
                 <x-navbar/>
 
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex justify-center items-center h-full">
-                        <strong>FOR-SIGSA-5b</strong>
+                        <strong>FOR-SIGSA-5bA</strong>
                     </div>
 
                     <!-- Contenido replicado -->
@@ -137,26 +134,39 @@
                         </div>
                     </div>
 
-                    <!-- Cuarta fila -->
-                    <div class="grid grid-cols-3 gap-4 mt-6">
-                        <!-- Columna 1 -->
+                    <!-- Información de Vacunas -->
+                    <div class="grid grid-cols-2 gap-4 mt-6">
                         <div>
-                            <strong>Mujer de 15 a 49 años:</strong><br>
-                            T.d.a. Toxoide tetánico diftérico para adulto.<br>
-                            Registre la fecha de aplicación de dosis en formato dd/mm/aaaa.
+                            <strong>11/ Nombre de vacuna:</strong><br>
+                            1. Vacuna contra Hepatitis "B"<br>
+                            2. Vacuna contra Influenza<br>
+                            3. IPV<br>
+                            4. OPV<br>
+                            5. SPR<br>
+                            6. IPV IGSS<br>
+                            7. VPH<br>
+                            8. Tdap<br>
+                            9. Otras vacunas cuando se incorporen
                         </div>
 
-                        <!-- Columna 2 -->
                         <div>
-                            <strong>Otros grupos:</strong><br>
-                            T.d.a. Toxoide tetánico diftérico para adulto.<br>
-                            Registre la fecha de aplicación de dosis en formato dd/mm/aaaa.
+                            <strong>13/ Dosis:</strong><br>
+                            1. 1era. Dosis<br>
+                            2. 2da. Dosis<br>
+                            3. 3era. Dosis<br>
+                            4. 1er. Refuerzo<br>
+                            5. 2do. Refuerzo<br>
+                            6. Refuerzo
                         </div>
+                    </div>
+
+                    <!-- Información de Grupo Prioritario -->
+                    <div class="mt-6">
+                        <strong>12/ Grupo priorizado:</strong><br>
+                        Según vacuna administrada (verificar código).
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-
 </x-app-layout>

@@ -99,8 +99,8 @@ class PDFController extends Controller
             'cui' => 26,
             'sexo' => 12, // Reducido
             'pueblo' => 14, // Reducido
-            'fecha_nacimiento' => 18,
             'comunidad_linguistica' => 21,
+            'fecha_nacimiento' => 18,
             'orientacion_sexual' => 16,
             'escolaridad' => 15,
             'profesion_oficio' => 15,
@@ -123,8 +123,10 @@ class PDFController extends Controller
         $pdf->MultiCell($columnWidths['cui'], 7, 'CUI', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['sexo'], 7, 'Sexo', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['pueblo'], 7, 'Pueblo', 1, 'C', 0, 0);
-        $pdf->MultiCell($columnWidths['fecha_nacimiento'], 7, 'Fecha Nac.', 1, 'C', 0, 0);
+
         $pdf->MultiCell($columnWidths['comunidad_linguistica'], 7, 'Comunidad Lingüística', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['fecha_nacimiento'], 7, 'Fecha Nac.', 1, 'C', 0, 0);
+
         $pdf->MultiCell($columnWidths['orientacion_sexual'], 7, 'Orient. Sexual', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['escolaridad'], 7, 'Escolaridad', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['profesion_oficio'], 7, 'Prof./Oficio', 1, 'C', 0, 0);
@@ -148,8 +150,8 @@ class PDFController extends Controller
                     'cui' => $paciente->cui,
                     'sexo' => $paciente->sexo,
                     'pueblo' => $paciente->pueblo ?? 'N/A',
-                    'fecha_nacimiento' => $paciente->fecha_nacimiento ? Carbon::parse($paciente->fecha_nacimiento)->format('d-m-Y') : 'N/A',
                     'comunidad_linguistica' => $paciente->comunidad_linguistica ?? 'N/A',
+                    'fecha_nacimiento' => $paciente->fecha_nacimiento ? Carbon::parse($paciente->fecha_nacimiento)->format('d-m-Y') : 'N/A',
                     'orientacion_sexual' => $paciente->orientacion_sexual ?? 'N/A',
                     'escolaridad' => $paciente->escolaridad ?? 'N/A',
                     'profesion_oficio' => $paciente->profesion_oficio ?? 'N/A',
@@ -172,8 +174,10 @@ class PDFController extends Controller
                 $pdf->MultiCell($columnWidths['cui'], $maxHeight, $rowData['cui'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['sexo'], $maxHeight, $rowData['sexo'], 1, 'C', 0, 0);
                 $pdf->MultiCell($columnWidths['pueblo'], $maxHeight, $rowData['pueblo'], 1, 'L', 0, 0);
-                $pdf->MultiCell($columnWidths['fecha_nacimiento'], $maxHeight, $rowData['fecha_nacimiento'], 1, 'C', 0, 0);
+
                 $pdf->MultiCell($columnWidths['comunidad_linguistica'], $maxHeight, $rowData['comunidad_linguistica'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['fecha_nacimiento'], $maxHeight, $rowData['fecha_nacimiento'], 1, 'C', 0, 0);
+
                 $pdf->MultiCell($columnWidths['orientacion_sexual'], $maxHeight, $rowData['orientacion_sexual'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['escolaridad'], $maxHeight, $rowData['escolaridad'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['profesion_oficio'], $maxHeight, $rowData['profesion_oficio'], 1, 'L', 0, 0);
@@ -189,7 +193,7 @@ class PDFController extends Controller
         }
 
         // Descargar el PDF
-        $pdf->Output('reporte_pacientes_5b.pdf', 'D');
+        $pdf->Output('reporte_pacientes_5b.pdf', 'I');
     }
 
 
@@ -243,6 +247,8 @@ class PDFController extends Controller
         $pdf->SetAuthor('Sistema de Vacunación');
         $pdf->SetTitle('Reporte de Pacientes Vacunados - SIGSA5bA');
 
+
+
         // Añadir página
         $pdf->AddPage();
 
@@ -252,7 +258,8 @@ class PDFController extends Controller
 
         $pdf->SetFont('helvetica', 'B', 14);
         $pdf->Cell(0, 15, 'Reporte de Vacunación - Formulario SIGSA5bA', 0, 1, 'C');
-
+//        $pdf->SetTitle('REGISTRO DE VACUNACION EN OTROS GRUPOS DE POBLACION');
+        
         // Vacuna a la derecha
         $pdf->SetFont('helvetica', '', 8);
         $pdf->SetXY(140, 25);
@@ -289,8 +296,8 @@ class PDFController extends Controller
             'cui' => 21,
             'sexo' => 8,
             'pueblo' => 11,
-            'fecha_nacimiento' => 18,
             'comunidad_linguistica' => 21,
+            'fecha_nacimiento' => 18,
             'orientacion_sexual' => 16,
             'escolaridad' => 16,
             'profesion_oficio' => 16,
@@ -312,8 +319,8 @@ class PDFController extends Controller
         $pdf->MultiCell($columnWidths['cui'], 7, 'CUI', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['sexo'], 7, 'Sexo', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['pueblo'], 7, 'Pueblo', 1, 'C', 0, 0);
-        $pdf->MultiCell($columnWidths['fecha_nacimiento'], 7, 'Fecha Nac.', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['comunidad_linguistica'], 7, 'Comunidad Lingüística', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['fecha_nacimiento'], 7, 'Fecha Nac.', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['orientacion_sexual'], 7, 'Orient. Sexual', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['escolaridad'], 7, 'Escolaridad', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['profesion_oficio'], 7, 'Prof./Oficio', 1, 'C', 0, 0);
@@ -337,8 +344,8 @@ class PDFController extends Controller
                     'cui' => $paciente->cui,
                     'sexo' => $paciente->sexo,
                     'pueblo' => $paciente->pueblo ?? 'N/A',
-                    'fecha_nacimiento' => $paciente->fecha_nacimiento ? Carbon::parse($paciente->fecha_nacimiento)->format('d-m-Y') : 'N/A',
                     'comunidad_linguistica' => $paciente->comunidad_linguistica ?? 'N/A',
+                    'fecha_nacimiento' => $paciente->fecha_nacimiento ? Carbon::parse($paciente->fecha_nacimiento)->format('d-m-Y') : 'N/A',
                     'orientacion_sexual' => $paciente->orientacion_sexual ?? 'N/A',
                     'escolaridad' => $paciente->escolaridad ?? 'N/A',
                     'profesion_oficio' => $paciente->profesion_oficio ?? 'N/A',
@@ -362,8 +369,8 @@ class PDFController extends Controller
                 $pdf->MultiCell($columnWidths['cui'], $maxHeight, $rowData['cui'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['sexo'], $maxHeight, $rowData['sexo'], 1, 'C', 0, 0);
                 $pdf->MultiCell($columnWidths['pueblo'], $maxHeight, $rowData['pueblo'], 1, 'L', 0, 0);
-                $pdf->MultiCell($columnWidths['fecha_nacimiento'], $maxHeight, $rowData['fecha_nacimiento'], 1, 'C', 0, 0);
                 $pdf->MultiCell($columnWidths['comunidad_linguistica'], $maxHeight, $rowData['comunidad_linguistica'], 1, 'L', 0, 0);
+                $pdf->MultiCell($columnWidths['fecha_nacimiento'], $maxHeight, $rowData['fecha_nacimiento'], 1, 'C', 0, 0);
                 $pdf->MultiCell($columnWidths['orientacion_sexual'], $maxHeight, $rowData['orientacion_sexual'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['escolaridad'], $maxHeight, $rowData['escolaridad'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['profesion_oficio'], $maxHeight, $rowData['profesion_oficio'], 1, 'L', 0, 0);
@@ -380,7 +387,7 @@ class PDFController extends Controller
         }
 
         // Descargar el PDF
-        $pdf->Output('reporte_pacientes_5bA.pdf', 'D');
+        $pdf->Output('reporte_pacientes_5bA.pdf', 'I');
     }
 
 }

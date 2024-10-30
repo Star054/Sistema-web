@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Bienvenido al sistema</title>
+    <title>Bienvenido al sistema  651651</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -134,7 +134,7 @@
 <body>
 <div class="container">
     <header>
-        <h1>Bienvenido a Laravel</h1>
+        <h1>Bienvenido al Sistema</h1>
         @if (Route::has('login'))
             <nav>
                 @auth
