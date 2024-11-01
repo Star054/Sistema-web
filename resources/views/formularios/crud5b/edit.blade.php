@@ -6,7 +6,6 @@
     </x-slot>
 
 
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg p-6">
@@ -95,6 +94,20 @@
                             </div>
 
                             <div class="mb-4">
+                                <label for="discapacidad" class="block text-gray-700 dark:text-gray-400">Discapacidad</label>
+                                <select name="discapacidad" id="discapacidad" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                    <option value="" {{ is_null($formulario->discapacidad) ? 'selected' : '' }}>Seleccione</option>
+                                    <option value="0" {{ $formulario->discapacidad === 0 ? 'selected' : '' }}>No aplica</option>
+                                    <option value="1" {{ $formulario->discapacidad == 1 ? 'selected' : '' }}>Física</option>
+                                    <option value="2" {{ $formulario->discapacidad == 2 ? 'selected' : '' }}>Mental</option>
+                                    <option value="3" {{ $formulario->discapacidad == 3 ? 'selected' : '' }}>Visual</option>
+                                    <option value="4" {{ $formulario->discapacidad == 4 ? 'selected' : '' }}>Auditiva</option>
+                                    <option value="5" {{ $formulario->discapacidad == 5 ? 'selected' : '' }}>Otro</option>
+
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
                                 <label for="sexo" class="block text-gray-700 dark:text-gray-400">Sexo</label>
                                 <select name="sexo" id="sexo" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
                                     <option value="" {{ is_null($formulario->sexo) ? 'selected' : '' }}>Seleccione el sexo</option>
@@ -134,9 +147,6 @@
                                 </select>
                             </div>
 
-
-
-
                             <div class="mb-4">
                                 <label for="escolaridad" class="block text-gray-700 dark:text-gray-400">Escolaridad</label>
                                 <select name="escolaridad" id="escolaridad" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
@@ -172,19 +182,7 @@
 
 
 
-                            <div class="mb-4">
-                                <label for="discapacidad" class="block text-gray-700 dark:text-gray-400">Discapacidad</label>
-                                <select name="discapacidad" id="discapacidad" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
-                                    <option value="" {{ is_null($formulario->discapacidad) ? 'selected' : '' }}>Seleccione</option>
-                                    <option value="0" {{ $formulario->discapacidad === 0 ? 'selected' : '' }}>No aplica</option>
-                                    <option value="1" {{ $formulario->discapacidad == 1 ? 'selected' : '' }}>Física</option>
-                                    <option value="2" {{ $formulario->discapacidad == 2 ? 'selected' : '' }}>Mental</option>
-                                    <option value="3" {{ $formulario->discapacidad == 3 ? 'selected' : '' }}>Visual</option>
-                                    <option value="4" {{ $formulario->discapacidad == 4 ? 'selected' : '' }}>Auditiva</option>
-                                    <option value="5" {{ $formulario->discapacidad == 5 ? 'selected' : '' }}>Otro</option>
 
-                                </select>
-                            </div>
 
                         </div>
 
@@ -227,10 +225,9 @@
                     </div>
 
 
-
                     <!-- Sección de Vacunas para Mujer de 15 a 49 años -->
                     <div class="mt-8">
-                        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Mujer de 15 a 49</h3>
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Mujer de 15-49</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             @foreach (['1a', '2a', '3a', 'r1', 'r2'] as $dosis)
                                 <div class="mb-4">
@@ -258,13 +255,13 @@
                         </div>
                     </div>
 
-
                     <!-- Botón para actualizar -->
                     <div class="mt-8">
                         <x-primary-button type="submit" class="bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-opacity-50 text-white font-semibold rounded-lg py-2 px-4 transition-all duration-300 ease-in-out">
                             {{ __('Actualizar') }}
                         </x-primary-button>
                     </div>
+
                 </form>
             </div>
         </div>

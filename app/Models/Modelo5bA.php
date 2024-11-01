@@ -32,6 +32,7 @@ class Modelo5bA extends Model
         'escolaridad',           // Escolaridad
         'profesion_oficio',      // Profesión u oficio
         'no_orden',
+        'orientacion_sexual'
     ];
 
     // Relación con la tabla `criterios_vacuna`

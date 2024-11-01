@@ -78,9 +78,30 @@
                             </div>
 
                             <div class="mb-4">
+                                <label for="comunidad_linguistica" class="block text-gray-700 dark:text-gray-400">Comunidad Lingüística</label>
+                                <input type="text" name="comunidad_linguistica" id="comunidad_linguistica" value="{{ $formulario->comunidad_linguistica }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                            </div>
+
+                            <div class="mb-4">
                                 <label for="fecha_nacimiento" class="block text-gray-700 dark:text-gray-400">Fecha de Nacimiento</label>
                                 <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" value="{{ $formulario->fecha_nacimiento }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
                             </div>
+
+
+                            <div class="mb-4">
+                                <label for="discapacidad" class="block text-gray-700 dark:text-gray-400">Discapacidad</label>
+                                <select name="discapacidad" id="discapacidad" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                                    <option value="" {{ is_null($formulario->discapacidad) ? 'selected' : '' }}>Seleccione</option>
+                                    <option value="0" {{ $formulario->discapacidad === 0 ? 'selected' : '' }}>No aplica</option>
+                                    <option value="1" {{ $formulario->discapacidad == 1 ? 'selected' : '' }}>Física</option>
+                                    <option value="2" {{ $formulario->discapacidad == 2 ? 'selected' : '' }}>Mental</option>
+                                    <option value="3" {{ $formulario->discapacidad == 3 ? 'selected' : '' }}>Visual</option>
+                                    <option value="4" {{ $formulario->discapacidad == 4 ? 'selected' : '' }}>Auditiva</option>
+                                    <option value="5" {{ $formulario->discapacidad == 5 ? 'selected' : '' }}>Otro</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
                             <div class="mb-4">
                                 <label for="sexo" class="block text-gray-700 dark:text-gray-400">Sexo</label>
@@ -103,10 +124,6 @@
                                 </select>
                             </div>
 
-                            <div class="mb-4">
-                                <label for="comunidad_linguistica" class="block text-gray-700 dark:text-gray-400">Comunidad Lingüística</label>
-                                <input type="text" name="comunidad_linguistica" id="comunidad_linguistica" value="{{ $formulario->comunidad_linguistica }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
-                            </div>
 
                             <div class="mb-4">
                                 <label for="orientacion_sexual" class="block text-gray-700 dark:text-gray-400">Orientación Sexual</label>
@@ -152,20 +169,6 @@
                                 </select>
                             </div>
 
-                            <div class="mb-4">
-                                <label for="discapacidad" class="block text-gray-700 dark:text-gray-400">Discapacidad</label>
-                                <select name="discapacidad" id="discapacidad" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
-                                    <option value="" {{ is_null($formulario->discapacidad) ? 'selected' : '' }}>Seleccione</option>
-                                    <option value="0" {{ $formulario->discapacidad === 0 ? 'selected' : '' }}>No aplica</option>
-                                    <option value="1" {{ $formulario->discapacidad == 1 ? 'selected' : '' }}>Física</option>
-                                    <option value="2" {{ $formulario->discapacidad == 2 ? 'selected' : '' }}>Mental</option>
-                                    <option value="3" {{ $formulario->discapacidad == 3 ? 'selected' : '' }}>Visual</option>
-                                    <option value="4" {{ $formulario->discapacidad == 4 ? 'selected' : '' }}>Auditiva</option>
-                                    <option value="5" {{ $formulario->discapacidad == 5 ? 'selected' : '' }}>Otro</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- Sección de Residencia -->
                     <div class="mt-8">

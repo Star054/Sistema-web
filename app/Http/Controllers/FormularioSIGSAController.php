@@ -269,29 +269,64 @@ class FormularioSIGSAController extends Controller
             ]);
         }
 
-        // Actualizar dosis de vacunación para mujeres de 15 a 49 años
-        if (!empty($validated['vacuna_mujer_15_49'])) {
-            foreach ($validated['vacuna_mujer_15_49'] as $tipoDosis => $fechaVacunacion) {
-                if ($fechaVacunacion) {
-                    Mujer15a49yOtrosGrupos::updateOrCreate(
-                        ['formulario_base_id' => $formulario->id, 'grupo' => 'mujer_15_49', 'tipo_dosis' => $tipoDosis],
-                        ['fecha_vacunacion' => $fechaVacunacion]
-                    );
+        // Manejo de las dosis para Mujer de 15 a 49 años
+        foreach (['1a', '2a', '3a', 'r1', 'r2'] as $dosis) {
+            $fechaVacunacion = $request->input('vacuna_mujer_15_49.'.$dosis);
+
+            // Busca la dosis existente
+            $dosisExistente = $formulario->mujer15a49yOtrosGrupos()
+                ->where('tipo_dosis', $dosis)
+                ->where('grupo', 'mujer_15_49')
+                ->first();
+
+            if ($fechaVacunacion) {
+                // Si hay una fecha, actualiza o crea la dosis
+                if ($dosisExistente) {
+                    $dosisExistente->fecha_vacunacion = $fechaVacunacion;
+                    $dosisExistente->save();
+                } else {
+                    // Crea una nueva dosis si no existe
+                    $formulario->mujer15a49yOtrosGrupos()->create([
+                        'tipo_dosis' => $dosis,
+                        'grupo' => 'mujer_15_49',
+                        'fecha_vacunacion' => $fechaVacunacion,
+                    ]);
                 }
+            } elseif ($dosisExistente) {
+                // Si no hay fecha y existe la dosis, elimínala
+                $dosisExistente->delete();
             }
         }
 
-        // Actualizar dosis de vacunación para otros grupos
-        if (!empty($validated['vacuna_otros_grupos'])) {
-            foreach ($validated['vacuna_otros_grupos'] as $tipoDosis => $fechaVacunacion) {
-                if ($fechaVacunacion) {
-                    Mujer15a49yOtrosGrupos::updateOrCreate(
-                        ['formulario_base_id' => $formulario->id, 'grupo' => 'otros_grupos', 'tipo_dosis' => $tipoDosis],
-                        ['fecha_vacunacion' => $fechaVacunacion]
-                    );
+        // Manejo de las dosis para Otros Grupos
+        foreach (['1a', '2a', '3a', 'r1', 'r2'] as $dosis) {
+            $fechaVacunacion = $request->input('vacuna_otros_grupos.'.$dosis);
+
+            // Busca la dosis existente
+            $dosisExistente = $formulario->mujer15a49yOtrosGrupos()
+                ->where('tipo_dosis', $dosis)
+                ->where('grupo', 'otros_grupos')
+                ->first();
+
+            if ($fechaVacunacion) {
+                // Si hay una fecha, actualiza o crea la dosis
+                if ($dosisExistente) {
+                    $dosisExistente->fecha_vacunacion = $fechaVacunacion;
+                    $dosisExistente->save();
+                } else {
+                    // Crea una nueva dosis si no existe
+                    $formulario->mujer15a49yOtrosGrupos()->create([
+                        'tipo_dosis' => $dosis,
+                        'grupo' => 'otros_grupos',
+                        'fecha_vacunacion' => $fechaVacunacion,
+                    ]);
                 }
+            } elseif ($dosisExistente) {
+                // Si no hay fecha y existe la dosis, elimínala
+                $dosisExistente->delete();
             }
         }
+
 
         // Redirigir de vuelta a la búsqueda si el término de búsqueda está presente
         $buscar = $request->input('buscar');

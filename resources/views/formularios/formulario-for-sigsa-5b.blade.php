@@ -63,6 +63,8 @@
                 </div>
             @endif
 
+            <br>
+
             <!-- Componente de datos paciente -->
             <div class="bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out hover:shadow-xl">
                 <x-datosPaciente5b />

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FormularioSIGSA5b;
+use App\Models\Modelo5bA;
 use App\Models\TipoFormulario;
 use App\Models\Consulta;
 use App\Models\Vacuna;
@@ -30,7 +31,7 @@ class FormularioController3CS extends Controller
             'servicio_salud' => 'nullable|string',
             'responsable_informacion' => 'nullable|string',
             'cargo_responsable' => 'nullable|string',
-            'anio' => 'required|string',
+            'anio' => 'nullable|string',
             'dia_consulta' => 'nullable|date',
             'no_historia_clinica' => 'nullable|string',
             'nombre_paciente' => 'required|string|max:150',
@@ -181,7 +182,7 @@ class FormularioController3CS extends Controller
             'servicio_salud' => 'nullable|string',
             'responsable_informacion' => 'nullable|string',
             'cargo_responsable' => 'nullable|string',
-            'anio' => 'required|string',
+            'anio' => 'nullable|string',
             'dia_consulta' => 'nullable|date',
             'no_historia_clinica' => 'nullable|string',
             'nombre_paciente' => 'required|string|max:150',
@@ -193,11 +194,13 @@ class FormularioController3CS extends Controller
             'escolaridad' => 'nullable|integer|in:0,1,2,3,4,5,6,7',
             'profesion_oficio' => 'nullable|in:0,1,2,3,4,5,6,7,8',
             'discapacidad' => 'nullable|integer|in:0,1,2,3,4,5',
+
             'orientacion_sexual' => 'nullable|integer|in:0,1,2,3,4,5',
             'comunidad_direccion' => 'nullable|string',
             'municipio_residencia' => 'nullable|string',
             'agricola_migrante' => 'nullable|string',
             'embarazada' => 'nullable|string',
+
 
             // Validaciones para los campos de consulta
             'consulta.*' => 'nullable|in:1,2,3,4',
@@ -214,6 +217,35 @@ class FormularioController3CS extends Controller
             'notificacion_lugar.*' => 'nullable|in:0,1,2,3',
             'notificacion_numero.*' => 'nullable|string|max:255',
             'nombre_acompanante.*' => 'nullable|string|max:255',
+        ]);
+
+        // Actualizar el formulario
+        $formulario = Modelo3CS::findOrFail($id);
+        $formulario->update([
+            'area_salud' => $validated['area_salud'] ?? null,
+            'distrito_salud' => $validated['distrito_salud'] ?? null,
+            'no_orden' => $validated['no_orden'] ?? null,
+            'municipio' => $validated['municipio'] ?? null,
+            'servicio_salud' => $validated['servicio_salud'] ?? null,
+            'responsable_informacion' => $validated['responsable_informacion'] ?? null,
+            'cargo_responsable' => $validated['cargo_responsable'] ?? null,
+            'anio' => $validated['anio'],
+            'nombre_paciente' => $validated['nombre_paciente'],
+            'cui' => $validated['cui'],
+            'sexo' => $validated['sexo'] ?? null,
+            'pueblo' => $validated['pueblo'] ?? null,
+            'fecha_nacimiento' => $validated['fecha_nacimiento'] ?? null,
+            'comunidad_linguistica' => $validated['comunidad_linguistica'] ?? null,
+            'orientacion_sexual' => $validated['orientacion_sexual'] ?? null,
+
+
+            'escolaridad' => $validated['escolaridad'] ?? null,
+            'profesion_oficio' => $validated['profesion_oficio'] ?? null,
+            'discapacidad' => $validated['discapacidad'] ?? null,
+            'comunidad_direccion' => $validated['comunidad_direccion'] ?? null,
+            'municipio_residencia' => $validated['municipio_residencia'] ?? null,
+            'agricola_migrante' => $validated['agricola_migrante'] ?? null,
+
         ]);
 
         // Buscar el formulario por ID

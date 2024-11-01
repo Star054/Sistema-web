@@ -152,6 +152,7 @@ class FormularioController5bA extends Controller
             'anio' => 'required|string',
             'nombre_paciente' => 'required|string|max:255',
             'cui' => 'nullable|string|max:13',
+
             'fecha_nacimiento' => 'nullable|date',
             'sexo' => 'nullable|string|in:M,F', // Es requerido porque es clave para los datos
             'pueblo' => 'nullable|integer|in:1,2,3,4,5,6', // También es requerido en la actualización
@@ -160,6 +161,7 @@ class FormularioController5bA extends Controller
             'profesion_oficio' => 'nullable|in:0,1,2,3,4,5,6,7,8',
             'discapacidad' => 'nullable|integer|in:0,1,2,3,4,5', // Opcional
             'orientacion_sexual' => 'nullable|integer|in:0,1,2,3,4,5', // Opcional
+
             'comunidad_direccion' => 'nullable|string', // Opcional
             'municipio_residencia' => 'nullable|string', // Opcional
             'agricola_migrante' => 'nullable|string',
@@ -188,6 +190,8 @@ class FormularioController5bA extends Controller
             'pueblo' => $validated['pueblo'] ?? null,
             'fecha_nacimiento' => $validated['fecha_nacimiento'] ?? null,
             'comunidad_linguistica' => $validated['comunidad_linguistica'] ?? null,
+            'orientacion_sexual' => $validated['orientacion_sexual'] ?? null,
+
             'escolaridad' => $validated['escolaridad'] ?? null,
             'profesion_oficio' => $validated['profesion_oficio'] ?? null,
             'discapacidad' => $validated['discapacidad'] ?? null,

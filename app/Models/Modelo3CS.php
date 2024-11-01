@@ -30,6 +30,7 @@ class Modelo3CS extends Model
         'orientacion_sexual',
         'escolaridad',
         'profesion_oficio',
+        'discapacidad',
     ];
 
     // Relación con Residencia

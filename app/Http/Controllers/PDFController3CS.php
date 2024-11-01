@@ -55,7 +55,7 @@ class PDFController3CS extends Controller
         $cargo_responsable = $primerPaciente->cargo_responsable;
 
         // Crear PDF con TCPDF en formato horizontal (Landscape) y tamaño oficio (Legal)
-        $pdf = new TCPDF('L', PDF_UNIT, 'LEGAL', true, 'UTF-8', false);
+        $pdf = new TCPDF('L', PDF_UNIT, 'FOLIO', true, 'UTF-8', false);
         $pdf->SetMargins(5, 5, 5);
 
         // Establecer información del documento
@@ -88,7 +88,7 @@ class PDFController3CS extends Controller
         $pdf->Ln(10);
 
         $pdf->SetFont('helvetica', '', 7);
-        $cellWidth = 95;
+        $cellWidth = 91;
 
         // Primera fila de información adicional
         $pdf->Cell($cellWidth, 6, 'Área de Salud: ' . $area_salud, 0, 0, 'L');
@@ -110,19 +110,19 @@ class PDFController3CS extends Controller
 
         // Definir los anchos de las columnas ajustados
         $columnWidths = [
-            'no_historia_clinica' => 10,
+            'no_historia_clinica' => 8,
             'dia_consulta' => 13,
             'nombre_paciente' => 30,
             'cui' => 18,
             'sexo' => 4,
             'pueblo' => 6,
-            'comunidad_linguistica' => 10,
+            'comunidad_linguistica' => 8,
             'fecha_nacimiento' => 13,
             'orientacion_sexual' => 10,
             'escolaridad' => 10,
             'profesion_oficio' => 10,
-            'comunidad_direccion' => 20,
-            'municipio_residencia' => 20,
+            'comunidad_direccion' => 12,
+            'municipio_residencia' => 12,
             'agricola_migrante' => 10,
             'consulta' => 8,
             'control' => 8,
@@ -132,7 +132,7 @@ class PDFController3CS extends Controller
             'referido_a' => 12,
             'diagnostico' => 17,
             'tratamiento_descripcion' => 20,
-            'tratamiento_presentacion' => 16,
+            'tratamiento_presentacion' => 10,
             'cantidad_recetada' => 10,
             'notificacion_lugar' => 10,
             'notificacion_numero' => 10,
@@ -162,7 +162,8 @@ class PDFController3CS extends Controller
                     'sexo' => $paciente->sexo ?? 'N/A',
                     'pueblo' => $paciente->pueblo ?? 'N/A',
                     'comunidad_linguistica' => $paciente->comunidad_linguistica ?? 'N/A',
-                    'fecha_nacimiento' => $paciente->fecha_nacimiento ? Carbon::parse($paciente->fecha_nacimiento)->format('d-m-Y') : 'N/A',
+                    'fecha_nacimiento' => $paciente->fecha_nacimiento ? Carbon::parse($paciente->fecha_nacimiento)->format('d-m-Y') : '',
+
                     'orientacion_sexual' => $paciente->orientacion_sexual ?? 'N/A',
                     'escolaridad' => $paciente->escolaridad ?? 'N/A',
                     'profesion_oficio' => $paciente->profesion_oficio ?? 'N/A',
@@ -194,6 +195,6 @@ class PDFController3CS extends Controller
             }
         }
 
-        $pdf->Output('reporte_pacientes_3CS.pdf', 'D');
+        $pdf->Output('reporte_pacientes_3CS.pdf', 'I');
     }
 }

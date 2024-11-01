@@ -24,16 +24,18 @@
                     Nombres y apellidos del paciente
                 </th>
                 <th class="border border-black dark:border-white p-4 text-center text-gray-900 dark:text-gray-100">CUI Código Único de Identificación</th>
-                <th class="border border-black dark:border-white p-4 text-center text-gray-900 dark:text-gray-100">Sexo</th>
-                <th class="border border-black dark:border-white p-4 text-center text-gray-900 dark:text-gray-100">Pueblo</th>
-                <th class="border border-black dark:border-white p-4 text-center text-gray-900 dark:text-gray-100">Fecha de nacimiento o edad</th>
-                <th class="border border-black dark:border-white p-3 text-center text-gray-900 dark:text-gray-100">Comunidad lingüística</th>
-                <th class="border border-black dark:border-white p-3 text-center text-gray-900 dark:text-gray-100">Orientación Sexual</th>
-                <th class="border border-black dark:border-white p-3 text-center text-gray-900 dark:text-gray-100">Escolaridad</th>
-                <th class="border border-black dark:border-white p-4 text-center text-gray-900 dark:text-gray-100">Profesión u oficio</th>
-                @if($mostrarDiscapacidad)
-                    <th class="border border-black dark:border-white p-3 text-center text-gray-900 dark:text-gray-100">Discapacidad</th>
-                @endif
+                <th class="border border-black dark:border-white p-4 text-center text-gray-900 dark:text-gray-100">1/ Sexo</th>
+                <th class="border border-black dark:border-white p-4 text-center text-gray-900 dark:text-gray-100">2/ Pueblo</th>
+                <th class="border border-black dark:border-white p-4 text-center text-gray-900 dark:text-gray-100">3/ Fecha de nacimiento o edad</th>
+                    <th class="border border-black dark:border-white p-3 text-center text-gray-900 dark:text-gray-100">4/ Comunidad lingüística</th>
+                    @if($mostrarDiscapacidad)
+                        <th class="border border-black dark:border-white p-3 text-center text-gray-900 dark:text-gray-100">5/ Discapacidad</th>
+                    @endif
+
+                <th class="border border-black dark:border-white p-3 text-center text-gray-900 dark:text-gray-100">6/ Orientación Sexual</th>
+                <th class="border border-black dark:border-white p-3 text-center text-gray-900 dark:text-gray-100">7/ Escolaridad</th>
+                <th class="border border-black dark:border-white p-4 text-center text-gray-900 dark:text-gray-100">8/ Profesión u oficio</th>
+
             </tr>
             </thead>
             <tbody>

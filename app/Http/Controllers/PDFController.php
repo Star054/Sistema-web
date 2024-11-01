@@ -45,7 +45,7 @@ class PDFController extends Controller
         $anio = $primerPaciente->anio;
 
         // Crear PDF con TCPDF en formato horizontal (Landscape) y tamaño oficio (Legal)
-        $pdf = new TCPDF('L', PDF_UNIT, 'LEGAL', true, 'UTF-8', false);
+        $pdf = new TCPDF('L', PDF_UNIT, [215.9, 330.2], true, 'UTF-8', false); // 8.5 x 13 pulgadas en mm
         $pdf->SetMargins(5, 5, 5);
 
         // Establecer información del documento
@@ -95,21 +95,21 @@ class PDFController extends Controller
         // Definir los anchos de las columnas ajustados
         $columnWidths = [
             'no_orden' => 8,
-            'nombre_paciente' => 50, // Aumentamos el ancho para el nombre
-            'cui' => 26,
-            'sexo' => 12, // Reducido
-            'pueblo' => 14, // Reducido
+            'nombre_paciente' => 35, // Aumentamos el ancho para el nombre
+            'cui' => 22,
+            'sexo' => 10, // Reducido
+            'pueblo' => 12, // Reducido
             'comunidad_linguistica' => 21,
             'fecha_nacimiento' => 18,
+            'discapacidad' => 16,
             'orientacion_sexual' => 16,
             'escolaridad' => 15,
             'profesion_oficio' => 15,
-            'discapacidad' => 16,
             'comunidad_direccion' => 25,
             'municipio_residencia' => 25,
             'agricola_migrante' => 15,
             'embarazada' => 15,
-            'grupo' => 20,
+            'grupo' => 19,
             'fecha_vacunacion' => 18,
             'tipo_dosis' => 14,
         ];
@@ -126,11 +126,11 @@ class PDFController extends Controller
 
         $pdf->MultiCell($columnWidths['comunidad_linguistica'], 7, 'Comunidad Lingüística', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['fecha_nacimiento'], 7, 'Fecha Nac.', 1, 'C', 0, 0);
-
+        $pdf->MultiCell($columnWidths['discapacidad'], 7, 'Discapacidad', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['orientacion_sexual'], 7, 'Orient. Sexual', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['escolaridad'], 7, 'Escolaridad', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['profesion_oficio'], 7, 'Prof./Oficio', 1, 'C', 0, 0);
-        $pdf->MultiCell($columnWidths['discapacidad'], 7, 'Discapacidad', 1, 'C', 0, 0);
+
         $pdf->MultiCell($columnWidths['comunidad_direccion'], 7, 'Comunidad', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['municipio_residencia'], 7, 'Municipio Res.', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['agricola_migrante'], 7, 'Agri. Migrante', 1, 'C', 0, 0);
@@ -152,10 +152,11 @@ class PDFController extends Controller
                     'pueblo' => $paciente->pueblo ?? 'N/A',
                     'comunidad_linguistica' => $paciente->comunidad_linguistica ?? 'N/A',
                     'fecha_nacimiento' => $paciente->fecha_nacimiento ? Carbon::parse($paciente->fecha_nacimiento)->format('d-m-Y') : 'N/A',
+                    'discapacidad' => $paciente->discapacidad ?? 'N/A',
                     'orientacion_sexual' => $paciente->orientacion_sexual ?? 'N/A',
                     'escolaridad' => $paciente->escolaridad ?? 'N/A',
                     'profesion_oficio' => $paciente->profesion_oficio ?? 'N/A',
-                    'discapacidad' => $paciente->discapacidad ?? 'N/A',
+
                     'comunidad_direccion' => $paciente->residencia->comunidad_direccion ?? 'N/A',
                     'municipio_residencia' => $paciente->residencia->municipio_residencia ?? 'N/A',
                     'agricola_migrante' => $paciente->residencia->agricola_migrante ?? 'N/A',
@@ -178,10 +179,11 @@ class PDFController extends Controller
                 $pdf->MultiCell($columnWidths['comunidad_linguistica'], $maxHeight, $rowData['comunidad_linguistica'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['fecha_nacimiento'], $maxHeight, $rowData['fecha_nacimiento'], 1, 'C', 0, 0);
 
+                $pdf->MultiCell($columnWidths['discapacidad'], $maxHeight, $rowData['discapacidad'], 1, 'C', 0, 0);
                 $pdf->MultiCell($columnWidths['orientacion_sexual'], $maxHeight, $rowData['orientacion_sexual'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['escolaridad'], $maxHeight, $rowData['escolaridad'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['profesion_oficio'], $maxHeight, $rowData['profesion_oficio'], 1, 'L', 0, 0);
-                $pdf->MultiCell($columnWidths['discapacidad'], $maxHeight, $rowData['discapacidad'], 1, 'C', 0, 0);
+
                 $pdf->MultiCell($columnWidths['comunidad_direccion'], $maxHeight, $rowData['comunidad_direccion'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['municipio_residencia'], $maxHeight, $rowData['municipio_residencia'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['agricola_migrante'], $maxHeight, $rowData['agricola_migrante'], 1, 'C', 0, 0);
@@ -206,6 +208,8 @@ class PDFController extends Controller
         }
         return max($heights);
     }
+
+
 
 
     public function generarPDF5bA(Request $request)
@@ -239,7 +243,10 @@ class PDFController extends Controller
         $anio = $primerPaciente->anio;
 
         // Crear PDF con TCPDF en formato horizontal (Landscape) y tamaño oficio (Legal)
-        $pdf = new TCPDF('L', PDF_UNIT, 'LEGAL', true, 'UTF-8', false);
+//        $pdf = new TCPDF('L', PDF_UNIT, 'LEGAL', true, 'UTF-8', false);
+//        $pdf->SetMargins(5, 5, 5);
+
+        $pdf = new TCPDF('L', PDF_UNIT, [215.9, 330.2], true, 'UTF-8', false); // 8.5 x 13 pulgadas en mm
         $pdf->SetMargins(5, 5, 5);
 
         // Establecer información del documento
@@ -259,7 +266,7 @@ class PDFController extends Controller
         $pdf->SetFont('helvetica', 'B', 14);
         $pdf->Cell(0, 15, 'Reporte de Vacunación - Formulario SIGSA5bA', 0, 1, 'C');
 //        $pdf->SetTitle('REGISTRO DE VACUNACION EN OTROS GRUPOS DE POBLACION');
-        
+
         // Vacuna a la derecha
         $pdf->SetFont('helvetica', '', 8);
         $pdf->SetXY(140, 25);
@@ -274,7 +281,7 @@ class PDFController extends Controller
         $pdf->Ln(10);
 
         $pdf->SetFont('helvetica', '', 8);
-        $cellWidth = 90;
+        $cellWidth = 91;
 
         // Primera fila de información adicional
         $pdf->Cell($cellWidth, 6, 'Área de Salud: ' . $area_salud, 0, 0, 'L');
@@ -292,23 +299,24 @@ class PDFController extends Controller
         // Definir los anchos de las columnas ajustados
         $columnWidths = [
             'no_orden' => 8,
-            'nombre_paciente' => 41,
-            'cui' => 21,
+            'nombre_paciente' => 33,
+            'cui' => 19.5,
             'sexo' => 8,
-            'pueblo' => 11,
-            'comunidad_linguistica' => 21,
-            'fecha_nacimiento' => 18,
-            'orientacion_sexual' => 16,
+            'pueblo' => 10.5,
+            'comunidad_linguistica' => 19,
+            'fecha_nacimiento' => 16,
+            'discapacidad' => 12,
+            'orientacion_sexual' => 12,
             'escolaridad' => 16,
-            'profesion_oficio' => 16,
-            'comunidad_direccion' => 25,
-            'municipio_residencia' => 25,
-            'agricola_migrante' => 15,
-            'residencia' => 25,
-            'embarazada' => 15,
-            'vacuna' => 15,
-            'grupo_priorizado' => 20,
-            'fecha_administracion' => 16,
+            'profesion_oficio' => 10,
+            'comunidad_direccion' => 23,
+            'municipio_residencia' => 23,
+            'agricola_migrante' => 13,
+            'residencia' => 23,
+            'embarazada' => 13.5,
+            'vacuna' => 17.5,
+            'grupo_priorizado' => 17,
+            'fecha_administracion' => 15,
             'dosis' => 12,
         ];
 
@@ -321,6 +329,7 @@ class PDFController extends Controller
         $pdf->MultiCell($columnWidths['pueblo'], 7, 'Pueblo', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['comunidad_linguistica'], 7, 'Comunidad Lingüística', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['fecha_nacimiento'], 7, 'Fecha Nac.', 1, 'C', 0, 0);
+        $pdf->MultiCell($columnWidths['discapacidad'], 7, 'Discapacidad', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['orientacion_sexual'], 7, 'Orient. Sexual', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['escolaridad'], 7, 'Escolaridad', 1, 'C', 0, 0);
         $pdf->MultiCell($columnWidths['profesion_oficio'], 7, 'Prof./Oficio', 1, 'C', 0, 0);
@@ -346,6 +355,7 @@ class PDFController extends Controller
                     'pueblo' => $paciente->pueblo ?? 'N/A',
                     'comunidad_linguistica' => $paciente->comunidad_linguistica ?? 'N/A',
                     'fecha_nacimiento' => $paciente->fecha_nacimiento ? Carbon::parse($paciente->fecha_nacimiento)->format('d-m-Y') : 'N/A',
+                    'discapacidad' => $paciente->discapacidad ?? 'N/A',
                     'orientacion_sexual' => $paciente->orientacion_sexual ?? 'N/A',
                     'escolaridad' => $paciente->escolaridad ?? 'N/A',
                     'profesion_oficio' => $paciente->profesion_oficio ?? 'N/A',
@@ -371,6 +381,7 @@ class PDFController extends Controller
                 $pdf->MultiCell($columnWidths['pueblo'], $maxHeight, $rowData['pueblo'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['comunidad_linguistica'], $maxHeight, $rowData['comunidad_linguistica'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['fecha_nacimiento'], $maxHeight, $rowData['fecha_nacimiento'], 1, 'C', 0, 0);
+                $pdf->MultiCell($columnWidths['discapacidad'], $maxHeight, $rowData['discapacidad'], 1, 'C', 0, 0);
                 $pdf->MultiCell($columnWidths['orientacion_sexual'], $maxHeight, $rowData['orientacion_sexual'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['escolaridad'], $maxHeight, $rowData['escolaridad'], 1, 'L', 0, 0);
                 $pdf->MultiCell($columnWidths['profesion_oficio'], $maxHeight, $rowData['profesion_oficio'], 1, 'L', 0, 0);

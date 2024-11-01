@@ -96,10 +96,7 @@
                                     <option value="5" {{ $formulario->pueblo == 5 ? 'selected' : '' }}>Otro</option>
                                 </select>
                             </div>
-                            <div class="mb-4">
-                                <label for="comunidad_linguistica" class="block text-gray-700 dark:text-gray-400">Comunidad Lingüística</label>
-                                <input type="text" name="comunidad_linguistica" id="comunidad_linguistica" value="{{ $formulario->comunidad_linguistica }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
-                            </div>
+
                             <div class="mb-4">
                                 <label for="orientacion_sexual" class="block text-gray-700 dark:text-gray-400">Orientación Sexual</label>
                                 <select name="orientacion_sexual" id="orientacion_sexual" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
@@ -208,6 +205,12 @@
                                    class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full"
                                    placeholder="Grupo priorizado">
                         </div>
+
+                    <div class="mb-4">
+                        <label for="comunidad_linguistica" class="block text-gray-700 dark:text-gray-400">Comunidad Lingüística</label>
+                        <input type="text" name="comunidad_linguistica" id="comunidad_linguistica" value="{{ $formulario->comunidad_linguistica }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                    </div>
+
                         <div class="mb-4">
                             <label for="fecha_administracion" class="block text-gray-700 dark:text-gray-400">Fecha de Administración</label>
                             <input type="date" name="fecha_administracion" id="fecha_administracion"
