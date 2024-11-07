@@ -25,13 +25,11 @@
                     </x-nav-link>
 
                     <!-- Verificar si el usuario es 'admin' y mostrar el enlace de 'Usuarios' solo si es admin -->
-                    <div style="min-width: 180px;">
-                        @if(auth()->check() && auth()->user()->rol === 'admin')
-                            <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
-                                {{ __('Admin/Usuarios') }}
-                            </x-nav-link>
-                        @endif
-                    </div>
+                    @if(auth()->check() && auth()->user()->rol === 'admin')
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                            {{ __('Admin/Usuarios') }}
+                        </x-nav-link>
+                    @endif
                 </div>
 
 

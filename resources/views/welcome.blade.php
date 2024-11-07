@@ -4,7 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Bienvenido al sistema  651651</title>
+    <title>Bienvenido al sistema</title>
+
+    <img src="{{ asset('images/b.png') }}" alt="Logo"
+         style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; position: absolute; top: 20px; left: 20px;">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -14,9 +17,9 @@
     <style>
         body {
             font-family: 'Figtree', sans-serif;
-            background: linear-gradient(45deg, #003577, #5fc6b3, #31818e, #070e19, #e91e63); /* Degradado con colores vibrantes */
+            background: linear-gradient(45deg, #003577, #5fc6b3, #31818e, #070e19, #e91e63);
             background-size: 300% 300%;
-            animation: backgroundShift 15s ease infinite; /* Animación para cambio de color */
+            animation: backgroundShift 15s ease infinite;
             color: #333;
             margin: 0;
             padding: 0;
@@ -24,6 +27,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            position: relative; /* Para que el posicionamiento absoluto de la imagen funcione bien */
         }
 
         /* Animación de cambio de fondo */
@@ -45,7 +49,7 @@
         header {
             padding: 2rem;
             text-align: center;
-            background: linear-gradient(90deg, #1d4e89, #e91e63); /* Degradado del encabezado */
+            background: linear-gradient(90deg, #1d4e89, #e91e63);
             color: white;
             position: relative;
         }
@@ -141,9 +145,6 @@
                     <a href="{{ url('/dashboard') }}">Dashboard</a>
                 @else
                     <a href="{{ route('login') }}">Iniciar sesión</a>
-{{--                    @if (Route::has('register'))--}}
-{{--                        <a href="{{ route('register') }}">Registrarse</a>--}}
-{{--                    @endif--}}
                 @endauth
             </nav>
         @endif
@@ -153,17 +154,17 @@
         <div class="welcome-container">
             <h1>Área de Inmunizaciones</h1>
             <p>
-                El área de inmunizaciones se enfoca en la administración de vacunas para proteger a las personas contra enfermedades infecciosas graves. A través del proceso de vacunación o inmunización, se introduce una
-                pequeña cantidad de un virus o bacteria debilitada o inactiva, lo que permite que el sistema inmunológico desarrolle defensas sin causar la enfermedad. La inmunización es una de las herramientas más eficaces
-                para prevenir enfermedades, ayudando a reducir la propagación de infecciones y salvando millones de vidas cada año. El objetivo del área de inmunizaciones del Distrito de Salud Cante es que todas las personas,
-                especialmente las poblaciones más vulnerables, reciban las vacunas necesarias para protegerse de enfermedades como el sarampión, la poliomielitis, la hepatitis y muchas más.
+                El área de inmunizaciones se enfoca en la administración de vacunas para proteger a las personas contra enfermedades infecciosas graves. A través del proceso de vacunación, el sistema inmunológico se prepara para defenderse sin causar la enfermedad. Las vacunas son fundamentales para prevenir la propagación de infecciones y salvar vidas,
+                especialmente en poblaciones vulnerables.
             </p>
+
         </div>
     </main>
 
     <footer>
-        Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
+        Laravel v{{ Illuminate\Foundation\Application::VERSION }} - Autor: Elver Gerardo Hernandez Ixtacuy
     </footer>
+
 </div>
 </body>
 </html>
