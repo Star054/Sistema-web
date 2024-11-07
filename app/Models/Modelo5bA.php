@@ -41,8 +41,6 @@ class Modelo5bA extends Model
         return $this->hasMany(CriteriosVacuna::class, 'formulario_sigsa_base_id');
     }
 
-
-
     // Relación con la tabla `residencia`
     public function residencia()
     {

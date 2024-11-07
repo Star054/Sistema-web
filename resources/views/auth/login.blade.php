@@ -185,11 +185,11 @@
     </form>
 
     <!-- Register Link -->
-    @if (Route::has('register'))
-        <p class="register-link">
-            ¿No tienes cuenta? <a href="{{ route('register') }}">Regístrate aquí</a>
-        </p>
-    @endif
+{{--    @if (Route::has('register'))--}}
+{{--        <p class="register-link">--}}
+{{--            ¿No tienes cuenta? <a href="{{ route('register') }}">Regístrate aquí</a>--}}
+{{--        </p>--}}
+{{--    @endif--}}
 </div>
 
 </body>

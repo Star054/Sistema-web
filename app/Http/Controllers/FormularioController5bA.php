@@ -47,6 +47,7 @@ class FormularioController5bA extends Controller
         return view('formularios.5bA', compact('vacunas'));
     }
 
+
     public function store(Request $request)
     {
         // Validar los datos del formulario
@@ -63,18 +64,17 @@ class FormularioController5bA extends Controller
             'nombre_paciente' => 'required|string|max:150',
             'fecha_nacimiento' => 'nullable|date',
             'cui' => 'nullable|string',
-            'sexo' => 'nullable|string|in:M,F', // Es requerido porque es clave para los datos
-            'pueblo' => 'nullable|integer|in:1,2,3,4,5,6', // También es requerido en la actualización
-            'comunidad_linguistica' => 'nullable|integer|in:1,2,3,...,23', // Opcional
-            'escolaridad' => 'nullable|integer|in:0,1,2,3,4,5,6,7', // Opcional
+            'sexo' => 'nullable|string|in:M,F',
+            'pueblo' => 'nullable|integer|in:1,2,3,4,5,6',
+            'comunidad_linguistica' => 'nullable|integer|in:1,2,3,...,23',
+            'escolaridad' => 'nullable|integer|in:0,1,2,3,4,5,6,7',
             'profesion_oficio' => 'nullable|in:0,1,2,3,4,5,6,7,8',
-            'discapacidad' => 'nullable|integer|in:0,1,2,3,4,5', // Opcional
-            'orientacion_sexual' => 'nullable|integer|in:0,1,2,3,4,5', // Opcional
-            'comunidad_direccion' => 'nullable|string', // Opcional
-            'municipio_residencia' => 'nullable|string', // Opcional
+            'discapacidad' => 'nullable|integer|in:0,1,2,3,4,5',
+            'orientacion_sexual' => 'nullable|integer|in:0,1,2,3,4,5',
+            'comunidad_direccion' => 'nullable|string',
+            'municipio_residencia' => 'nullable|string',
             'agricola_migrante' => 'nullable|string',
             'embarazada' => 'nullable|string',
-
             'vacuna' => 'required|exists:vacunas,nombre_vacuna',
             'grupo_priorizado' => 'required|string',
             'fecha_administracion' => 'required|date',
@@ -85,7 +85,6 @@ class FormularioController5bA extends Controller
         $tipoFormulario = TipoFormulario::firstOrCreate([
             'codigo_formulario' => $validated['codigo_formulario'],
         ]);
-
 
         // Guardar los datos generales del formulario en `formulario_sigsa_base`
         $formulario = Modelo5bA::create([
@@ -124,20 +123,31 @@ class FormularioController5bA extends Controller
             'formulario_base_id' => $formulario->id,  // Relacionar con el formulario correctamente
         ]);
 
+        // Verificar la disponibilidad de stock para la vacuna especificada
+        $vacuna = Vacuna::where('nombre_vacuna', $validated['vacuna'])->first();
+        if (!$vacuna || $vacuna->cantidad_despachada <= 0) {
+            return back()->with('error', 'No hay stock disponible para esta vacuna.');
+        }
+
+        // Reducir el stock de la vacuna
+        $vacuna->cantidad_despachada -= 1;
+        $vacuna->save();
+
+        // Crear el registro en `CriteriosVacuna` después de la reducción de stock
         CriteriosVacuna::create([
             'formulario_sigsa_base_id' => $formulario->id,
-            'vacuna' => $validated['vacuna'],  // Incluir 'vacuna' en la creación
+            'vacuna' => $validated['vacuna'],
             'grupo_priorizado' => $validated['grupo_priorizado'],
             'fecha_administracion' => $validated['fecha_administracion'],
             'dosis' => $validated['dosis'],
         ]);
 
+        session()->flash('status', 'form-saved');
 
-        return redirect()->route('for-sigsa-5bA.create')->with('status', 'form-saved');
+        // Redirigir a la vista después de guardar
+        return redirect()->route('for-sigsa-5b.index');
     }
 
-
-    // Método para actualizar el formulario
     public function update(Request $request, $id)
     {
         // Validar los datos del formulario
@@ -217,9 +227,6 @@ class FormularioController5bA extends Controller
             'dosis' => $validated['dosis'],
         ]);
 
-
-
-
         // Redirigir de vuelta a la búsqueda si el término de búsqueda está presente
         $buscar = $request->input('buscar');
         if ($buscar) {
@@ -231,12 +238,33 @@ class FormularioController5bA extends Controller
         return redirect()->route('for-sigsa-5bA.index')->with('status', 'Formulario actualizado correctamente.');
     }
 
-    public function destroy($id)
+        public function destroy($id)
     {
-        // Buscar el formulario por ID y eliminarlo
+        // Buscar el formulario por ID
         $formulario = Modelo5bA::findOrFail($id);
+
+        // Obtener la relación con criterios de vacuna
+        $criteriosVacuna = $formulario->criteriosVacuna()->first();
+
+        if ($criteriosVacuna) {
+            // Buscar la vacuna usando el nombre guardado en criterios_vacuna
+            $vacuna = Vacuna::where('nombre_vacuna', $criteriosVacuna->vacuna)->first();
+
+            if ($vacuna) {
+                // Contar cuántas dosis están registradas
+                $dosisRegistradas = $formulario->criteriosVacuna()->count();
+
+                // Aumentar la cantidad despachada en la vacuna
+                $vacuna->cantidad_despachada += $dosisRegistradas;
+                $vacuna->save();
+            }
+        }
+
+        // Eliminar el formulario
         $formulario->delete();
 
-        return redirect()->route('for-sigsa-5bA.index')->with('status', 'Formulario eliminado correctamente.');
+        return redirect()->route('for-sigsa-5bA.index')->with('status', 'Formulario eliminado correctamente y stock restaurado.');
     }
+
+
 }

@@ -21,13 +21,30 @@ class FormularioSIGSAController extends Controller
     }
 
 
+
     public function destroy($id)
     {
-
         $formulario = FormularioSIGSA5b::findOrFail($id);
-        $formulario->delete();
-        return redirect()->route('for-sigsa-5b.index')->with('success', 'Formulario eliminado correctamente.');
+        $vacuna = Vacuna::where('nombre_vacuna', $formulario->vacuna)->first();
+
+        if ($vacuna) {
+            // Contar el número de dosis registradas para este formulario
+            $dosisRegistradas = $formulario->mujer15a49yOtrosGrupos()->count();
+
+
+            $vacuna->cantidad_despachada += $dosisRegistradas;
+
+
+            $vacuna->save();
+        }
+
+        // Eliminar las dosis relacionadas y luego el formulario
+        $formulario->mujer15a49yOtrosGrupos()->delete(); // Eliminar las dosis primero
+        $formulario->delete(); // Luego eliminar el formulario principal
+
+        return redirect()->route('for-sigsa-5b.index')->with('status', 'Formulario y dosis eliminados exitosamente, inventario actualizado.');
     }
+
 
 
     public function show($id)
@@ -42,11 +59,11 @@ class FormularioSIGSAController extends Controller
         return view('formularios.formulario-for-sigsa-5b', compact('vacunas'));
     }
 
+
+
     public function store(Request $request)
     {
-//
-//        dd($request->all());  // Depurar todos los datos enviados desde el formulario
-
+        // Validar los datos del formulario
         $validated = $request->validate([
             'vacuna' => 'required|string|exists:vacunas,nombre_vacuna',
             'nombre_paciente' => 'required|string',
@@ -61,56 +78,48 @@ class FormularioSIGSAController extends Controller
             'no_orden' => 'nullable|integer',
             'cui' => 'nullable|string',
             'fecha_nacimiento' => 'nullable|date',
-            'sexo' => 'nullable|string|in:M,F', // Solo puede ser M o F
-            'pueblo' => 'nullable|integer|in:1,2,3,4,5,6', // Validar pueblo según la lista
-            'comunidad_linguistica' => 'nullable|integer|in:1,2,3,...,23', // Comunidades lingüísticas validas
-            'escolaridad' => 'nullable|integer|in:0,1,2,3,4,5,6,7', // Escolaridad con los valores asignados
-            'profesion_oficio' => 'nullable|integer|in:0,1,2,3,4,5,6,7,8', // Profesión u oficio
-            'discapacidad' => 'nullable|integer|in:0,1,2,3,4,5', // Discapacidad de 0 a 5
-            'orientacion_sexual' => 'nullable|integer|in:0,1,2,3,4,5', // Orientación sexual validada
+            'sexo' => 'nullable|string|in:M,F',
+            'pueblo' => 'nullable|integer|in:1,2,3,4,5,6',
+            'comunidad_linguistica' => 'nullable|integer|in:1,2,3,...,23',
+            'escolaridad' => 'nullable|integer|in:0,1,2,3,4,5,6,7',
+            'profesion_oficio' => 'nullable|integer|in:0,1,2,3,4,5,6,7,8',
+            'discapacidad' => 'nullable|integer|in:0,1,2,3,4,5',
+            'orientacion_sexual' => 'nullable|integer|in:0,1,2,3,4,5',
             'dia_consulta' => 'nullable|date',
             'no_historia_clinica' => 'nullable|string',
             'comunidad_direccion' => 'nullable|string',
             'municipio_residencia' => 'nullable|string',
             'agricola_migrante' => 'nullable|string',
             'embarazada' => 'nullable|string',
-
-
             'mujer_15_49' => 'nullable|array',
             'mujer_15_49.*' => 'nullable|date',
-
             'otros_grupos' => 'nullable|array',
             'otros_grupos.*' => 'nullable|date',
         ]);
 
-
-        // Si se proporciona el CUI, buscar por CUI y vacuna
-        if (!empty($validated['cui'])) {
-            $pacienteExistente = FormularioSIGSA5b::where('cui', $validated['cui'])
-                ->where('vacuna', $validated['vacuna']) // Verificar la misma vacuna
-                ->first();
-        } else {
-            // Si no se proporciona el CUI, buscar por nombre del paciente y vacuna
-            $pacienteExistente = FormularioSIGSA5b::where('nombre_paciente', $validated['nombre_paciente'])
-                ->where('vacuna', $validated['vacuna']) // Verificar la misma vacuna
-                ->first();
-        }
+        // Verificar si el paciente ya está registrado con esta vacuna
+        $pacienteExistente = FormularioSIGSA5b::where(function ($query) use ($validated) {
+            $query->where('vacuna', $validated['vacuna']);
+            if (!empty($validated['cui'])) {
+                $query->where('cui', $validated['cui']);
+            } else {
+                $query->where('nombre_paciente', $validated['nombre_paciente']);
+            }
+        })->first();
 
         if ($pacienteExistente) {
-            // Si ya existe, redirigir con un mensaje de alerta
             return redirect()->back()->with('alert', 'Este paciente ya ha recibido esta vacuna. Si deseas agregar una segunda dosis o refuerzo, edita el registro existente.');
         }
 
+        // Reducir el inventario de la vacuna
+        $inventarioController = new InventarioController();
+        if (!$inventarioController->reducirDosisPorNombre($validated['vacuna'])) {
+            return redirect()->back()->withErrors(['error' => 'No hay stock suficiente para esta vacuna.']);
+        }
 
-
-        $tipoFormulario = TipoFormulario::firstOrCreate([
-            'codigo_formulario' => $validated['codigo_formulario'],
-        ]);
-
-        $vacuna = Vacuna::where('nombre_vacuna', $validated['vacuna'])->firstOrFail();
-
+        // Crear el registro del formulario del paciente
         $formulario = FormularioSIGSA5b::create([
-            'vacuna' => $vacuna->nombre_vacuna,
+            'vacuna' => $validated['vacuna'],
             'area_salud' => $validated['area_salud'],
             'distrito_salud' => $validated['distrito_salud'],
             'municipio' => $validated['municipio'],
@@ -126,55 +135,36 @@ class FormularioSIGSAController extends Controller
             'fecha_nacimiento' => $validated['fecha_nacimiento'] ?? null,
             'comunidad_linguistica' => $validated['comunidad_linguistica'] ?? null,
             'escolaridad' => $validated['escolaridad'] !== '' ? $validated['escolaridad'] : null,
-
             'profesion_oficio' => $validated['profesion_oficio'] ?? null,
             'discapacidad' => $validated['discapacidad'] ?? null,
-
-            'comunidad_direccion' => 'nullable|string',
-            'municipio_residencia' => 'nullable|string',
-            'agricola_migrante' => 'nullable|string',
-            'embarazada' => 'nullable|string',
+            'comunidad_direccion' => $validated['comunidad_direccion'] ?? null,
+            'municipio_residencia' => $validated['municipio_residencia'] ?? null,
+            'agricola_migrante' => $validated['agricola_migrante'] ?? null,
+            'embarazada' => $validated['embarazada'] ?? null,
         ]);
 
-        // Relacionar el formulario con el tipo de formulario
+        // Asociar el formulario con el tipo de formulario
+        $tipoFormulario = TipoFormulario::firstOrCreate(['codigo_formulario' => $validated['codigo_formulario']]);
         $formulario->tipoFormularios()->attach($tipoFormulario->id);
 
-        // Guardar los datos de residencia
-        $formulario->residencia()->create([
-            'comunidad_direccion' => $validated['comunidad_direccion'],
-            'municipio_residencia' => $validated['municipio_residencia'],
-            'agricola_migrante' => $validated['agricola_migrante'],
-            'embarazada' => $validated['embarazada'],
-        ]);
-
-        // Almacenar las dosis de vacunación para mujeres de 15 a 49 años
-        foreach ($request->input('mujer_15_49', []) as $tipoDosis => $fechaVacunacion) {
-            if ($fechaVacunacion) {
-                Mujer15a49yOtrosGrupos::create([
-                    'formulario_base_id' => $formulario->id,
-                    'grupo' => 'mujer_15_49',
-                    'fecha_vacunacion' => $fechaVacunacion,
-                    'tipo_dosis' => $tipoDosis,
-                ]);
+        // Guardar los datos de vacunación para mujeres de 15 a 49 años y otros grupos
+        foreach (['mujer_15_49', 'otros_grupos'] as $grupo) {
+            foreach ($request->input($grupo, []) as $fechaVacunacion) {
+                if ($fechaVacunacion) {
+                    Mujer15a49yOtrosGrupos::create([
+                        'formulario_base_id' => $formulario->id,
+                        'grupo' => $grupo,
+                        'fecha_vacunacion' => $fechaVacunacion,
+                    ]);
+                }
             }
         }
-
-        // Almacenar las dosis de vacunación para otros grupos
-        foreach ($request->input('otros_grupos', []) as $tipoDosis => $fechaVacunacion) {
-            if ($fechaVacunacion) {
-                Mujer15a49yOtrosGrupos::create([
-                    'formulario_base_id' => $formulario->id,
-                    'grupo' => 'otros_grupos',
-                    'fecha_vacunacion' => $fechaVacunacion,
-                    'tipo_dosis' => $tipoDosis,
-                ]);
-            }
-        }
-
         session()->flash('status', 'form-saved');
-//        return redirect()->route('formulario.exitoso')->with('status', 'Formulario guardado exitosamente');
-        return redirect()->route('for-sigsa-5b.create');
+
+        // Redirigir a la vista anterior o a otra
+        return redirect()->route('for-sigsa-5b.create')->with('success', 'Paciente registrado exitosamente.');
     }
+
 
 
     public function edit($id)
@@ -341,3 +331,4 @@ class FormularioSIGSAController extends Controller
     }
 
 }
+

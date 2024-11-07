@@ -110,7 +110,10 @@
                                 </select>
                             </div>
 
-
+                            <div class="mb-4">
+                                <label for="comunidad_linguistica" class="block text-gray-700 dark:text-gray-400">Comunidad Lingüística</label>
+                                <input type="text" name="comunidad_linguistica" id="comunidad_linguistica" value="{{ $formulario->comunidad_linguistica }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
+                            </div>
 
                             <div class="mb-4">
                                 <label for="escolaridad" class="block text-gray-700 dark:text-gray-400">Escolaridad</label>
@@ -179,6 +182,7 @@
                         </div>
                     </div>
 
+
                     <!-- Sección de Criterios de selección según vacuna administrada -->
                     <div class="mt-8">
                         <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
@@ -198,6 +202,7 @@
                         </div>
                     </div>
 
+
                     <div class="mb-4">
                             <label for="grupo_priorizado" class="block text-gray-700 dark:text-gray-400">Grupo Priorizado</label>
                             <input type="text" name="grupo_priorizado" id="grupo_priorizado"
@@ -206,10 +211,7 @@
                                    placeholder="Grupo priorizado">
                         </div>
 
-                    <div class="mb-4">
-                        <label for="comunidad_linguistica" class="block text-gray-700 dark:text-gray-400">Comunidad Lingüística</label>
-                        <input type="text" name="comunidad_linguistica" id="comunidad_linguistica" value="{{ $formulario->comunidad_linguistica }}" class="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 p-2 rounded-md w-full">
-                    </div>
+
 
                         <div class="mb-4">
                             <label for="fecha_administracion" class="block text-gray-700 dark:text-gray-400">Fecha de Administración</label>

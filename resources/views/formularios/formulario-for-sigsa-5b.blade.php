@@ -1,6 +1,9 @@
 <x-app-layout>
     <div class="container mx-auto px-4 py-6 space-y-8">
 
+
+{{--        @dd(session()->all());--}}
+
         <!-- Iniciar el formulario -->
         <form action="{{ route('for-sigsa-5b.store') }}" method="POST">
             @csrf  <!-- Token de seguridad de Laravel -->
@@ -95,6 +98,8 @@
         </form> <!-- Fin del formulario -->
 
         <br>
+
+
 
         <!-- Botones CRUD para la navegación -->
         <div class="bg-white dark:bg-gray-800 p-6 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out hover:shadow-xl">

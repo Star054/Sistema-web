@@ -13,7 +13,7 @@
                     <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
                         {{ __('Si necesitas crear una nueva cuenta, haz clic en el siguiente botón. Asegúrate de usar un correo electrónico diferente si deseas empezar de nuevo.') }}
                     </p>
-                    <a href="{{ route('register') }}" class="inline-block px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-500 dark:bg-blue-700 dark:hover:bg-blue-600 transition duration-200">
+                    <a href="{{ route('simple-register.create') }}" class="inline-block px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-500 dark:bg-blue-700 dark:hover:bg-blue-600 transition duration-200">
                         {{ __('Crear una nueva cuenta') }}
                     </a>
                 </div>

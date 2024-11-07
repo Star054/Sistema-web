@@ -44,16 +44,67 @@
                             @enderror
                         </div>
 
+
                         <!-- Descripción -->
                         <div class="mb-4">
                             <label for="descripcion" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Descripción (Opcional):</label>
                             <textarea name="descripcion" id="descripcion" rows="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('descripcion') border-red-500 @enderror">{{ old('descripcion', $vacuna->descripcion) }}</textarea>
-
-                            <!-- Mostrar errores específicos del campo 'descripcion' -->
                             @error('descripcion')
                             <p class="text-red-500 dark:text-red-300 text-xs italic mt-2">{{ $message }}</p>
                             @enderror
                         </div>
+
+                        <!-- Cantidad Solicitada -->
+                        <div class="mb-4">
+                            <label for="cantidad_solicitada" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Cantidad Solicitada (Opcional):</label>
+                            <input type="number" name="cantidad_solicitada" id="cantidad_solicitada" value="{{ old('cantidad_solicitada', $vacuna->cantidad_solicitada) }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('cantidad_solicitada') border-red-500 @enderror" min="0" step="1">
+
+                            @error('cantidad_solicitada')
+                            <p class="text-red-500 dark:text-red-300 text-xs italic mt-2">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+
+                        <!-- Cantidad Autorizada -->
+                        <div class="mb-4">
+                            <label for="cantidad_autorizada" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Cantidad Autorizada:</label>
+                            <input type="number" name="cantidad_autorizada" id="cantidad_autorizada" value="{{ old('cantidad_autorizada', $vacuna->cantidad_autorizada) }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('cantidad_autorizada') border-red-500 @enderror" required min="1" step="1">
+
+                            @error('cantidad_autorizada')
+                            <p class="text-red-500 dark:text-red-300 text-xs italic mt-2">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Cantidad Despachada -->
+                        <div class="mb-4">
+                            <label for="cantidad_despachada" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Cantidad Despachada:</label>
+                            <input type="number" name="cantidad_despachada" id="cantidad_despachada" value="{{ old('cantidad_despachada', $vacuna->cantidad_despachada) }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('cantidad_despachada') border-red-500 @enderror" required min="0">
+                            @error('cantidad_despachada')
+                            <p class="text-red-500 dark:text-red-300 text-xs italic mt-2">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+
+
+                        <!-- Fecha de Recepción -->
+                        <div class="mb-4">
+                            <label for="fecha_recepcion" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Fecha de Recepción:</label>
+                            <input type="date" name="fecha_recepcion" id="fecha_recepcion" value="{{ old('fecha_recepcion', $vacuna->fecha_recepcion) }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('fecha_recepcion') border-red-500 @enderror" required>
+                            @error('fecha_recepcion')
+                            <p class="text-red-500 dark:text-red-300 text-xs italic mt-2">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+
+                        <div class="mb-4">
+                            <label for="hora_recepcion" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Hora de Recepción:</label>
+                            <input type="time" name="hora_recepcion" id="hora_recepcion" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('hora_recepcion') border-red-500 @enderror" required>
+                            @error('hora_recepcion')
+                            <p class="text-red-500 dark:text-red-300 text-xs italic mt-2">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+
 
                         <!-- Botón de guardar -->
                         <div class="flex items-center justify-between">

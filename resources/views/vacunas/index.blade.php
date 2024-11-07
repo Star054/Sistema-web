@@ -15,13 +15,11 @@
                     </div>
                 @endif
 
-
                 @if ($errors->any())
                     <div class="bg-red-100 dark:bg-red-900 border-l-4 border-red-500 text-red-700 dark:text-red-300 p-4 mb-4">
                         <strong>¡Error!</strong> {{ $errors->first('error') }}
                     </div>
                 @endif
-
 
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
@@ -29,6 +27,9 @@
                         <tr>
                             <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nombre</th>
                             <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Descripción</th>
+                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Cantidad Solicitada</th>
+                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Cantidad Despachada</th>
+                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Tipo de Dosis</th>
                             <th class="px-6 py-3 text-right text-sm font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Acciones</th>
                         </tr>
                         </thead>
@@ -37,6 +38,9 @@
                             <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-150 ease-in-out">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $vacuna->nombre_vacuna }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">{{ $vacuna->descripcion }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">{{ $vacuna->cantidad_solicitada }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">{{ $vacuna->cantidad_despachada }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">{{ $vacuna->tipo_dosis }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-right">
                                     <a href="{{ route('vacunas.edit', $vacuna) }}" class="text-blue-600 hover:text-blue-900 transition duration-150 ease-in-out">Editar</a>
                                     <form action="{{ route('vacunas.destroy', $vacuna) }}" method="POST" class="inline-block">

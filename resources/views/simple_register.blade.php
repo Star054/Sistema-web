@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario</title>
 
-
-
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
@@ -133,12 +131,10 @@
 <div class="register-container">
     <h2>Registro de Usuario</h2>
 
-    <form method="POST" action="{{ route('register') }}">
+    <form action="{{ route('simple-register.store') }}" method="POST">
         @csrf
 
-        <form action="{{ route('register') }}" method="POST">
-            @csrf
-        <!-- Name -->
+        <!-- Nombre -->
         <div class="form-group">
             <label for="name">Nombre</label>
             <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name">
@@ -147,7 +143,7 @@
             @endif
         </div>
 
-        <!-- Email Address -->
+        <!-- Correo Electrónico -->
         <div class="form-group">
             <label for="email">Correo Electrónico</label>
             <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="username">
@@ -156,7 +152,7 @@
             @endif
         </div>
 
-        <!-- Password -->
+        <!-- Contraseña -->
         <div class="form-group">
             <label for="password">Contraseña</label>
             <input id="password" type="password" name="password" required autocomplete="new-password">
@@ -165,7 +161,7 @@
             @endif
         </div>
 
-        <!-- Confirm Password -->
+        <!-- Confirmar Contraseña -->
         <div class="form-group">
             <label for="password_confirmation">Confirmar Contraseña</label>
             <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password">
@@ -174,27 +170,23 @@
             @endif
         </div>
 
+        <div class="form-group">
+            <label for="rol">Rol</label>
+            <select id="rol" name="rol" required>
+                <option value="usuario" {{ old('rol') == 'usuario' ? 'selected' : '' }}>Usuario</option>
+                <option value="admin" {{ old('rol') == 'admin' ? 'selected' : '' }}>Administrador</option>
+            </select>
+            @if ($errors->get('rol'))
+                <div class="error">{{ $errors->first('rol') }}</div>
+            @endif
+        </div>
+
+
         <button type="submit" class="register-btn">Registrarse</button>
     </form>
 
-
-{{--    <!-- Rol (solo visible para admin) -->--}}
-{{--    @if (Auth::check() && Auth::user()->rol === 'admin')--}}
-{{--        <div class="form-group">--}}
-{{--            <label for="rol">Rol</label>--}}
-{{--            <select id="rol" name="rol">--}}
-{{--                <option value="admin" {{ old('rol') === 'admin' ? 'selected' : '' }}>Administrador</option>--}}
-{{--                <option value="usuario" {{ old('rol') === 'usuario' ? 'selected' : '' }}>Usuario</option>--}}
-{{--            </select>--}}
-{{--            @if ($errors->get('rol'))--}}
-{{--                <div class="error">{{ $errors->first('rol') }}</div>--}}
-{{--            @endif--}}
-{{--        </div>--}}
-{{--    @endif--}}
-
     <a href="{{ route('login') }}" class="login-link">¿Ya tienes cuenta? Inicia sesión</a>
 </div>
-
 
 </body>
 </html>

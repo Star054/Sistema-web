@@ -15,6 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('nombre_vacuna');
             $table->string('descripcion')->nullable();
+            $table->integer('cantidad_autorizada')->default(0);
+            $table->integer('cantidad_solicitada')->nullable();
+            $table->integer('cantidad_despachada')->nullable();
+            $table->string('unidad_medida')->default('mL');
+            $table->time('hora_recepcion')->nullable();
+            $table->date('fecha_recepcion')->nullable();
             $table->timestamps();
         });
     }

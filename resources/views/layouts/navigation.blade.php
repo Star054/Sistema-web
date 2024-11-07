@@ -10,7 +10,6 @@
                     </a>
                 </div>
 
-                <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Inicio') }}
@@ -21,10 +20,23 @@
                     <x-nav-link :href="route('vacunas.filtros')" :active="request()->routeIs('vacunas.filtros')">
                         {{ __('Consultas Informes') }}
                     </x-nav-link>
-                </div>
-            </div>
+                    <x-nav-link :href="route('inventario.index')" :active="request()->routeIs('inventario.index')">
+                        {{ __('Inventario') }}
+                    </x-nav-link>
 
-            <!-- Gestion de Formularios Dropdown para pantallas grandes -->
+                    <!-- Verificar si el usuario es 'admin' y mostrar el enlace de 'Usuarios' solo si es admin -->
+                    <div style="min-width: 180px;">
+                        @if(auth()->check() && auth()->user()->rol === 'admin')
+                            <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                                {{ __('Admin/Usuarios') }}
+                            </x-nav-link>
+                        @endif
+                    </div>
+                </div>
+
+
+
+                <!-- Gestion de Formularios Dropdown para pantallas grandes -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
@@ -129,9 +141,17 @@
             <x-responsive-nav-link :href="route('vacunas.create')" :active="request()->routeIs('vacunas.create')">
                 {{ __('Vacunas') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('inventario.index')" :active="request()->routeIs('inventario.index')">
+                {{ __('Inventario') }}
+            </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('vacunas.resultados')" :active="request()->routeIs('vacunas.resultados')">
                 {{ __('Consultas Informes') }}
             </x-responsive-nav-link>
+            @if(auth()->check() && auth()->user()->rol === 'admin')
+                <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                    {{ __('Admin/Usuarios') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Gestion de Formularios -->

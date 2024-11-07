@@ -32,10 +32,10 @@ class PDFController extends Controller
             return redirect()->back()->withErrors(['mensaje' => 'No se encontraron pacientes para generar el PDF.']);
         }
 
-        // Obtener el primer paciente
+
         $primerPaciente = $pacientes->first();
 
-        // Asignar los datos del encabezado desde el primer paciente
+       
         $area_salud = $primerPaciente->area_salud;
         $distrito_salud = $primerPaciente->distrito_salud;
         $municipio = $primerPaciente->municipio;
@@ -44,11 +44,11 @@ class PDFController extends Controller
         $cargo_responsable = $primerPaciente->cargo_responsable;
         $anio = $primerPaciente->anio;
 
-        // Crear PDF con TCPDF en formato horizontal (Landscape) y tamaño oficio (Legal)
+
         $pdf = new TCPDF('L', PDF_UNIT, [215.9, 330.2], true, 'UTF-8', false); // 8.5 x 13 pulgadas en mm
         $pdf->SetMargins(5, 5, 5);
 
-        // Establecer información del documento
+
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor('Sistema de Vacunación');
         $pdf->SetTitle('Reporte de Pacientes Vacunados - SIGSA5b');

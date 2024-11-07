@@ -49,9 +49,6 @@ class FormularioController3CS extends Controller
             'agricola_migrante' => 'nullable|string',
             'embarazada' => 'nullable|string',
 
-
-
-
             // Otros campos relacionados con la consulta
             'consulta' => 'nullable|in:1,2,3,4',
             'control' => 'nullable|in:0,1,2,3,4,5,6',
@@ -67,10 +64,15 @@ class FormularioController3CS extends Controller
             'notificacion_lugar' => 'nullable|in:0,1,2,3',
             'notificacion_numero' => 'nullable|string|max:255',
             'nombre_acompanante' => 'nullable|string|max:255',
-
-
-
         ]);
+
+        // Verificar la disponibilidad de la vacuna
+        $vacuna = Vacuna::where('nombre_vacuna', $validated['tratamiento_descripcion'])->first();
+
+        // Comprobar si la vacuna existe y hay stock disponible
+        if (!$vacuna || $vacuna->cantidad_despachada <= 0) {
+            return redirect()->back()->withErrors(['tratamiento_descripcion' => 'La vacuna no está disponible.'])->withInput();
+        }
 
         // Guardar el tipo de formulario en la tabla `tipo_formularios`
         $tipoFormulario = TipoFormulario::firstOrCreate([
@@ -79,7 +81,7 @@ class FormularioController3CS extends Controller
 
         // Guardar directamente los datos generales en `formulario_sigsa_base`
         $formulario = Modelo3CS::create([
-        'area_salud' => $validated['area_salud'] ?? null,
+            'area_salud' => $validated['area_salud'] ?? null,
             'distrito_salud' => $validated['distrito_salud'] ?? null,
             'municipio' => $validated['municipio'] ?? null,
             'servicio_salud' => $validated['servicio_salud'] ?? null,
@@ -95,16 +97,12 @@ class FormularioController3CS extends Controller
             'fecha_nacimiento' => $validated['fecha_nacimiento'] ?? null,
             'comunidad_linguistica' => $validated['comunidad_linguistica'] ?? null,
             'escolaridad' => $validated['escolaridad'] !== '' ? $validated['escolaridad'] : null,
-
             'profesion_oficio' => $validated['profesion_oficio'] ?? null,
             'discapacidad' => $validated['discapacidad'] ?? null,
-
-            'comunidad_direccion' => 'nullable|string',
-            'municipio_residencia' => 'nullable|string',
-            'agricola_migrante' => 'nullable|string',
-
-           ]);
-
+            'comunidad_direccion' => $validated['comunidad_direccion'],
+            'municipio_residencia' => $validated['municipio_residencia'],
+            'agricola_migrante' => $validated['agricola_migrante'] ?? null,
+        ]);
 
         // Establecer la relación en la tabla pivote con `tipo_formulario`
         $formulario->tiposFormulario()->attach($tipoFormulario->id);
@@ -125,23 +123,25 @@ class FormularioController3CS extends Controller
             'referido_a' => $validated['referido_a'] ?? null,
             'diagnostico' => $validated['diagnostico'] ?? null,
             'codigo_cie' => $validated['codigo_cie'] ?? null,
-
             'viene' => $validated['viene'] ?? null,
             'fue' => $validated['fue'] ?? null,
-
             'tratamiento_descripcion' => $validated['tratamiento_descripcion'] ?? null,
             'tratamiento_presentacion' => $validated['tratamiento_presentacion'] ?? null,
             'cantidad_recetada' => $validated['cantidad_recetada'] ?? null,
             'notificacion_lugar' => $validated['notificacion_lugar'] ?? null,
             'notificacion_numero' => $validated['notificacion_numero'] ?? null,
             'nombre_acompanante' => $validated['nombre_acompanante'] ?? null,
-
         ]);
+
+        // Descontar una unidad del inventario de la vacuna
+        if ($vacuna->cantidad_despachada > 0) {
+            $vacuna->decrement('cantidad_despachada');
+        }
 
         // Redirigir con mensaje de éxito
         return redirect()->route('formularios-3cs.create')->with('status', 'Formulario y consulta guardados correctamente.');
-
     }
+
 
     public function index()
     {
@@ -329,6 +329,18 @@ class FormularioController3CS extends Controller
         // Buscar el formulario por ID
         $formulario = Modelo3CS::findOrFail($id);
 
+        // Obtener la descripción del tratamiento (vacuna) de la consulta relacionada
+        $tratamientoDescripcion = $formulario->consulta()->first()->tratamiento_descripcion ?? null;
+
+        // Aumentar el stock de la vacuna en inventario si hay tratamiento
+        if ($tratamientoDescripcion) {
+            $vacuna = Vacuna::where('nombre_vacuna', $tratamientoDescripcion)->first();
+            if ($vacuna) {
+                // Aumentar el stock en 1
+                $vacuna->increment('cantidad_despachada');
+            }
+        }
+
         // Eliminar la residencia y la consulta si existen
         if ($formulario->residencia) {
             $formulario->residencia()->delete();
@@ -343,4 +355,6 @@ class FormularioController3CS extends Controller
         // Redirigir con mensaje de éxito
         return redirect()->route('formularios-3cs.index')->with('status', 'Formulario eliminado correctamente.');
     }
+
+
 }
